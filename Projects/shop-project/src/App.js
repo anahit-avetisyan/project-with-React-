@@ -55,7 +55,7 @@ class App extends Component {
           <h1 className="App-title">Welcome to React LocalStorage Tutorial</h1>
         </header> */}
         <div className="todoList">
-          Add an item to the list
+          Add an item 
           <br />
           <input
             type="text"
