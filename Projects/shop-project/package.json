@@ -5,7 +5,10 @@
   "dependencies": {
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-scripts": "2.1.8"
+    "react-icons": "^3.5.0",
+    "react-scripts": "2.1.8",
+    "react-simple-storage": "^1.4.1",
+    "yarn-install": "^1.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
