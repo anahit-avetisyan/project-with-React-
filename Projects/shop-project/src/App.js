@@ -7,7 +7,7 @@ class App extends Component {
     state = {
       newItem: "",
       list: [],
-      clicked:true,
+  
     };
   
 
