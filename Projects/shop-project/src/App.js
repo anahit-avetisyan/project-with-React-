@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import SimpleStorage from "react-simple-storage";
 import "./App.css";
- 
+import { Button,Alert } from 'reactstrap';
 class App extends Component {
   
     state = {
@@ -14,6 +14,7 @@ class App extends Component {
   updateInput(key, value) {
     // update react state
     this.setState({ [key]: value });
+    
   }
 
   addItem() {
@@ -22,7 +23,7 @@ class App extends Component {
       id: 1 + Math.random(),
       value: this.state.newItem.slice()
     };
-
+    
     // copy current list of items
     const list = [...this.state.list];
 
@@ -63,15 +64,18 @@ class App extends Component {
             value={this.state.newItem}
             onChange={e => this.updateInput("newItem", e.target.value)}
           />
-          <button
+          <Button
             onClick={() => this.addItem()}
             disabled={!this.state.newItem.length}
           >
             &#43; Add
-          </button>
+          </Button>
           <br /> 
           </div>
           <div className="itemsContainer">
+          <Alert color="primary">
+        This is a primary alert — check it out!
+        </Alert>
           <ul>
             {this.state.list.map(item => {
               return (
