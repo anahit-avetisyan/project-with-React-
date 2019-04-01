@@ -1,0 +1,36 @@
+ 
+h1{
+    text-align: center;
+    margin: 1em;
+    margin-top:3em;
+    padding: 1em
+}
+.wrapper{
+    display: flex;
+    flex-direction: column;
+        
+}
+.main{
+    margin-top: 3em;    
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    div{
+        margin: 1em;
+        display: flex;
+        flex-direction: column;
+        button{
+            margin-top:0.5em
+        }
+        p{
+            margin: 0;
+        }
+       
+    }
+    div img{
+        height: 20em;
+        width: 18em;
+    }
+}
+ 
