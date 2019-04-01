@@ -19,41 +19,41 @@ class Main extends Component{
     }
  
     render(){
-        // console.log(this.props, "props")
+        console.log(this.props, "props")
         return( 
             <div className="wrapper">
-            <h1>ONLINE FRUITS SHOP</h1>
-            <div className="main">
-                <div><img src={Apple} alt="Apple img" />
-                    <p>Name: APPLE</p>
-                    <p>Price{this.props.state.changeQuantityApple}</p>
-                    <label>Quantity:</label> <input placeholder="0" type="number" ref={input=>this.textInput=input}/>
-                    <button onClick={this.addBasket}>ADD TO BASKET</button>
+                <h1>ONLINE FRUITS SHOP </h1>
+                <div className="main">
+                    <div><img src={Apple} alt="Apple img" />
+                        <p>Name: APPLE</p>
+                        <p>Price{this.props.state.changeQuantityApple}</p>
+                        <label>Quantity:</label> <input placeholder="0" type="number" ref={input=>this.textInput=input}/>
+                        <button onClick={this.addBasket}>ADD TO BASKET</button>
+                    </div>
+                    <div><img src={Avocado} alt="Avocado img"/>
+                        <p>Name: APPLE</p>
+                        <p>Price</p>
+                        <input placeholder="0" type="number" />
+                    </div>
+                    <div><img src={Cherry} alt="Cherry img" />
+                    <p>Price </p>
+                    <input type="number"/></div>
+                    <div><img src={Lemon} alt="Lemon img" />
+                    <p>Price </p>
+                    <input type="number"/></div>
+                    <div><img src={Oranges} alt="Oranges img" />
+                    <p>Price </p>
+                    <input type="number"/></div>
+                    <div><img src={Raspberry} alt="Raspberry img" />
+                    <p>Price </p>
+                    <input type="number"/></div>
+                    <div><img src={Pineapple} alt="Pineapple img"/>
+                    <p>Price </p>
+                    <input type="number"/></div>
+                    <div><img src={Strawberry} alt="Strawberry img" />
+                    <p>Price </p>
+                    <input type="number"/></div>
                 </div>
-                <div><img src={Avocado} alt="Avocado img"/>
-                    <p>Name: APPLE</p>
-                    <p>Price</p>
-                    <input placeholder="0" type="number" />
-                </div>
-                <div><img src={Cherry} alt="Cherry img" />
-                <p>Price </p>
-                <input type="number"/></div>
-                <div><img src={Lemon} alt="Lemon img" />
-                <p>Price </p>
-                <input type="number"/></div>
-                <div><img src={Oranges} alt="Oranges img" />
-                <p>Price </p>
-                <input type="number"/></div>
-                <div><img src={Raspberry} alt="Raspberry img" />
-                <p>Price </p>
-                <input type="number"/></div>
-                <div><img src={Pineapple} alt="Pineapple img"/>
-                <p>Price </p>
-                <input type="number"/></div>
-                <div><img src={Strawberry} alt="Strawberry img" />
-                <p>Price </p>
-                <input type="number"/></div>
-            </div>
             </div> 
         )
     }
