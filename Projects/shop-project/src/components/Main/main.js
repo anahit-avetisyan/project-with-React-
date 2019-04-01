@@ -19,7 +19,7 @@ class Main extends Component{
     }
  
     render(){
-        console.log(this.props, "props")
+        // console.log(this.props, "props")
         return( 
             <div className="wrapper">
             <h1>ONLINE FRUITS SHOP</h1>
