@@ -11,7 +11,7 @@ import {InputValue} from '../reducer/action'
 import './main.scss'
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-
+ 
 class Main extends Component{
      
     addBasket=()=>{
@@ -21,12 +21,13 @@ class Main extends Component{
     render(){
         console.log(this.props, "props")
         return( 
+            <Fragment>
             <div className="wrapper">
                 <h1>ONLINE FRUITS SHOP </h1>
                 <div className="main">
                     <div><img src={Apple} alt="Apple img" />
                         <p>Name: APPLE</p>
-                        <p>Price{this.props.state.changeQuantityApple}</p>
+                        <p>Price</p>
                         <label>Quantity:</label> <input placeholder="0" type="number" ref={input=>this.textInput=input}/>
                         <button onClick={this.addBasket}>ADD TO BASKET</button>
                     </div>
@@ -55,6 +56,8 @@ class Main extends Component{
                     <input type="number"/></div>
                 </div>
             </div> 
+             
+            </Fragment>
         )
     }
 }

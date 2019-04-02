@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux"
 import {InputValue} from '../reducer/action'
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-
+import {Link, BrowserRouter,Router  } from 'react-router-dom'
 function mapStateToProps(state) {
     console.log(state)
     return {
@@ -26,11 +26,27 @@ class Header extends Component {
     menuForProduct=()=>{
         this.setState(state => ({ collapse: !state.collapse }));
     }
+    tablePage() {
+        this.props.history.push('/');
+    }
+    homePage(){
+        this.props.history.push('/')
+    }
+    ProductPage(){
+        this.props.history.push('/')
+    }
     render(){
         return(
         <div className="wrapper">
             <div className="header">
-            <span>My Basket </span><br/>
+        
+            <BrowserRouter>
+            <div>
+                <Link  to='/' onClick={this.homePage}> Home </Link>
+                <Link  to='/tablepage' onClick={this.tablePage}>My Basket </Link>
+                <Link  to='/products' onClick={this.ProductPage}>Product </Link>
+            </div>
+            </BrowserRouter>
             <span className="quantityOfitems">{this.props.state.changeQuantityApple}</span>
         <UncontrolledDropdown>
             <DropdownToggle caret size="sm">
