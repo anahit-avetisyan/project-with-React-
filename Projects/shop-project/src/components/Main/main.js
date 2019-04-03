@@ -11,9 +11,10 @@ import {InputValue} from '../reducer/action'
 import './main.scss'
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
- 
+import Pagination from './Pagination'
+import Rating from '../Main/ratingwithstar'
+
 class Main extends Component{
-     
     addBasket=()=>{
        this.props.InputValue(this.textInput.value)
     }
@@ -22,10 +23,13 @@ class Main extends Component{
         console.log(this.props, "props")
         return( 
             <Fragment>
+                
             <div className="wrapper">
                 <h1>ONLINE FRUITS SHOP </h1>
                 <div className="main">
                     <div><img src={Apple} alt="Apple img" />
+                    <Rating/>
+                      
                         <p>Name: APPLE</p>
                         <p>Price</p>
                         <label>Quantity:</label> <input placeholder="0" type="number" ref={input=>this.textInput=input}/>
@@ -55,8 +59,8 @@ class Main extends Component{
                     <p>Price </p>
                     <input type="number"/></div>
                 </div>
+                <Pagination  className="pagination"/>
             </div> 
-             
             </Fragment>
         )
     }
