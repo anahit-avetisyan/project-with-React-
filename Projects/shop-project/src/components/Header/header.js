@@ -41,7 +41,7 @@ class Header extends Component {
             <div className="header">
         
             <BrowserRouter>
-            <div>
+            <div className="combineLinks">
                 <Link  to='/' onClick={this.homePage}> Home </Link>
                 <Link  to='/tablepage' onClick={this.tablePage}>My Basket </Link>
                 <Link  to='/products' onClick={this.ProductPage}>Product </Link>

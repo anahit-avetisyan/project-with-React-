@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import Header from './Header/header'
-import Main from './Main/main'
+import Main from './Main/main';
+import Table from './Route/tablePage'
  
 
 
@@ -9,6 +10,7 @@ class Index extends Component{
         return(
            <div>
                 <Header/>
+                <Table/>
                 <Main/>
               </div>
         )

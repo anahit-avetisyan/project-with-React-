@@ -17,8 +17,8 @@ const store=createStore(reducer,applyMiddleware(thunk))
 const history = createBrowserHistory()
   const routing= (<Provider store={store}> 
 <Router history={history}>
-  <Route path='/tablepage'  component={TablePage}/>
   <Route path='/' component={Header}/>
+  <Route path='/tablepage'  component={TablePage}/>
   <Route path='/products' component={Main}/>
 </Router>  
  
