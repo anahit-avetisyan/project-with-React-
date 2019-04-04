@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import {Table} from 'reactstrap';
-import { IoIosClose } from "react-icons/io";
+
+import NewRow from './row'
 
  
  
@@ -14,7 +15,7 @@ class TablePage extends Component{
 
     }
     render(){   
-       const data=["Apple",12,3,]
+       
         return(
             <Table striped>
                 <thead>
@@ -29,12 +30,7 @@ class TablePage extends Component{
                 </thead>
                 <tbody>
           <tr>
-            <th scope="row">1</th>
-            <td>{data[0]}</td>
-            <td>{data[1]}</td>
-            <td>{data[2]}</td>
-            <td>{data[1]*data[2]} </td>
-            <td><IoIosClose onClick={this.deleteProduct}/> </td>
+      <NewRow />
           </tr>
           </tbody>
             </Table>

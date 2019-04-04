@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.scss';
-import App from './App';
 import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Provider } from 'react-redux'
@@ -9,16 +8,18 @@ import reducer from './components/reducer/reducer'
 import { createStore,applyMiddleware } from 'redux';
 import thunk  from 'redux-thunk';
 import { BrowserRouter as Router, Route} from "react-router-dom";
-import TablePage from './components/Route/tablePage'
+import TablePage from './components/TablePage/tablePage'
 import { createBrowserHistory } from 'history';
 import Main from './components/Main/main';
 import Header from './components/Header/header'
+import PopUp from './components/form/Index'
 const store=createStore(reducer,applyMiddleware(thunk))
 const history = createBrowserHistory()
   const routing= (<Provider store={store}> 
 <Router history={history}>
   <Route path='/' component={Header}/>
   <Route path='/tablepage'  component={TablePage}/>
+  <Route path='/registration' component={PopUp}/>
   <Route path='/products' component={Main}/>
 </Router>  
  
