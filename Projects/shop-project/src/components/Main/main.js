@@ -13,27 +13,33 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import Pagination from './Pagination'
 import Rating from '../Main/ratingwithstar'
+import ls from 'local-storage'
+ 
 
 class Main extends Component{
+  
+     
     addBasket=()=>{
-       this.props.InputValue(this.textInput.value)
+    ls.set("basket",this.input.value)
+    this.props.InputValue(this.input.value)
     }
- 
+
     render(){
         console.log(this.props, "props")
         return( 
             <Fragment>
-                
+              
             <div className="wrapper">
+         
                 <h1>ONLINE FRUITS SHOP </h1>
                 <div className="main">
                     <div><img src={Apple} alt="Apple img" />
                     <Rating/>
-                      
+                
                         <p>Name: APPLE</p>
                         <p>Price</p>
-                        <label>Quantity:</label> <input placeholder="0" type="number" ref={input=>this.textInput=input}/>
-                        <button onClick={this.addBasket}>ADD TO BASKET</button>
+                        <label>Quantity:</label> <input placeholder="0" type="number" ref={input=>this.input=input}/>
+                        <button onClick={this.addBasket}  >ADD TO BASKET</button>
                     </div>
                     <div><img src={Avocado} alt="Avocado img"/>
                         <p>Name: APPLE</p>

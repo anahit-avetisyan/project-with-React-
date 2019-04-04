@@ -5,7 +5,8 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux"
 import {InputValue} from '../reducer/action'
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-import {Link, BrowserRouter,Router  } from 'react-router-dom'
+import {Link, BrowserRouter} from 'react-router-dom';
+ 
 function mapStateToProps(state) {
     console.log(state)
     return {
@@ -35,16 +36,19 @@ class Header extends Component {
     ProductPage(){
         this.props.history.push('/')
     }
+    Registration(){
+        this.props.history.push('/')
+    }
     render(){
         return(
         <div className="wrapper">
             <div className="header">
-        
             <BrowserRouter>
             <div className="combineLinks">
                 <Link  to='/' onClick={this.homePage}> Home </Link>
                 <Link  to='/tablepage' onClick={this.tablePage}>My Basket </Link>
                 <Link  to='/products' onClick={this.ProductPage}>Product </Link>
+                <Link to='/registration'onClick={this.Registration} >Registration</Link>
             </div>
             </BrowserRouter>
             <span className="quantityOfitems">{this.props.state.changeQuantityApple}</span>
