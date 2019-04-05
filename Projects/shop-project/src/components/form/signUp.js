@@ -1,14 +1,18 @@
 import React,{Component,Fragment} from 'react';
-
+ 
 
 class SignUp extends Component {
     state={
+        closeSignUp:false,
         name:"",
         userName:"",
         email:"",
         password:"",
         repassword:"",
         allfields:"",
+    }
+    closed=()=>{
+        this.setState({closePopup:true})  
     }
     nameChange=()=>{
         let regexpName =/[A-Z][a-zA-Z][^#&<>"~;$^%{}?]{1,6}$/;
@@ -87,33 +91,32 @@ class SignUp extends Component {
 }    
     render(){
         return(
-<Fragment>
-    <div id ="DivForSignUp"  ref={el=>this.SignUp=el}>
-    <h2>Creat Account</h2>
-    <form id="signUp" > 
-                    <p>{this.state.allfields}</p>
-                    <input  onChange={this.nameChange} type="text"   placeholder="Name" id="loginName" ref={input=>this.name=input} />
-                    <p>{this.state.name}</p>
-                    <input  onChange={this.userNameChange} type="text" placeholder="User Name" id="loginuserName" ref={input=>this.userName=input}/>
-                    <p>{this.state.userName}</p>
-                    <input onChange={this.mailChange} type="mail" placeholder="Your Email" id="loginEmail" ref={input=>this.email=input}/>
-                    <p>{this.state.email}</p>
-                    <input  onChange={this.passwordChange} type="password" placeholder="Password" id="loginPassword" ref={input=>this.password=input}/>
-                    <p>{this.state.password}</p>
-                    <input onChange={this.repasswordChange} type="password" placeholder="Repeat your password" id= "RepeatPassword" ref={input=>this.repassword=input}/>
-                    <p>{this.state.repassword}</p>
-              
-                    <div id="divForCheckbox" ref={checkbox=>this.checkbox=checkbox} >
-                        <input id="typeCheckbox" type="checkbox"/>
-                        <label   className="labelForCheckbox" >
-                            I agree all statements in <a href="#top" >Terms of service</a>
-                        </label>
+            <Fragment>
+            {this.state.closePopup? null:<div className='popup'>
+                <div className='popup_inner'>
+                  <div className="DivForForms">
+                    {this.state.signIn? null:<div id ="DivForSignUp"  ref={el=>this.SignUp=el}>
+                    <h2>Creat Account</h2>
+                    <form id="signUp" > 
+                        <p>{this.state.allfields}</p>
+                        <input  onChange={this.nameChange} type="text"   placeholder="Name" id="loginName" ref={input=>this.name=input} />
+                        <p>{this.state.name}</p>
+                        <input  onChange={this.userNameChange} type="text" placeholder="User Name" id="loginuserName" ref={input=>this.userName=input}/>
+                        <p>{this.state.userName}</p>
+                        <input onChange={this.mailChange} type="mail" placeholder="Your Email" id="loginEmail" ref={input=>this.email=input}/>
+                        <p>{this.state.email}</p>
+                        <input  onChange={this.passwordChange} type="password" placeholder="Password" id="loginPassword" ref={input=>this.password=input}/>
+                        <p>{this.state.password}</p>
+                        <input onChange={this.repasswordChange} type="password" placeholder="Repeat your password" id= "RepeatPassword" ref={input=>this.repassword=input}/>
+                        <p>{this.state.repassword}</p>
+                        <button ref={button=>this.button1=button}  id="buttonOne" type="button" onClick={this.myFunction}>CREAT ACCOUNT</button>
+                    
+                        <p ref={checkbox=>this.checkbox1=checkbox} id="footer">Have already an account? <b><a href="/registration/signIn" target = "_self"  > Login here </a> </b></p>
+                </form>
+                </div>}
+            </div>
                     </div>
-            <button ref={button=>this.button1=button}  id="buttonOne" type="button" onClick={this.myFunction}>CREAT ACCOUNT</button>
-           
-            <p ref={checkbox=>this.checkbox1=checkbox} id="footer">Have already an account? <b><a href="#top" target = "_blank"  > Login here </a> </b></p>
-</form>
-</div>
+              </div>}  
 </Fragment>
         )
     }

@@ -1,10 +1,13 @@
 import React,{Component} from 'react'
 
-
 class SignIn extends Component{
     state={ 
+        closeSignIn:false,
         nameIn: "",
         repasswordIn:"",
+        }
+        closed=()=>{
+            this.setState({closeSignIn:true})   
         }
     nameChangeIn=()=>{
         let regexpName =/[A-Z][a-zA-Z][^#&<>"~;$^%{}?]{1,6}$/;
@@ -52,9 +55,13 @@ class SignIn extends Component{
         this.setState({responseData: this.response})
         }
         render(){
+            console.log(this.state)
             return(
                 <React.Fragment>
-                    {this.state.clicked1? null: <div  id ="DivForSignIn" ref={el=>this.SignIn=el}>
+                       {this.state.closeSignIn? null:<div className='popup'>
+                  <div className='popup_inner'>
+                  <div className="DivForForms">
+                    <div  id ="DivForSignIn" ref={el=>this.SignIn=el}>
                     <form id="signIn">
                         <h2>LOGIN</h2>
                             <input  onChange={this.nameChangeIn}  type="text" placeholder="User Name" id="loginuserNameOne" ref={input=>this.nameIn=input}/>
@@ -63,7 +70,11 @@ class SignIn extends Component{
                                 <p>{this.state.passwordIn}</p>
                             <button ref={button=>this.button2=button}   id="buttonTwo" type="button" onClick={this.myFunctionOne}>LOG IN</button>
                     </form>  
-                    </div>}
+                    </div>
+                  </div>
+                  </div>
+              </div>} 
+                  
                 </React.Fragment>
             )  
         }

@@ -12,18 +12,34 @@ import './main.scss'
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import Pagination from './Pagination'
-import Rating from '../Main/ratingwithstar'
-import ls from 'local-storage'
+import Rating from './ratingWithstar'
+import ls from 'local-storage';
+import ModalForComment from './modalForComments'
  
-
 class Main extends Component{
   
-     
+    arr=[]
     addBasket=()=>{
-    ls.set("basket",this.input.value)
-    this.props.InputValue(this.input.value)
-    }
+   this.props.InputValue(this.input.value)
+    let a=this.arr.push(this.input.value)
+    ls.set("basket",this.arr)
+    console.log(this.arr)
+    this.input.value=""
+    
+}
+addBasket2=()=>{
+   this.props.InputValue(this.input2.value)
+    let a=this.arr.push(this.input2.value)
+    ls.set("basket",this.arr)
+    console.log(this.arr)
+    this.input2.value=""
 
+ 
+}
+ 
+    sendData=()=>{
+        console.log(this.textInput.value)
+    }
     render(){
         console.log(this.props, "props")
         return( 
@@ -33,18 +49,30 @@ class Main extends Component{
          
                 <h1>ONLINE FRUITS SHOP </h1>
                 <div className="main">
-                    <div><img src={Apple} alt="Apple img" />
-                    <Rating/>
-                
-                        <p>Name: APPLE</p>
-                        <p>Price</p>
-                        <label>Quantity:</label> <input placeholder="0" type="number" ref={input=>this.input=input}/>
-                        <button onClick={this.addBasket}  >ADD TO BASKET</button>
+                    <div className="firstDiv"><img src={Apple} alt="Apple img" />
+                       
+                            <p>Name: APPLE</p>
+                            <p>Price</p>
+                            <label>Quantity:</label> <input placeholder="0" type="number" ref={input=>this.input=input}/>
+                            <button onClick={this.addBasket}  >ADD TO BASKET</button>
+                            <Rating id="rating"/>
+                            <textarea ref={text=>this.textInput=text} rows="4" placeholder="Please leave comments" cols="50"></textarea>
+                            <div className="divForButtons">
+                            <button onClick={this.sendData} className="buttonForComment">Send Comment</button>
+                            <ModalForComment/>
+                            </div>
                     </div>
                     <div><img src={Avocado} alt="Avocado img"/>
                         <p>Name: APPLE</p>
                         <p>Price</p>
-                        <input placeholder="0" type="number" />
+                        <input placeholder="0" type="number" ref={input=>this.input2=input} />
+                        <button onClick={this.addBasket2}  >ADD TO BASKET</button>
+                        <Rating id="rating"/>
+                        <textarea ref={text=>this.textInput=text} rows="4" placeholder="Please leave comments" cols="50"></textarea>
+                            <div className="divForButtons">
+                                <button onClick={this.sendData} className="buttonForComment">Send Comment</button>
+                                <ModalForComment/>
+                            </div>
                     </div>
                     <div><img src={Cherry} alt="Cherry img" />
                     <p>Price </p>
@@ -72,7 +100,7 @@ class Main extends Component{
     }
 }
 function mapStateToProps(state) {
-    // console.log(state)
+    console.log(state)
     return {
     state
     };

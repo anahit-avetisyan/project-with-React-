@@ -6,6 +6,7 @@ import { bindActionCreators } from "redux"
 import {InputValue} from '../reducer/action'
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import {Link, BrowserRouter} from 'react-router-dom';
+import ls from 'local-storage';
  
 function mapStateToProps(state) {
     console.log(state)
@@ -39,7 +40,13 @@ class Header extends Component {
     Registration(){
         this.props.history.push('/')
     }
+    // componentDidUpdate(prevProps, prevState){
+    //     const basketData= ls.get('basket')
+    //      this.basketLength=basketData.length
+    //      console.log(this.basketLength)
+    //  }
     render(){
+
         return(
         <div className="wrapper">
             <div className="header">
@@ -49,9 +56,11 @@ class Header extends Component {
                 <Link  to='/tablepage' onClick={this.tablePage}>My Basket </Link>
                 <Link  to='/products' onClick={this.ProductPage}>Product </Link>
                 <Link to='/registration'onClick={this.Registration} >Registration</Link>
+               
             </div>
             </BrowserRouter>
-            <span className="quantityOfitems">{this.props.state.changeQuantityApple}</span>
+            <span className="quantityOfitems">
+            {ls.get('basket').length}</span>
         <UncontrolledDropdown>
             <DropdownToggle caret size="sm">
             <IoIosBasket id="toggler" onClick={this.menuForProduct} className="ioIosBasket"/>

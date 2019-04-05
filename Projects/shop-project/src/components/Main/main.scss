@@ -2,7 +2,6 @@
 h1{
     text-align: center;
     margin: 1em;
-    margin-top:3em;
     padding: 1em
 }
 .wrapper{
@@ -17,7 +16,8 @@ h1{
     flex-wrap: wrap;
     justify-content: center;
     div{
-        margin: 1em;
+        padding:1em;
+     
         display: flex;
         flex-direction: column;
         button{
@@ -26,6 +26,7 @@ h1{
         p{
             margin: 0;
         }
+       
        
     }
     div img{
@@ -37,3 +38,16 @@ h1{
     display: flex;
     justify-content: center;
 }
+.firstDiv{
+    border:0.1px solid grey
+}
+ .star-ratings{
+     text-align:center;
+        div{
+         margin-right: 1em;
+     }
+ }
+ textarea,input{
+     outline: none;
+ }
+  

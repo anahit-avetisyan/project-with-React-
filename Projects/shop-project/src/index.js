@@ -11,7 +11,9 @@ import { BrowserRouter as Router, Route} from "react-router-dom";
 import TablePage from './components/TablePage/tablePage'
 import { createBrowserHistory } from 'history';
 import Main from './components/Main/main';
-import Header from './components/Header/header'
+import Header from './components/Header/header';
+import SignIn from './components/form/signIn';
+import SignUp from './components/form/signUp'
 import PopUp from './components/form/Index'
 const store=createStore(reducer,applyMiddleware(thunk))
 const history = createBrowserHistory()
@@ -20,6 +22,8 @@ const history = createBrowserHistory()
   <Route path='/' component={Header}/>
   <Route path='/tablepage'  component={TablePage}/>
   <Route path='/registration' component={PopUp}/>
+  <Route path='/registration/signIn' component={SignIn}/>
+  <Route path='/registration/signUp' component={SignUp}/>
   <Route path='/products' component={Main}/>
 </Router>  
  

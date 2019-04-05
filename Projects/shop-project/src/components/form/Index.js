@@ -4,46 +4,37 @@ import {FaTimes} from 'react-icons/fa';
 import SignIn from './signIn';
 import SignUp from './signUp';
 import './Index.scss'
-
+import {Link} from 'react-router-dom';
  
  
 class PopUp extends Component {
   state={
-    closePopup:true,
     signIn:true,
     signUp:true
   }
    
   signIn=()=>{
-    this.setState({closePopup:false})
+  
     this.setState({signIn:false})
     this.setState({signUp:true})
   }
-  closed=()=>{
-    this.setState({closePopup:true})  
-}
+  
   signUp=()=>{
-    this.setState({closePopup:false})
     this.setState({signIn:true})
     this.setState({signUp:false})
   }
     render(){
-      
+      console.log(this.state)
         return(
             <Fragment>
                 <div className="divForMainButtons">
-                    <span onClick={this.signIn} className="mainButtonSignIn"> SIGN IN </span>
-                    <span onClick={this.signUp} className="mainButtonSignUP"> SIGN UP </span>
+                <Link to="/registration/signIn"> <span onClick={this.signIn} className="mainButtonSignIn"> SIGN IN </span></Link>
+                <Link to='/registration/signUp'>   <span onClick={this.signUp} className="mainButtonSignUP"> SIGN UP </span></Link> 
                 </div>
-            {this.state.closePopup? null:<div className='popup'>
-                  <div className='popup_inner'>
-                  <FaTimes className="FaTimes" onClick={this.closed}/> 
-                  <div className="DivForForms">
-                  {this.state.signIn? null:<SignIn/>}
-                  {this.state.signUp? null: <SignUp/>}
-                  </div>
-                  </div>
-              </div>}
+                <div className="DivForForms">
+                {this.state.signIn? null: <SignIn/>}
+                {this.state.signUp? null: <SignUp/>}
+                </div> 
             </Fragment> 
         )
     }
