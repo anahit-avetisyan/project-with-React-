@@ -29,9 +29,9 @@ class TablePage extends Component{
                     </tr>
                 </thead>
                 <tbody>
-          <tr>
+          
       <NewRow />
-          </tr>
+        
           </tbody>
             </Table>
         )

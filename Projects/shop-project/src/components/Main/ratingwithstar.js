@@ -3,7 +3,7 @@ import StarRatings from 'react-star-ratings';
 
 class Rating extends Component{
     state={
-        rating:2.35
+        rating:3.2
     }
     changeRating=( newRating)=> {
         this.setState({
@@ -11,6 +11,7 @@ class Rating extends Component{
         });
       }
     render(){
+      console.log(this.state)
         return(
             <StarRatings
           rating={this.state.rating}
