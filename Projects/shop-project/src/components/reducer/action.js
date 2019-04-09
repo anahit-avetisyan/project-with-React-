@@ -5,3 +5,9 @@ return{
     value
 }
 }
+export function ChangeRate(value){
+    return{
+        type:"CHANGE_RATE",
+        value
+    }
+}

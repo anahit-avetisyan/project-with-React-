@@ -1,20 +1,17 @@
 import React,{Component} from 'react';
 import StarRatings from 'react-star-ratings';
-
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import {ChangeRate} from '../reducer/action'
 class Rating extends Component{
-    state={
-        rating:3.2
-    }
+    
     changeRating=( newRating)=> {
-        this.setState({
-          rating: newRating
-        });
+      this.props.ChangeRate(newRating)
       }
     render(){
-      console.log(this.state)
         return(
             <StarRatings
-          rating={this.state.rating}
+          rating={this.props.ratingProduct}
           starRatedColor="yellow"
           starHoverColor="yellow"
           changeRating={this.changeRating}
@@ -26,4 +23,15 @@ class Rating extends Component{
         )
     }
 }
- export default Rating;
+function mapStateToProps(state){
+  return state
+}
+function mapDispatchToProps(dispatch){
+  return bindActionCreators(
+    {
+      ChangeRate
+    },
+    dispatch
+  )
+}
+ export default connect(mapStateToProps,mapDispatchToProps)(Rating);

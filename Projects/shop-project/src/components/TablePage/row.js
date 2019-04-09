@@ -22,16 +22,21 @@ function mapDispatchToProps(dispatch) {
 }
  class NewRow extends Component {
      state={
-         close:false
+         close:false,
      }
+     basketData = ls.get('basket') ? ls.get('basket'):{}    
+    
      deleteProduct=()=>{
          this.setState({close:true})
      }
-    componentDidMount() {
-       const basketData= ls.get('basket')
-       console.log("aaa",basketData.length)
-    }
+     product={
+        "id":4554545,
+          "name":"Apple",
+          "price":5
+      }
+    
      render(){
+        
          return(
             <Fragment>
                {this.state.close? null: <tr>
@@ -39,11 +44,13 @@ function mapDispatchToProps(dispatch) {
                 style={{
                 textDecoration: this.completed ? 'line-through' : 'none'
                 }}>1</th>
-                <td>Apple</td>
-                <td>5</td>
-                <td>{ls.get('basket')}</td>
-                <td>{5* ls.get('basket')} </td>
-                <td><IoIosClose onClick={this.deleteProduct}/> </td>
+                <td>{this.product.name}</td>
+                <td>{this.product.price}</td>
+                <td>
+                {ls.get('basket')[4554545].quantity}
+                </td>
+                <td>{} </td>
+                <td><IoIosClose onClick={this.deleteProduct.quantity}/> </td>
                 </tr>}
             </Fragment>
          )

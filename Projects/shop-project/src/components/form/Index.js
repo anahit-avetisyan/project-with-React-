@@ -1,6 +1,5 @@
  
 import React, { Component,Fragment } from 'react';
-import {FaTimes} from 'react-icons/fa';
 import SignIn from './signIn';
 import SignUp from './signUp';
 import './Index.scss'
@@ -12,13 +11,10 @@ class PopUp extends Component {
     signIn:true,
     signUp:true
   }
-   
   signIn=()=>{
-  
     this.setState({signIn:false})
     this.setState({signUp:true})
   }
-  
   signUp=()=>{
     this.setState({signIn:true})
     this.setState({signUp:false})
