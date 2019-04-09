@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button, Modal, ModalHeader, ModalBody } from 'reactstrap';
-import SignIn from '../form/signIn'
 class ModalForComment extends React.Component {
    state = {
       modal: false
@@ -14,11 +13,13 @@ class ModalForComment extends React.Component {
   render() {
     return (
       <div>
-        <Button color="secondary" onClick={this.toggle}>View last Comments</Button>
+        <Button color="secondary" onClick={this.toggle}>View the last Comments</Button>
         <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
           <ModalHeader toggle={this.toggle}>The last three comments</ModalHeader>
           <ModalBody>
-         
+            1.comment {this.props.firstComment} <br/>
+            2.comment {this.props.seconComment} <br/>
+            3.comment {this.props.thirdComment}
           </ModalBody>
         </Modal>
       </div>

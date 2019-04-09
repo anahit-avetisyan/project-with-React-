@@ -7,7 +7,7 @@ import { Provider } from 'react-redux'
 import reducer from './components/reducer/reducer'
 import { createStore,applyMiddleware } from 'redux';
 import thunk  from 'redux-thunk';
-import { BrowserRouter as Router, Route} from "react-router-dom";
+import { Router, Route} from "react-router-dom";
 import TablePage from './components/TablePage/tablePage'
 import { createBrowserHistory } from 'history';
 import Main from './components/Main/main';
@@ -26,7 +26,6 @@ const history = createBrowserHistory()
   <Route path='/registration/signUp' component={SignUp}/>
   <Route path='/products' component={Main}/>
 </Router>  
- 
 </Provider>
   )
  ReactDOM.render(routing,document.getElementById('root'));
