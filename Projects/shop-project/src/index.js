@@ -16,6 +16,7 @@ import SignIn from './components/form/signIn';
 import SignUp from './components/form/signUp'
 import PopUp from './components/form/Index'
 const store=createStore(reducer,applyMiddleware(thunk))
+console.log(store)
 const history = createBrowserHistory()
   const routing= (<Provider store={store}> 
 <Router history={history}>

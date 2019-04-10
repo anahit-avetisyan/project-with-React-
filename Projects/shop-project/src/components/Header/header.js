@@ -26,7 +26,7 @@ class Header extends Component {
     state = { collapse: false,
        
      }
-     basketData=ls.get('basket') ? ls.get('basket') : {}
+     basketData=ls.get('basket')  ? ls.get('basket') : {}
     menuForProduct=()=>{
         this.setState(state => ({ collapse: !state.collapse }));
     }

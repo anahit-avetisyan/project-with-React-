@@ -16,6 +16,17 @@ import { combineReducers} from 'redux';
                 return state;
         }
     }
-    const reducer = combineReducers({changeQuantityApple,ratingProduct});
+    function userReduser(state={},action){
+        switch (action.type) {
+            case  "FETCH_PRODUCTS_BEGIN":
+                return state;
+            case "FETCH_PRODUCTS_SUCCESS":       
+                return {...state, 
+                posts: action.payload};
+            default:
+            return state;
+        }
+    }
+    const reducer = combineReducers({changeQuantityApple,ratingProduct,userReduser});
       
       export default reducer;

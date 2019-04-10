@@ -46,8 +46,8 @@ class Main extends Component{
             this.input.value=""
         
         }
-     
-        ls.set("basket", basketData)
+  
+        ls.set("basket",basketData)
 }
     sendData=()=>{
         let data={
@@ -58,7 +58,7 @@ class Main extends Component{
         this.textInput.value=""
     }
     render(){
-   
+        console.log(this.props)
         return( 
             <Fragment> 
             <div className="wrapper">

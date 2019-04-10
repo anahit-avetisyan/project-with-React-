@@ -11,3 +11,39 @@ export function ChangeRate(value){
         value
     }
 }
+export function fetchProducts(url,data) {
+    return (dispatch) => {
+      dispatch(fetchProductsBegin());
+      return fetch(url,{
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(data)
+    })
+        .then(res => res.json())
+        .then(response => {
+          dispatch(fetchProductsSuccess(response));
+          return response;
+        })
+        .catch(error => dispatch(fetchProductsFailure(error)));
+    };
+  }
+
+export function fetchProductsBegin(){
+    return{
+  type: "FETCH_PRODUCTS_BEGIN"
+    }
+};
+
+export function  fetchProductsSuccess(user){
+    return{
+  type: "FETCH_PRODUCTS_SUCCESS",
+  payload: { user }
+    }
+};
+
+export function fetchProductsFailure(error){
+    return{
+  type: "FETCH_PRODUCTS_FAILURE",
+  payload: { error }
+    }
+};
