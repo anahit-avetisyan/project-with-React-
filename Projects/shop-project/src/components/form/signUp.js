@@ -1,5 +1,14 @@
 import React,{Component,Fragment} from 'react';
- 
+import { connect } from "react-redux";
+import {fetchProducts,fetchProductsSuccess} from '../reducer/action';
+import userReduser from  '../reducer/reducer'
+// import { bindActionCreators } from "redux";
+
+function mapStateToProps(state) {
+    return {
+         state
+    };
+}
 
 class SignUp extends Component {
     state={
@@ -11,6 +20,7 @@ class SignUp extends Component {
         repassword:"",
         allfields:"",
     }
+    
     closed=()=>{
         this.setState({closePopup:true})  
     }
@@ -58,38 +68,45 @@ class SignUp extends Component {
             this.setState({repassword:""})
         }
     }
+    
     myFunction=()=>{
         let regexpName =/[A-Z][a-zA-Z][^#&<>"~;$^%{}?]{1,6}$/;
         let regexpUserName= /[A-Z][a-zA-Z]{1,6}$/;
         let regpass = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/; 
         let mailformat =/^(([^<>()/[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g
-        if(regexpName.test(this.name.value)&&regexpUserName.test(this.userName.value)&& mailformat.test(this.email.value)&& regpass.test(this.password.value)===true){
+        if(regexpName.test(this.name.value)&& mailformat.test(this.email.value)&& regpass.test(this.password.value)===true){
             let  data={
                 name:this.name.value,
-                userName:this.userName.value,
                 email:this.email.value,
                 password:this.password.value,    
             }
-    console.log(data)
-        fetch("http://rest.learncode.academy/api/learncode/friends", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(data)
-        })
-
+          let url="http://books.test/api/register"
+            this.props.fetchProducts(url,data)
+            console.log(data)
+           
+        // fetch("http://books.test/api/register", {
+        //     method: "POST",
+        //     headers: {"Content-Type": "application/json"},
+        //     body: JSON.stringify(data)
+        // })
+        // .then(response => response.json()) // response.json() returns a promise
+        // .then((response) => {
+        //   console.log(response)
+        // })
     }
 
     else{
         alert("Please fill all fileds Right Format")
         // this.setState({allfields:"Please fill all fileds"})
     } 
-     this.name.value=""
-     this.userName.value=""
-     this.email.value=""
-     this.password.value=""
-     this.repassword.value=""   
+    //  this.name.value=""
+    //  this.userName.value=""
+    //  this.email.value=""
+    //  this.password.value=""
+    //  this.repassword.value=""   
 }    
     render(){
+        console.log(this.props.state)
         return(
             <Fragment>
             {this.state.closePopup? null:<div className='popup'>
@@ -101,8 +118,8 @@ class SignUp extends Component {
                         <p>{this.state.allfields}</p>
                         <input  onChange={this.nameChange} type="text"   placeholder="Name" id="loginName" ref={input=>this.name=input} />
                         <p>{this.state.name}</p>
-                        <input  onChange={this.userNameChange} type="text" placeholder="User Name" id="loginuserName" ref={input=>this.userName=input}/>
-                        <p>{this.state.userName}</p>
+                        {/* <input  onChange={this.userNameChange} type="text" placeholder="User Name" id="loginuserName" ref={input=>this.userName=input}/>
+                        <p>{this.state.userName}</p> */}
                         <input onChange={this.mailChange} type="mail" placeholder="Your Email" id="loginEmail" ref={input=>this.email=input}/>
                         <p>{this.state.email}</p>
                         <input  onChange={this.passwordChange} type="password" placeholder="Password" id="loginPassword" ref={input=>this.password=input}/>
@@ -121,4 +138,4 @@ class SignUp extends Component {
         )
     }
 }
-export default SignUp ;
+export default connect(mapStateToProps,{fetchProducts})(SignUp) ;

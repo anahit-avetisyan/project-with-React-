@@ -20,7 +20,7 @@ class PopUp extends Component {
     this.setState({signUp:false})
   }
     render(){
-      console.log(this.state)
+     
         return(
             <Fragment>
                 <div className="divForMainButtons">
