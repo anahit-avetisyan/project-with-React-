@@ -11,10 +11,10 @@ export function ChangeRate(value){
         value
     }
 }
-export function fetchProducts(url,data) {
+export function fetchProducts(data) {
     return (dispatch) => {
       dispatch(fetchProductsBegin());
-      return fetch(url,{
+      return fetch('http://books.test/api/register',{
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(data)

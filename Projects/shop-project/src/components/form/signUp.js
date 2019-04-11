@@ -1,17 +1,18 @@
 import React,{Component,Fragment} from 'react';
 import { connect } from "react-redux";
-import {fetchProducts,fetchProductsSuccess} from '../reducer/action';
-import userReduser from  '../reducer/reducer'
-// import { bindActionCreators } from "redux";
+import {fetchProducts} from '../reducer/action';
+import history from '../Header/history'
+ 
 
 function mapStateToProps(state) {
     return {
-         state
+         state,
     };
 }
 
 class SignUp extends Component {
     state={
+        apearName:true,
         closeSignUp:false,
         name:"",
         userName:"",
@@ -20,7 +21,8 @@ class SignUp extends Component {
         repassword:"",
         allfields:"",
     }
-    
+    history=this.props
+    // pushPage=history.push('/')
     closed=()=>{
         this.setState({closePopup:true})  
     }
@@ -70,8 +72,9 @@ class SignUp extends Component {
     }
     
     myFunction=()=>{
+        console.log(this.props.history.location.pathname)
         let regexpName =/[A-Z][a-zA-Z][^#&<>"~;$^%{}?]{1,6}$/;
-        let regexpUserName= /[A-Z][a-zA-Z]{1,6}$/;
+        // let regexpUserName= /[A-Z][a-zA-Z]{1,6}$/;
         let regpass = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/; 
         let mailformat =/^(([^<>()/[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g
         if(regexpName.test(this.name.value)&& mailformat.test(this.email.value)&& regpass.test(this.password.value)===true){
@@ -80,33 +83,36 @@ class SignUp extends Component {
                 email:this.email.value,
                 password:this.password.value,    
             }
-          let url="http://books.test/api/register"
-            this.props.fetchProducts(url,data)
-            console.log(data)
+        //   let url="http://books.test/api/register"
+            this.props.fetchProducts(data)
+        //  if( this.props.state.userReduser.posts.user.psuccess===true ){
            
-        // fetch("http://books.test/api/register", {
-        //     method: "POST",
-        //     headers: {"Content-Type": "application/json"},
-        //     body: JSON.stringify(data)
-        // })
-        // .then(response => response.json()) // response.json() returns a promise
-        // .then((response) => {
-        //   console.log(response)
-        // })
-    }
+        //  }
+         
+   
+           
+        }
 
     else{
         alert("Please fill all fileds Right Format")
-        // this.setState({allfields:"Please fill all fileds"})
+     
     } 
     //  this.name.value=""
     //  this.userName.value=""
     //  this.email.value=""
     //  this.password.value=""
     //  this.repassword.value=""   
+   
+
 }    
+ 
+ 
     render(){
-        console.log(this.props.state)
+        
+        console.log(this.props.state.userReduser.posts);
+        console.log(history)
+        // const { user } = this.props.userReduser.posts.user;
+   
         return(
             <Fragment>
             {this.state.closePopup? null:<div className='popup'>
@@ -121,12 +127,14 @@ class SignUp extends Component {
                         {/* <input  onChange={this.userNameChange} type="text" placeholder="User Name" id="loginuserName" ref={input=>this.userName=input}/>
                         <p>{this.state.userName}</p> */}
                         <input onChange={this.mailChange} type="mail" placeholder="Your Email" id="loginEmail" ref={input=>this.email=input}/>
-                        <p>{this.state.email}</p>
+                        {this.props.state.userReduser.posts===undefined? null:<p>{this.props.state.userReduser.posts.user.success===false?this.props.state.userReduser.posts.user.errors.email:this.props.history===undefined?null:this.props.history.push('/products')}</p>}
                         <input  onChange={this.passwordChange} type="password" placeholder="Password" id="loginPassword" ref={input=>this.password=input}/>
                         <p>{this.state.password}</p>
                         <input onChange={this.repasswordChange} type="password" placeholder="Repeat your password" id= "RepeatPassword" ref={input=>this.repassword=input}/>
                         <p>{this.state.repassword}</p>
-                        <button ref={button=>this.button1=button}  id="buttonOne" type="button" onClick={this.myFunction}>CREAT ACCOUNT</button>
+                      
+                        <button ref={button=>this.button1=button}   id="buttonOne" type="button" onClick={this.myFunction}>CREAT ACCOUNT</button>
+                   
                     
                         <p ref={checkbox=>this.checkbox1=checkbox} id="footer">Have already an account? <b><a href="/registration/signIn" target = "_self"  > Login here </a> </b></p>
                 </form>

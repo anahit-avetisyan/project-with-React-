@@ -6,7 +6,6 @@ import { bindActionCreators } from "redux"
 import {InputValue} from '../reducer/action'
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import {Link } from 'react-router-dom';
-import history from './history'
 import ls from 'local-storage'
 function mapStateToProps(state) {
     return {
@@ -26,21 +25,11 @@ class Header extends Component {
     state = { collapse: false,
        
      }
-     basketData=ls.get('basket')  ? ls.get('basket') : {}
+  
+      basketData=ls.get('basket')  ? ls.get('basket') : {}
+     
     menuForProduct=()=>{
         this.setState(state => ({ collapse: !state.collapse }));
-    }
-    tablePage() {
-        history.push('/');
-    }
-    homePage(){
-        history.push('/')
-    }
-    ProductPage(){
-        history.push('/')
-    }
-    Registration(){
-        history.push('/')
     }
    
     render(){
@@ -64,7 +53,7 @@ class Header extends Component {
             <IoIosBasket id="toggler" onClick={this.menuForProduct} className="ioIosBasket"/>
             </DropdownToggle>
                 <DropdownMenu>
-                    <DropdownItem header>APPLE <p>{this.basketData[4554545].quantity}</p></DropdownItem>
+                    {/* <DropdownItem header>APPLE <p>{this.basketData[4554545].quantity}</p></DropdownItem> */}
                     <DropdownItem divider />
                     <DropdownItem header>Avocado {this.props.state.changeQuantity}</DropdownItem>
                     <DropdownItem divider />

@@ -7,7 +7,7 @@ import Oranges from "../pictures/Orange.jpg"
 import Pineapple from "../pictures/pineapples.png"
 import Raspberry from "../pictures/Raspberry.jpg"
 import Strawberry from "../pictures/Strawberry.jpg"
-import {InputValue,ChangeRate} from '../reducer/action'
+import {InputValue,ChangeRate,fetchProducts} from '../reducer/action'
 import './main.scss'
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -16,6 +16,9 @@ import Rating from './ratingWithstar'
 import ls from 'local-storage';
 import ModalForComment from './modalForComments'
  
+
+ 
+
 class Main extends Component{
     
   product={
@@ -46,7 +49,7 @@ class Main extends Component{
             this.input.value=""
         
         }
-  
+        
         ls.set("basket",basketData)
 }
     sendData=()=>{
@@ -57,12 +60,14 @@ class Main extends Component{
         console.log(data)
         this.textInput.value=""
     }
+     
     render(){
         console.log(this.props)
         return( 
             <Fragment> 
             <div className="wrapper">
                 <h1>ONLINE FRUITS SHOP </h1>
+                {this.props.state.userReduser.posts === undefined ? null: <p>User Name:{this.props.state.userReduser.posts.user.success===false?null:this.props.state.userReduser.posts.user.payload.name}</p>}
                 <div className="main">
                     <div className="firstDiv"><img src={Apple} alt="Apple img" />
                             <p>Name: APPLE</p>
@@ -133,7 +138,8 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators(
         {
             InputValue,
-            ChangeRate
+            ChangeRate,
+            fetchProducts
         },
         dispatch
     );

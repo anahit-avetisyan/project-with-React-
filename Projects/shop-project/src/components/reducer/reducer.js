@@ -27,6 +27,7 @@ import { combineReducers} from 'redux';
             return state;
         }
     }
+
     const reducer = combineReducers({changeQuantityApple,ratingProduct,userReduser});
       
       export default reducer;
