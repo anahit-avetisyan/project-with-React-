@@ -1,7 +1,7 @@
 import React,{Component,Fragment} from 'react';
 import { connect } from "react-redux";
 import {fetchProducts} from '../reducer/action';
-import history from '../Header/history'
+ 
  
 
 function mapStateToProps(state) {
@@ -15,14 +15,13 @@ class SignUp extends Component {
         apearName:true,
         closeSignUp:false,
         name:"",
-        userName:"",
         email:"",
         password:"",
         repassword:"",
         allfields:"",
     }
-    history=this.props
-    // pushPage=history.push('/')
+  
+  
     closed=()=>{
         this.setState({closePopup:true})  
     }
@@ -83,8 +82,9 @@ class SignUp extends Component {
                 email:this.email.value,
                 password:this.password.value,    
             }
-        //   let url="http://books.test/api/register"
-            this.props.fetchProducts(data)
+            let method="POST"
+          let url="http://books.test/api/register"
+            this.props.fetchProducts(url,method,data)
         //  if( this.props.state.userReduser.posts.user.psuccess===true ){
            
         //  }
@@ -108,11 +108,6 @@ class SignUp extends Component {
  
  
     render(){
-        
-        console.log(this.props.state.userReduser.posts);
-        console.log(history)
-        // const { user } = this.props.userReduser.posts.user;
-   
         return(
             <Fragment>
             {this.state.closePopup? null:<div className='popup'>

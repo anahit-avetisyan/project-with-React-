@@ -11,12 +11,12 @@ export function ChangeRate(value){
         value
     }
 }
-export function fetchProducts(data) {
+export function fetchProducts(url,method="GET",data="",header="") {
     return (dispatch) => {
       dispatch(fetchProductsBegin());
-      return fetch('http://books.test/api/register',{
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
+      return fetch(url,{
+        method: method,
+        headers: {"Content-Type": "application/json",header},
         body: JSON.stringify(data)
     })
         .then(res => res.json())
@@ -47,3 +47,9 @@ export function fetchProductsFailure(error){
   payload: { error }
     }
 };
+export function logOut(value){
+  return {
+    type:"LOG_OUT",
+    value
+  }
+}

@@ -53,7 +53,7 @@ class Header extends Component {
             <IoIosBasket id="toggler" onClick={this.menuForProduct} className="ioIosBasket"/>
             </DropdownToggle>
                 <DropdownMenu>
-                    {/* <DropdownItem header>APPLE <p>{this.basketData[4554545].quantity}</p></DropdownItem> */}
+                    <DropdownItem header>APPLE <p>{this.basketData[4554545].quantity}</p></DropdownItem>
                     <DropdownItem divider />
                     <DropdownItem header>Avocado {this.props.state.changeQuantity}</DropdownItem>
                     <DropdownItem divider />
