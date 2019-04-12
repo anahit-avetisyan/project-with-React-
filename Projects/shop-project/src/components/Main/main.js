@@ -29,13 +29,9 @@ class Main extends Component{
     
     addBasket=()=>{
         this.props.InputValue(this.input.value)
+
        
         let basketData = ls.get("basket") ? ls.get("basket") : {};
-      
-        if (this.input.value===""){
-            alert("Please input value")
-        }
-        else{
             if (basketData[this.product.id]!== undefined){
                 basketData[this.product.id].quantity = this.input.value;
                 
@@ -48,31 +44,51 @@ class Main extends Component{
             }
             this.input.value=""
         
-        }
         
-        ls.set("basket",basketData)
+        if(this.props.state.userReduser.posts===undefined){
+            alert ("please Log In")
+        }
+        else{ls.set("basket",basketData)}
+       
 }
     sendData=()=>{
         let data={
+            book_id:5,
             comment:this.textInput.value,
             rating:this.props.state.ratingProduct
         }
-        console.log(data)
+        if(this.props.state.userReduser.posts===undefined){
+            alert ("please Log In ")
+        }
+        else{
+            console.log(this.props.state.userReduser.posts.user.payload.token )
+          fetch("http://books.test/api/book-rating",{
+            method:"POST",
+           
+            headers: {"Content-Type": "application/json",
+            "Authorization" : `Bearer ${this.props.state.userReduser.posts.user.payload.token}`        },
+            body: JSON.stringify(data)
+        })
+            .then(res => res.json())
+            .then(response => {
+              console.log(response);
+            })
+            .catch(error =>  ( error));    
         this.textInput.value=""
     }
-     
+}
     render(){
         console.log(this.props)
         return( 
             <Fragment> 
             <div className="wrapper">
+            {this.props.state.userReduser.posts === undefined||this.props.state.userReduser.posts.user.success===false ? null: <p className="userName">User Name:{this.props.state.userReduser.posts.user.success===false?null:this.props.state.userReduser.posts.user.payload.name}</p>}
                 <h1>ONLINE FRUITS SHOP </h1>
-                {this.props.state.userReduser.posts === undefined ? null: <p>User Name:{this.props.state.userReduser.posts.user.success===false?null:this.props.state.userReduser.posts.user.payload.name}</p>}
-                <div className="main">
+                <div className="main">  
                     <div className="firstDiv"><img src={Apple} alt="Apple img" />
                             <p>Name: APPLE</p>
                             <p>Price </p>
-                            <label>Quantity:</label> <input placeholder="0" type="number" ref={input=>this.input=input}/>
+                            <label>Quantity:</label> <input placeholder="1" type="number" ref={input=>this.input=input}/>
                             <button onClick={this.addBasket}  >ADD TO BASKET</button>
                             <Rating id="rating"/><span>{this.midrate}</span>
                             <textarea ref={text=>this.textInput=text} rows="4" placeholder="Please leave comments" cols="50"></textarea>

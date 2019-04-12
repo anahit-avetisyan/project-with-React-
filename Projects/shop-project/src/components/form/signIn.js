@@ -1,23 +1,26 @@
 import React,{Component} from 'react'
-
+import { connect } from "react-redux";
+import {fetchProducts} from '../reducer/action';
 class SignIn extends Component{
     state={ 
         closeSignIn:false,
         nameIn: "",
         repasswordIn:"",
+      
+
         }
         closed=()=>{
             this.setState({closeSignIn:true})   
         }
-    nameChangeIn=()=>{
-        let regexpName =/[A-Z][a-zA-Z][^#&<>"~;$^%{}?]{1,6}$/;
-        if(regexpName.test(this.nameIn.value)===false){
-            this.setState({nameIn:"Please Input Right Format"})
+        mailChange=()=>{
+            let mailformat = /^(([^<>()/[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g;
+            if(mailformat.test(this.email.value)===false){
+                this.setState({email:"Please Input Right Format"})
+            } 
+            else{
+                this.setState({email:""})
+            }
         } 
-        else{
-            this.setState({nameIn:""})
-        } 
-    }
     passwordChangeIn = () => {
         let regpass = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;   
         if(regpass.test(this.passwordIn.value)===false){
@@ -28,34 +31,36 @@ class SignIn extends Component{
             } 
     }
     myFunctionOne=()=>{
-        let regexpName =/[A-Z][a-zA-Z][^#&<>"~;$^%{}?]{1,6}$/;
+        let mailformat =/^(([^<>()/[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g
         let regpass = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;   
         let  data1={
-            name:this.nameIn.value,
+            email:this.email.value,
             password:this.passwordIn.value,    
                  }
          
-    if(regexpName.test(this.nameIn.value)===true && regpass.test(this.passwordIn.value)===true){     
-        fetch("http://rest.learncode.academy/api/learncode/friends", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(data1)
-        })
-        .then(response => response.json())
-        .then((response) => 
-        console.table(response)    
-        )
-        .catch(error => console.error('Error:', error));
+    if(mailformat.test(this.email.value)===true && regpass.test(this.passwordIn.value)===true){     
+        let method="POST"
+        let url="http://books.test/api/login";
+        this.props.fetchProducts(url,method,data1)
         }
         else{
             alert("Please fill all fileds Right Format")
         }
-        this.nameIn.value="";
+        this.email.value="";
         this.passwordIn.value="";
-        this.setState({responseData: this.response})
+   
+        // if(this.response===undefined){
+        //     alert("aaa")
+        // }
+        // if(this.response.success===false){
+        // this.setState({responceForLogIn:this.response.error})
+        // }
+
         }
+
         render(){
-            console.log(this.state)
+            console.log(this.props.state)
+         
             return(
                 <React.Fragment>
                        {this.state.closeSignIn? null:<div className='popup'>
@@ -64,8 +69,9 @@ class SignIn extends Component{
                     <div  id ="DivForSignIn" ref={el=>this.SignIn=el}>
                     <form id="signIn">
                         <h2>LOGIN</h2>
-                            <input  onChange={this.nameChangeIn}  type="text" placeholder="User Name" id="loginuserNameOne" ref={input=>this.nameIn=input}/>
-                                <p  >{this.state.nameIn}</p>
+                        {this.props.state.userReduser.posts===undefined? null:<p>{this.props.state.userReduser.posts.user.success===false?this.props.state.userReduser.posts.user.errors:this.props.history===undefined?null:this.props.history.push('/products')}</p>}
+                             <input onChange={this.mailChange} type="mail" placeholder="Your Email" id="loginEmail" ref={input=>this.email=input}/>
+                                <p  >{this.state.mail}</p>
                             <input onChange={this.passwordChangeIn}   type="password" placeholder="Password" id="loginPasswordOne" ref={input=>this.passwordIn=input}/>
                                 <p>{this.state.passwordIn}</p>
                             <button ref={button=>this.button2=button}   id="buttonTwo" type="button" onClick={this.myFunctionOne}>LOG IN</button>
@@ -79,4 +85,9 @@ class SignIn extends Component{
             )  
         }
     }
-export default SignIn;
+    function mapStateToProps(state) {
+        return {
+             state,
+        };
+    }
+    export default connect(mapStateToProps,{fetchProducts})(SignIn) ;

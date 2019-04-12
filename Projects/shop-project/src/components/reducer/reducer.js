@@ -1,6 +1,6 @@
 import { combineReducers} from 'redux';
 
-    function changeQuantityApple(state ="", action) {
+    function changeQuantityApple(state =1, action) {
             switch (action.type){
                 case "CHANGE_VALUE":
                 return action.value
@@ -16,13 +16,16 @@ import { combineReducers} from 'redux';
                 return state;
         }
     }
-    function userReduser(state={},action){
+    const initialState = {}
+    function userReduser(state=initialState,action){
         switch (action.type) {
             case  "FETCH_PRODUCTS_BEGIN":
-                return state;
+                return initialState;
             case "FETCH_PRODUCTS_SUCCESS":       
                 return {...state, 
                 posts: action.payload};
+            // case "LOG_OUT":
+            // return initialState;
             default:
             return state;
         }

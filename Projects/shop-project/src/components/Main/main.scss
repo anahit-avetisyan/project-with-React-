@@ -1,7 +1,7 @@
  
 h1{
     text-align: center;
-    margin: 1em;
+    margin: 0.3em;
     padding: 1em
 }
 .wrapper{
@@ -50,4 +50,8 @@ h1{
  textarea,input{
      outline: none;
  }
-  
+ .userName{
+     padding: 0.5em;
+     border:0.2px solid grey;
+     width: 10em
+ }
