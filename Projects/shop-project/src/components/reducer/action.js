@@ -5,12 +5,6 @@ return{
     value
 }
 }
-export function ChangeRate(value){
-    return{
-        type:"CHANGE_RATE",
-        value
-    }
-}
 export function fetchProducts(url,method="GET",data="",header="") {
     return (dispatch) => {
       dispatch(fetchProductsBegin());
@@ -47,9 +41,15 @@ export function fetchProductsFailure(error){
   payload: { error }
     }
 };
-export function logOut(value){
-  return {
-    type:"LOG_OUT",
-    value
+// export function logOut(value){
+//   return {
+//     type:"LOG_OUT",
+//     value
+//   }
+// }
+export function ChangePage(page){
+  return{
+    type:"CHANGE_PAGE",
+    page
   }
 }

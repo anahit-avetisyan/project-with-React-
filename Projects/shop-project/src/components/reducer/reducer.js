@@ -8,14 +8,15 @@ import { combineReducers} from 'redux';
                 return state 
             }
         };
-    function ratingProduct(state=3,action){
+        function paginationPage(state=1,action){
             switch (action.type) {
-                case "CHANGE_RATE":
-                return action.value  
+                case "CHANGE_PAGE":
+                return action.page  
                 default:
                 return state;
+        }   
         }
-    }
+     
     const initialState = {}
     function userReduser(state=initialState,action){
         switch (action.type) {
@@ -31,6 +32,6 @@ import { combineReducers} from 'redux';
         }
     }
 
-    const reducer = combineReducers({changeQuantityApple,ratingProduct,userReduser});
+    const reducer = combineReducers({changeQuantityApple,userReduser,paginationPage});
       
       export default reducer;
