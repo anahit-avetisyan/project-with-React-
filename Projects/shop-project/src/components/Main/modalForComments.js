@@ -17,9 +17,20 @@ class ModalForComment extends React.Component {
         <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
           <ModalHeader toggle={this.toggle}>The last three comments</ModalHeader>
           <ModalBody>
-            1.comment {this.props.firstComment} <br/>
-            2.comment {this.props.seconComment} <br/>
-            3.comment {this.props.thirdComment}
+          <ul>
+           {this.props.reviews.map((data,index)=>{
+
+            return(
+
+            <li key={index}>Name:  {data.user_name} <p>Comment: {data.comment}</p></li>
+              )
+
+             }
+            )
+            }  
+            
+          </ul>
+
           </ModalBody>
         </Modal>
       </div>

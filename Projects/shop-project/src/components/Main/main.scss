@@ -39,7 +39,8 @@ h1{
     justify-content: center;
 }
 .firstDiv{
-    border:0.1px solid grey
+    border:0.1px solid grey;
+    margin-right: 0.5em;
 }
  .star-ratings{
      text-align:center;
@@ -54,4 +55,12 @@ h1{
      padding: 0.5em;
      border:0.2px solid grey;
      width: 10em
+ }
+ .pagination {
+     margin:1em;
+     li{
+    border: 0.2px solid grey;
+    border-right: none;
+    padding: 0.7em 1em
+     }
  }

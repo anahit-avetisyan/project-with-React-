@@ -18,7 +18,7 @@ class TablePage extends Component{
        
         return(
             <Table striped>
-                <thead>
+                
                     <tr>
                         <td>#</td>
                         <td>Product Name</td>
@@ -27,12 +27,10 @@ class TablePage extends Component{
                         <td>Total Sum</td>
                         <td>#</td>
                     </tr>
-                </thead>
-                <tbody>
-          
-      <NewRow />
-        
-          </tbody>
+               
+                   
+                        <NewRow />
+                    
             </Table>
         )
     }
