@@ -5,7 +5,7 @@ import SignUp from './signUp';
 import './Index.scss'
 import {Link} from 'react-router-dom';
 import { connect } from "react-redux";
-import {fetchProducts,logOut} from '../reducer/action';
+import {fetchProducts} from '../reducer/action';
 import { bindActionCreators } from "redux"; 
 function mapStateToProps(state) {
   return {

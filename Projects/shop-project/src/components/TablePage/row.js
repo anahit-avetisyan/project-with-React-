@@ -7,61 +7,51 @@ import ls from 'local-storage'
  
 
  class NewRow extends Component {
-    state={
-        booksData:null
+   
+  basketData = ls.get("basket") ? ls.get("basket") : {};
+  remove = (rowId) => {
+    const basketData =ls.get("basket")? Object.values(this.basketData).filter((row) => row.id !== rowId):{};
+    ls.clear();
+    console.log(basketData)
+    ls.set("basket",basketData);
+   
+  };
+  componentDidUpdate=(prevProps)=>{
+    if (this.props.state.paginationPage !== prevProps.state.paginationPage) {
+      
+        }
     }
-    componentDidMount=()=>{
-        let url=`http://books.test/api/books`;
-        fetch(url)
-        .then(response => response.json())
-        .then(dataBook=> 
-            this.setState({ booksData:dataBook })
-            )
-        .catch(error =>  ( error));
-    }
-     basketData = ls.get('basket') ? ls.get('basket'):{}    
-    
-     deleteProduct=()=>{
-         this.setState({close:true})
-     }
-     product={
-        "id":4554545,
-          "name":"Apple",
-          "price":5
-      }
-    
      render(){
-        console.log(this.basketData)
+    
          return(
             <Fragment>
-              
-                
                   <tbody>
-                  {this.state.booksData===null?null: this.state.booksData.payload.map((data,index) => {          
+                  {Object.values(this.basketData).map((data,index) => {          
                     return( 
-                <tr key={index}>  
-                    <th  scope="row" onClick={this.onClick}
-                    style={{
-                    textDecoration: this.completed ? 'line-through' : 'none'
-                    }}>{data.book_id}</th>
-                        <td>{data.name}</td>
-                        <td>{data.price}</td>
-                        <td>
-                        {/* {ls.get('basket')[4554545].quantity} */}
-                        </td>
-                        <td> </td>
-                        <td><IoIosClose onClick={this.deleteProduct}/> </td>
-                </tr>
+                      <tr key={index}>  
+                            <th  scope="row" onClick={this.onClick}
+                            style={{
+                            textDecoration: this.completed ? 'line-through' : 'none'
+                            }}>{index+1}</th>
+                                <td>{data.name}</td>
+                                <td>{data.price}</td> 
+                                <td> 
+                                {data.quantity} 
+                                </td>
+                                <td>{data.price*data.quantity}</td>
+                                <td><IoIosClose onClick={() => this.remove(data.id)}/> </td>
+                        </tr>   
                     )
                 })
-            }
-                </tbody>
+            } 
+                    
+                    </tbody>
             </Fragment>
          )
      }
  }
  function mapStateToProps(state) {
-    console.log(state)
+  
     return {
          state
     };

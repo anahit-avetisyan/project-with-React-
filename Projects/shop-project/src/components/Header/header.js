@@ -1,4 +1,4 @@
-import React,{Component} from 'react'
+import React,{Component,Fragment} from 'react'
 import {IoIosBasket } from "react-icons/io";
 import './header.scss'
 import { connect } from "react-redux";
@@ -27,50 +27,51 @@ class Header extends Component {
      }
   
       basketData=ls.get('basket')  ? ls.get('basket') : {}
-     
+      
     menuForProduct=()=>{
         this.setState(state => ({ collapse: !state.collapse }));
     }
-   
+    componentDidMount=()=>{
+        Object.values(this.basketData).map((data,index) => { 
+            console.log(data,"aaaaaaaaaa")
+        })
+       }
     render(){
-      
+      console.log(this.basketData)
         return(
         <div className="wrapper">
             <div className="header">
            
-            <div className="combineLinks">
-                <Link  to='/' onClick={this.homePage}> Home </Link>
-                <Link  to='/tablepage' onClick={this.tablePage}>My Basket </Link>
-                <Link  to='/products' onClick={this.ProductPage}>Product </Link>
-                <Link to='/registration' onClick={this.Registration} >Registration</Link>
-               
-            </div>       
-            <span className="quantityOfitems">
-            {this.basketData.hasOwnProperty.length}
-            </span>
-        <UncontrolledDropdown>
-            <DropdownToggle caret size="sm">
-            <IoIosBasket id="toggler" onClick={this.menuForProduct} className="ioIosBasket"/>
-            </DropdownToggle>
-                <DropdownMenu>
-                    <DropdownItem header>APPLE <p>{this.basketData[4554545].quantity}</p></DropdownItem>
-                    <DropdownItem divider />
-                    <DropdownItem header>Avocado {this.props.state.changeQuantity}</DropdownItem>
-                    <DropdownItem divider />
-                    <DropdownItem header>Cherry {this.props.state.changeQuantity}</DropdownItem>
-                    <DropdownItem divider />
-                    <DropdownItem header>Lemon {this.props.state.changeQuantity}</DropdownItem>
-                    <DropdownItem divider />
-                    <DropdownItem header>Orange {this.props.state.changeQuantity}</DropdownItem>
-                    <DropdownItem divider />
-                    <DropdownItem header>Pineapples{this.props.state.changeQuantity}</DropdownItem>
-                    <DropdownItem divider />
-                    <DropdownItem header>Raspberry{this.props.state.changeQuantity}</DropdownItem>
-                    <DropdownItem divider />
-                    <DropdownItem header>Strowberry{this.props.state.changeQuantity}</DropdownItem>
-                    <DropdownItem divider />
-                </DropdownMenu>
-        </UncontrolledDropdown>
+                <div className="combineLinks">
+                    <Link  to='/' onClick={this.homePage}> Home </Link>
+                    <Link  to='/products' onClick={this.ProductPage}>Product </Link>
+                    <Link to='/registration' onClick={this.Registration} >Registration</Link>
+                    {this.props.state.userReduser.posts===undefined ? null: <Link  to='/tablepage' onClick={this.tablePage}>My Basket </Link>}
+                
+                </div>       
+                    {this.props.state.userReduser.posts===undefined ? null: <span className="quantityOfitems">
+                    {/* {this.basketData.hasOwnProperty.length} */}
+                    {Object.keys(this.basketData).length}
+                </span>}
+                    <UncontrolledDropdown>
+                        <DropdownToggle caret size="sm">
+                        <IoIosBasket id="toggler" onClick={this.menuForProduct} className="ioIosBasket"/>
+                        </DropdownToggle>
+                            <DropdownMenu >
+                            {this.props.state.userReduser.posts===undefined ?<Fragment>
+                                <DropdownItem  style={{color:'red'}} header> </DropdownItem>
+                                <DropdownItem divider />
+                                </Fragment> :Object.values(this.basketData).map((data,index) => {          
+                                return( 
+                                <Fragment key={index}>
+                                <DropdownItem  style={{color:'red'}} header> </DropdownItem>
+                                <DropdownItem divider />
+                                </Fragment>
+                                         )
+                                    })
+                            }
+                            </DropdownMenu>
+                    </UncontrolledDropdown>
             </div>
             </div>
         )

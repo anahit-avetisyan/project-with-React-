@@ -15,7 +15,8 @@ class Main extends Component{
         booksData:null,
         rating:{
             
-        }
+        },
+
     }
     changeRating=( newRating, name )=> {
         let ratingNew = Object.assign({}, this.state.rating);    //creating copy of object
@@ -24,31 +25,31 @@ class Main extends Component{
             rating: ratingNew
         });
     }
-    textInput1 = React.createRef()
+   
     addBasket=(id)=>{
-        this.props.InputValue(this.refs['input' + id].value)
+        console.log(this.refs['name'+id].textContent)
+        this.props.InputValue(this.refs['input' + id].value);
         let basketData = ls.get("basket") ? ls.get("basket") : {};
-        console.log(basketData)
             if (basketData[id]!== undefined){
                 basketData[id].quantity = this.refs['input' + id].value;  
             } else {
                 basketData[id]= {
                     'id':id,
                     'quantity': this.refs['input' + id].value,
+                    'name':this.refs['name'+id].textContent,
+                    'price':this.refs['price'+id].textContent
                 }
-                this.refs['input' + id].value=""
+                this.refs['input' + id].value="";
             }
-            this.refs['input' + id].value=""
-        
-        
+            this.refs['input' + id].value="";
         if(this.props.state.userReduser.posts===undefined){
-            alert ("please Log In")
+            alert ("please Log In");
         }
         else{
 
-            ls.set("basket",basketData)
+            ls.set("basket",basketData);
         }
-       
+        
     }
 
     sendData=(id)=>{
@@ -58,7 +59,7 @@ class Main extends Component{
             rating: this.state.rating['rating' +id] 
         }
         if(this.props.state.userReduser.posts===undefined){
-            alert ("please Log In ")
+            alert ("please Log In ");
         }
         else{
           fetch("http://books.test/api/book-rating",{
@@ -72,7 +73,7 @@ class Main extends Component{
             })
             .catch(error =>  ( error));    
         }
-
+        this.refs['textInput' + id].value=""
     }
 
     componentDidMount=()=>{
@@ -85,19 +86,18 @@ class Main extends Component{
         .catch(error =>  ( error));
     }
     componentDidUpdate=(prevProps)=>{
-    if (this.props.state.paginationPage !== prevProps.state.paginationPage) {
-
-    let url=`http://books.test/api/books?page=${this.props.state.paginationPage}`;
-    fetch(url)
-    .then(response => response.json())
-    .then(dataBook=> 
-         this.setState({ booksData:dataBook })
-        )
-    .catch(error =>  ( error));
-}
-    
-}
+        if (this.props.state.paginationPage !== prevProps.state.paginationPage) {
+            let url=`http://books.test/api/books?page=${this.props.state.paginationPage}`;
+                fetch(url)
+                    .then(response => response.json())
+                    .then(dataBook=> 
+                        this.setState({ booksData:dataBook })
+                        )
+                    .catch(error =>  ( error));
+                }   
+            }
     render(){
+        
         return( 
             <Fragment> 
             <div  className="wrapper" >
@@ -108,8 +108,10 @@ class Main extends Component{
                     return( 
                         <div key={index} className="firstDiv">
                     < img src={`http://${data.image}`} alt="img"  />
-                    <p  >Name:{data.name}</p>
-                    <p  >Price {data.price} </p>
+                    <span>Name:</span>
+                    <p ref={`name${data.book_id}`} >{data.name}</p>
+                    <span>Price:</span>
+                    <p ref={`price${data.book_id}`} >{data.price} </p>
                     <label ></label> <input placeholder="1" type="number" ref={`input${data.book_id}`}/>
                     <button onClick={()=>this.addBasket(data.book_id)}  >ADD TO BASKET</button>
                     <StarRatings
