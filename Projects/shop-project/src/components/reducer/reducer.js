@@ -25,8 +25,8 @@ import { combineReducers} from 'redux';
             case "FETCH_PRODUCTS_SUCCESS":       
                 return {...state, 
                 posts: action.payload};
-            // case "LOG_OUT":
-            // return initialState;
+            case "LOG_OUT":
+            return initialState;
             default:
             return state;
         }

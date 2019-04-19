@@ -1,7 +1,7 @@
 import React,{Component,Fragment} from 'react';
 import { connect } from "react-redux";
 import {fetchProducts} from '../reducer/action';
- 
+import ls from 'local-storage';  
  
 
 function mapStateToProps(state) {
@@ -71,7 +71,6 @@ class SignUp extends Component {
     }
     
     myFunction=()=>{
-        console.log(this.props.history.location.pathname)
         let regexpName =/[A-Z][a-zA-Z][^#&<>"~;$^%{}?]{1,6}$/;
         // let regexpUserName= /[A-Z][a-zA-Z]{1,6}$/;
         let regpass = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/; 
@@ -84,13 +83,7 @@ class SignUp extends Component {
             }
             let method="POST"
           let url="http://books.test/api/register"
-            this.props.fetchProducts(url,method,data)
-        //  if( this.props.state.userReduser.posts.user.psuccess===true ){
-           
-        //  }
-         
-   
-           
+            this.props.fetchProducts(url,method,data)  
         }
 
     else{
@@ -105,7 +98,17 @@ class SignUp extends Component {
    
 
 }    
- 
+componentDidUpdate=(prevProps)=>{
+    if(this.props.state.userReduser.posts!==prevProps.state.userReduser.posts){
+       if(this.props.state.userReduser.posts.user.success===true){
+           if(this.props.history!==undefined){
+           return this.props.history.push('/products')
+           }
+       }
+    }
+
+}
+    dataUser = ls.get("userData") ? ls.get("userData") : {}
  
     render(){
         return(
@@ -122,7 +125,7 @@ class SignUp extends Component {
                         {/* <input  onChange={this.userNameChange} type="text" placeholder="User Name" id="loginuserName" ref={input=>this.userName=input}/>
                         <p>{this.state.userName}</p> */}
                         <input onChange={this.mailChange} type="mail" placeholder="Your Email" id="loginEmail" ref={input=>this.email=input}/>
-                        {this.props.state.userReduser.posts===undefined? null:<p>{this.props.state.userReduser.posts.user.success===false?this.props.state.userReduser.posts.user.errors.email:this.props.history===undefined?null:this.props.history.push('/products')}</p>}
+                        {this.props.state.userReduser.posts===undefined? null:<p>{this.props.state.userReduser.success===false?this.props.state.userReduser.posts.user.errors.email:null}</p>}
                         <input  onChange={this.passwordChange} type="password" placeholder="Password" id="loginPassword" ref={input=>this.password=input}/>
                         <p>{this.state.password}</p>
                         <input onChange={this.repasswordChange} type="password" placeholder="Repeat your password" id= "RepeatPassword" ref={input=>this.repassword=input}/>
