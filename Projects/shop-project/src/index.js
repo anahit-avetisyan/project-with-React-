@@ -13,8 +13,8 @@ import { createBrowserHistory } from 'history';
 import Main from './components/Main/main';
 import Header from './components/Header/header';
 import SignIn from './components/form/signIn';
-import SignUp from './components/form/signUp'
-import PopUp from './components/form/Index'
+import SignUp from './components/form/signUp';
+import PopUp from './components/form/Index';
 const store=createStore(reducer,applyMiddleware(thunk))
 console.log(store)
 const history = createBrowserHistory()

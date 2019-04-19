@@ -9,11 +9,7 @@ import NewRow from './row'
 
 
 class TablePage extends Component{
-    
-    deleteProduct=()=>{
-      
-
-    }
+     
     render(){   
        
         return(

@@ -1,32 +1,33 @@
-import React,{Component,Fragment} from 'react'
+import React,{Component,Fragment } from 'react'
 import { IoIosClose } from "react-icons/io";
 import { connect } from "react-redux";
 import {InputValue} from '../reducer/action'
 import { bindActionCreators } from "redux";
 import ls from 'local-storage'
  
-
+ 
  class NewRow extends Component {
-   
-  basketData = ls.get("basket") ? ls.get("basket") : {};
-  remove = (rowId) => {
-    const basketData =ls.get("basket")? Object.values(this.basketData).filter((row) => row.id !== rowId):{};
-    ls.clear();
-    console.log(basketData)
-    ls.set("basket",basketData);
-   
-  };
-  componentDidUpdate=(prevProps)=>{
-    if (this.props.state.paginationPage !== prevProps.state.paginationPage) {
-      
-        }
-    }
+   state={
+       basketData: ls.get("basket")? ls.get("basket") : {},
+       booksData:{}
+   }
+     
+    remove = (rowId) => {
+        const basketDataNew=ls.get("basket");
+        Object.values(basketDataNew).map((objectKey, index)=> {
+            if(objectKey.id === rowId){
+             return   delete basketDataNew[rowId];
+            }  
+        });
+        ls.set("basket",basketDataNew);
+        this.setState({basketData:basketDataNew})
+    };
      render(){
-    
+  
          return(
             <Fragment>
                   <tbody>
-                  {Object.values(this.basketData).map((data,index) => {          
+                  {Object.values(this.state.basketData).map((data,index) => {          
                     return( 
                       <tr key={index}>  
                             <th  scope="row" onClick={this.onClick}
@@ -41,9 +42,9 @@ import ls from 'local-storage'
                                 <td>{data.price*data.quantity}</td>
                                 <td><IoIosClose onClick={() => this.remove(data.id)}/> </td>
                         </tr>   
-                    )
-                })
-            } 
+                        )
+                    })
+                } 
                     
                     </tbody>
             </Fragment>

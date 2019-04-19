@@ -22,22 +22,35 @@ function mapDispatchToProps(dispatch) {
 }
 class Header extends Component {
    
-    state = { collapse: false,
+    state = { 
+        collapse: false,
+        basketData:ls.get('basket')  ? ls.get('basket') : {},
+        dataUser: ls.get("userData") ? ls.get("userData") : {}
        
      }
   
-      basketData=ls.get('basket')  ? ls.get('basket') : {}
-      
-    menuForProduct=()=>{
-        this.setState(state => ({ collapse: !state.collapse }));
-    }
-    componentDidMount=()=>{
-        Object.values(this.basketData).map((data,index) => { 
-            console.log(data,"aaaaaaaaaa")
-        })
-       }
+        menuForProduct=()=>{
+            this.setState(state => ({ collapse: !state.collapse }));
+        }
+        userData=()=>{
+            if(this.props.state.userReduser.posts === undefined){
+            return this.dataUser
+            }
+            else if(this.props.state.userReduser.posts !== undefined && this.props.state.userReduser.posts.user.success===true){
+                ls.set("userData",this.props.state.userReduser);
+                ls.get('userData') 
+                this.setState({dataUser:this.props.state.userReduser})
+    
+            }    
+        }
+        componentDidUpdate=(prevProps)=>{
+            console.log("Aaaaaaaaa")
+            if(this.props.state.userReduser.posts!==prevProps.state.userReduser.posts){
+                this.userData();
+            }  
+           
+        }
     render(){
-      console.log(this.basketData)
         return(
         <div className="wrapper">
             <div className="header">
@@ -46,25 +59,24 @@ class Header extends Component {
                     <Link  to='/' onClick={this.homePage}> Home </Link>
                     <Link  to='/products' onClick={this.ProductPage}>Product </Link>
                     <Link to='/registration' onClick={this.Registration} >Registration</Link>
-                    {this.props.state.userReduser.posts===undefined ? null: <Link  to='/tablepage' onClick={this.tablePage}>My Basket </Link>}
+                    {this.state.dataUser.posts===undefined ? null: <Link  to='/tablepage' onClick={this.tablePage}>My Basket </Link>}
                 
                 </div>       
-                    {this.props.state.userReduser.posts===undefined ? null: <span className="quantityOfitems">
-                    {/* {this.basketData.hasOwnProperty.length} */}
-                    {Object.keys(this.basketData).length}
+                    {this.state.dataUser.posts===undefined ? null: <span className="quantityOfitems">
+                    {Object.keys(this.state.basketData).length}
                 </span>}
                     <UncontrolledDropdown>
                         <DropdownToggle caret size="sm">
                         <IoIosBasket id="toggler" onClick={this.menuForProduct} className="ioIosBasket"/>
                         </DropdownToggle>
                             <DropdownMenu >
-                            {this.props.state.userReduser.posts===undefined ?<Fragment>
+                            {this.state.dataUser.posts===undefined ?<Fragment>
                                 <DropdownItem  style={{color:'red'}} header> </DropdownItem>
                                 <DropdownItem divider />
-                                </Fragment> :Object.values(this.basketData).map((data,index) => {          
+                                </Fragment> :Object.values(this.state.basketData).map((data,index) => {          
                                 return( 
                                 <Fragment key={index}>
-                                <DropdownItem  style={{color:'red'}} header> </DropdownItem>
+                                <DropdownItem  style={{color:'red'}} header>{data.name}:  {data.quantity}</DropdownItem>
                                 <DropdownItem divider />
                                 </Fragment>
                                          )
