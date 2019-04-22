@@ -43,11 +43,11 @@ class Main extends Component{
             this.props.InputValue(this.refs['input' + id].value);
             let basketData = ls.get("basket") ? ls.get("basket") : {};
                 if (basketData[id]!== undefined){
-                    basketData[id].quantity = this.refs['input' + id].value;  
+                    basketData[id].quantity = parseInt(this.refs['input' + id].value);  
                 } else {
                     basketData[id]= {
                         'id':id,
-                        'quantity': this.refs['input' + id].value,
+                        'quantity': parseInt(this.refs['input' + id].value),
                         'name':this.refs['name'+id].textContent,
                         'price':this.refs['price'+id].textContent
                     }
@@ -66,7 +66,7 @@ class Main extends Component{
 
     sendData=(id)=>{
         let data={
-            book_id: id,
+            id: id,
             comment: this.refs['textInput' + id].value,
             rating: this.state.rating['rating' +id] 
         }
@@ -106,9 +106,7 @@ class Main extends Component{
                     .then(dataBook=> 
                         this.setState({ booksData:dataBook })
                         )
-                    .catch(error =>  ( error));
-                
-                    
+                    .catch(error =>  ( error));     
             }
                 
             }
@@ -126,23 +124,23 @@ class Main extends Component{
                             <div key={index} className="firstDiv">
                         < img src={`http://${data.image}`} alt="img"  />
                         <span>Name:</span>
-                        <p ref={`name${data.book_id}`} >{data.name}</p>
+                        <p ref={`name${data.id}`} >{data.name}</p>
                         <span>Price:</span>
-                        <p ref={`price${data.book_id}`} >{data.price} </p>
-                        <label ></label> <input placeholder="1" type="number" ref={`input${data.book_id}`}/>
-                        <button onClick={()=>this.addBasket(data.book_id)}  >ADD TO BASKET</button>
+                        <p ref={`price${data.id}`} >{data.price} </p>
+                        <label ></label> <input placeholder="1" type="number" ref={`input${data.id}`}/>
+                        <button onClick={()=>this.addBasket(data.id)}  >ADD TO BASKET</button>
                         <StarRatings
-                            rating={this.state.rating['rating'+data.book_id]}
+                            rating={this.state.rating['rating'+data.id]}
                             starRatedColor="yellow"
                             starHoverColor="yellow"
                             changeRating={this.changeRating}
                             numberOfStars={5}
-                            name={`rating${data.book_id}`}
+                            name={`rating${data.id}`}
                         />
                         <span>Average Rate "{data.average_rating}"</span>
-                        <textarea ref={`textInput${data.book_id}`} rows="4" placeholder="Please leave comments" cols="50"></textarea>
+                        <textarea ref={`textInput${data.id}`} rows="4" placeholder="Please leave comments" cols="50"></textarea>
                         <div className="divForButtons">
-                        <button onClick={()=>this.sendData(data.book_id)} className="buttonForComment">Send Comment</button>
+                        <button onClick={()=>this.sendData(data.id)} className="buttonForComment">Send Comment</button>
                         <ModalForComment    reviews={data.reviews} />
                         </div>
                         </div>

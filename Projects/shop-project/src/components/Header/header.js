@@ -34,7 +34,7 @@ class Header extends Component {
         }
         userData=()=>{
             if(this.props.state.userReduser.posts === undefined){
-            return this.dataUser
+            return this.state.dataUser
             }
             else if(this.props.state.userReduser.posts !== undefined && this.props.state.userReduser.posts.user.success===true){
                 ls.set("userData",this.props.state.userReduser);
@@ -43,14 +43,24 @@ class Header extends Component {
     
             }    
         }
-        componentDidUpdate=(prevProps)=>{
-            console.log("Aaaaaaaaa")
+        componentDidUpdate=(prevProps,prevState)=>{
             if(this.props.state.userReduser.posts!==prevProps.state.userReduser.posts){
-                this.userData();
-            }  
-           
+                if(this.props.state.userReduser.posts === undefined){
+                    
+                    return this.setState({dataUser:{}})
+                }
+                else if(this.props.state.userReduser.posts !== undefined && this.props.state.userReduser.posts.user.success===true){
+            
+                    ls.set("userData",this.props.state.userReduser);
+                    ls.get('userData') 
+                   return this.setState({dataUser:this.props.state.userReduser})
+                }    
+            } 
+            
         }
+        
     render(){
+      
         return(
         <div className="wrapper">
             <div className="header">
@@ -59,12 +69,12 @@ class Header extends Component {
                     <Link  to='/' onClick={this.homePage}> Home </Link>
                     <Link  to='/products' onClick={this.ProductPage}>Product </Link>
                     <Link to='/registration' onClick={this.Registration} >Registration</Link>
-                    {this.state.dataUser.posts===undefined ? null: <Link  to='/tablepage' onClick={this.tablePage}>My Basket </Link>}
+                      <Link  to='/tablepage' onClick={this.tablePage}>My Basket </Link>
                 
                 </div>       
-                    {this.state.dataUser.posts===undefined ? null: <span className="quantityOfitems">
-                    {Object.keys(this.state.basketData).length}
-                </span>}
+                      <span className="quantityOfitems">
+                    {Object.keys(ls.get('basket') ? ls.get('basket') : {}).length}
+                </span>
                     <UncontrolledDropdown>
                         <DropdownToggle caret size="sm">
                         <IoIosBasket id="toggler" onClick={this.menuForProduct} className="ioIosBasket"/>
@@ -73,7 +83,7 @@ class Header extends Component {
                             {this.state.dataUser.posts===undefined ?<Fragment>
                                 <DropdownItem  style={{color:'red'}} header> </DropdownItem>
                                 <DropdownItem divider />
-                                </Fragment> :Object.values(this.state.basketData).map((data,index) => {          
+                                </Fragment> :Object.values(ls.get('basket') ? ls.get('basket') : {}).map((data,index) => {          
                                 return( 
                                 <Fragment key={index}>
                                 <DropdownItem  style={{color:'red'}} header>{data.name}:  {data.quantity}</DropdownItem>

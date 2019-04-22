@@ -9,9 +9,10 @@ import ls from 'local-storage'
  class NewRow extends Component {
    state={
        basketData: ls.get("basket")? ls.get("basket") : {},
-       booksData:{}
+       booksData:{},
+
    }
-     
+    
     remove = (rowId) => {
         const basketDataNew=ls.get("basket");
         Object.values(basketDataNew).map((objectKey, index)=> {
@@ -22,8 +23,18 @@ import ls from 'local-storage'
         ls.set("basket",basketDataNew);
         this.setState({basketData:basketDataNew})
     };
+    increment=()=>{
+        console.log(this.inputValue)
+        this.setState({value:this.state.value + 1})
+    }
+    quantityOf=(e)=>{
+         {this.setState({inputVal: e.target.value})}
+    }
+    componentDidMount=()=>{
+
+    }
      render(){
-  
+        console.log(this.inputValue)
          return(
             <Fragment>
                   <tbody>
@@ -37,7 +48,9 @@ import ls from 'local-storage'
                                 <td>{data.name}</td>
                                 <td>{data.price}</td> 
                                 <td> 
-                                {data.quantity} 
+                                    <button onClick={this.increment}>  +  </button>
+                                      <input ref={el=>this.inputValue=el} value={this.state.inputValue} onChange={(e) => {this.setState({inputVal: e.target.value})}} defaultValue={data.quantity}   type="number" ></input> 
+                                     <button>  -   </button>
                                 </td>
                                 <td>{data.price*data.quantity}</td>
                                 <td><IoIosClose onClick={() => this.remove(data.id)}/> </td>
