@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import {Table} from 'reactstrap';
-
+import ModalForOrder from './modalForOrder'
 import NewRow from './row'
 
  
@@ -9,16 +9,15 @@ import NewRow from './row'
 
 
 class TablePage extends Component{
-    
-    deleteProduct=()=>{
-      
+    createOrder=()=>{
 
-    }
+    } 
     render(){   
        
         return(
+            <div >
             <Table striped>
-                
+                <thead>
                     <tr>
                         <td>#</td>
                         <td>Product Name</td>
@@ -27,11 +26,11 @@ class TablePage extends Component{
                         <td>Total Sum</td>
                         <td>#</td>
                     </tr>
-               
-                   
-                        <NewRow />
-                    
+                </thead>
+                        <NewRow  />
             </Table>
+           <ModalForOrder/>
+            </div>
         )
     }
 }

@@ -41,12 +41,12 @@ export function fetchProductsFailure(error){
   payload: { error }
     }
 };
-// export function logOut(value){
-//   return {
-//     type:"LOG_OUT",
-//     value
-//   }
-// }
+export function LogOut(value){
+  return {
+    type:"LOG_OUT",
+    value
+  }
+}
 export function ChangePage(page){
   return{
     type:"CHANGE_PAGE",

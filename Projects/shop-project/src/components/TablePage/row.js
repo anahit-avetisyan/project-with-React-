@@ -1,67 +1,71 @@
-import React,{Component,Fragment} from 'react'
+import React,{Component,Fragment } from 'react'
 import { IoIosClose } from "react-icons/io";
 import { connect } from "react-redux";
 import {InputValue} from '../reducer/action'
 import { bindActionCreators } from "redux";
 import ls from 'local-storage'
  
-
+ 
  class NewRow extends Component {
-    state={
-        booksData:null
+   state={
+       basketData: ls.get("basket")? ls.get("basket") : {},
+       booksData:{},
+
+   }
+    
+    remove = (rowId) => {
+        const basketDataNew=ls.get("basket");
+        Object.values(basketDataNew).map((objectKey, index)=> {
+            if(objectKey.id === rowId){
+             return   delete basketDataNew[rowId];
+            }  
+        });
+        ls.set("basket",basketDataNew);
+        this.setState({basketData:basketDataNew})
+    };
+    increment=()=>{
+        console.log(this.inputValue)
+        this.setState({value:this.state.value + 1})
+    }
+    quantityOf=(e)=>{
+         {this.setState({inputVal: e.target.value})}
     }
     componentDidMount=()=>{
-        let url=`http://books.test/api/books`;
-        fetch(url)
-        .then(response => response.json())
-        .then(dataBook=> 
-            this.setState({ booksData:dataBook })
-            )
-        .catch(error =>  ( error));
+
     }
-     basketData = ls.get('basket') ? ls.get('basket'):{}    
-    
-     deleteProduct=()=>{
-         this.setState({close:true})
-     }
-     product={
-        "id":4554545,
-          "name":"Apple",
-          "price":5
-      }
-    
      render(){
-        console.log(this.basketData)
+        console.log(this.inputValue)
          return(
             <Fragment>
-              
-                
                   <tbody>
-                  {this.state.booksData===null?null: this.state.booksData.payload.map((data,index) => {          
+                  {Object.values(this.state.basketData).map((data,index) => {          
                     return( 
-                <tr key={index}>  
-                    <th  scope="row" onClick={this.onClick}
-                    style={{
-                    textDecoration: this.completed ? 'line-through' : 'none'
-                    }}>{data.book_id}</th>
-                        <td>{data.name}</td>
-                        <td>{data.price}</td>
-                        <td>
-                        {/* {ls.get('basket')[4554545].quantity} */}
-                        </td>
-                        <td> </td>
-                        <td><IoIosClose onClick={this.deleteProduct}/> </td>
-                </tr>
-                    )
-                })
-            }
-                </tbody>
+                      <tr key={index}>  
+                            <th  scope="row" onClick={this.onClick}
+                            style={{
+                            textDecoration: this.completed ? 'line-through' : 'none'
+                            }}>{index+1}</th>
+                                <td>{data.name}</td>
+                                <td>{data.price}</td> 
+                                <td> 
+                                    <button onClick={this.increment}>  +  </button>
+                                      <input ref={el=>this.inputValue=el} value={this.state.inputValue} onChange={(e) => {this.setState({inputVal: e.target.value})}} defaultValue={data.quantity}   type="number" ></input> 
+                                     <button>  -   </button>
+                                </td>
+                                <td>{data.price*data.quantity}</td>
+                                <td><IoIosClose onClick={() => this.remove(data.id)}/> </td>
+                        </tr>   
+                        )
+                    })
+                } 
+                    
+                    </tbody>
             </Fragment>
          )
      }
  }
  function mapStateToProps(state) {
-    console.log(state)
+  
     return {
          state
     };

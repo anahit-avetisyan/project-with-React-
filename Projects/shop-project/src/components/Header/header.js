@@ -1,4 +1,4 @@
-import React,{Component} from 'react'
+import React,{Component,Fragment} from 'react'
 import {IoIosBasket } from "react-icons/io";
 import './header.scss'
 import { connect } from "react-redux";
@@ -22,55 +22,78 @@ function mapDispatchToProps(dispatch) {
 }
 class Header extends Component {
    
-    state = { collapse: false,
+    state = { 
+        collapse: false,
+        basketData:ls.get('basket')  ? ls.get('basket') : {},
+        dataUser: ls.get("userData") ? ls.get("userData") : {}
        
      }
   
-      basketData=ls.get('basket')  ? ls.get('basket') : {}
-     
-    menuForProduct=()=>{
-        this.setState(state => ({ collapse: !state.collapse }));
-    }
-   
+        menuForProduct=()=>{
+            this.setState(state => ({ collapse: !state.collapse }));
+        }
+        userData=()=>{
+            if(this.props.state.userReduser.posts === undefined){
+            return this.state.dataUser
+            }
+            else if(this.props.state.userReduser.posts !== undefined && this.props.state.userReduser.posts.user.success===true){
+                ls.set("userData",this.props.state.userReduser);
+                ls.get('userData') 
+                this.setState({dataUser:this.props.state.userReduser})
+    
+            }    
+        }
+        componentDidUpdate=(prevProps,prevState)=>{
+            if(this.props.state.userReduser.posts!==prevProps.state.userReduser.posts){
+                if(this.props.state.userReduser.posts === undefined){
+                    
+                    return this.setState({dataUser:{}})
+                }
+                else if(this.props.state.userReduser.posts !== undefined && this.props.state.userReduser.posts.user.success===true){
+            
+                    ls.set("userData",this.props.state.userReduser);
+                    ls.get('userData') 
+                   return this.setState({dataUser:this.props.state.userReduser})
+                }    
+            } 
+            
+        }
+        
     render(){
       
         return(
         <div className="wrapper">
             <div className="header">
            
-            <div className="combineLinks">
-                <Link  to='/' onClick={this.homePage}> Home </Link>
-                <Link  to='/tablepage' onClick={this.tablePage}>My Basket </Link>
-                <Link  to='/products' onClick={this.ProductPage}>Product </Link>
-                <Link to='/registration' onClick={this.Registration} >Registration</Link>
-               
-            </div>       
-            <span className="quantityOfitems">
-            {this.basketData.hasOwnProperty.length}
-            </span>
-        <UncontrolledDropdown>
-            <DropdownToggle caret size="sm">
-            <IoIosBasket id="toggler" onClick={this.menuForProduct} className="ioIosBasket"/>
-            </DropdownToggle>
-                <DropdownMenu>
-                    <DropdownItem header>APPLE <p>{this.basketData[4554545].quantity}</p></DropdownItem>
-                    <DropdownItem divider />
-                    <DropdownItem header>Avocado {this.props.state.changeQuantity}</DropdownItem>
-                    <DropdownItem divider />
-                    <DropdownItem header>Cherry {this.props.state.changeQuantity}</DropdownItem>
-                    <DropdownItem divider />
-                    <DropdownItem header>Lemon {this.props.state.changeQuantity}</DropdownItem>
-                    <DropdownItem divider />
-                    <DropdownItem header>Orange {this.props.state.changeQuantity}</DropdownItem>
-                    <DropdownItem divider />
-                    <DropdownItem header>Pineapples{this.props.state.changeQuantity}</DropdownItem>
-                    <DropdownItem divider />
-                    <DropdownItem header>Raspberry{this.props.state.changeQuantity}</DropdownItem>
-                    <DropdownItem divider />
-                    <DropdownItem header>Strowberry{this.props.state.changeQuantity}</DropdownItem>
-                    <DropdownItem divider />
-                </DropdownMenu>
-        </UncontrolledDropdown>
+                <div className="combineLinks">
+                    <Link  to='/' onClick={this.homePage}> Home </Link>
+                    <Link  to='/products' onClick={this.ProductPage}>Product </Link>
+                    <Link to='/registration' onClick={this.Registration} >Registration</Link>
+                      <Link  to='/tablepage' onClick={this.tablePage}>My Basket </Link>
+                
+                </div>       
+                      <span className="quantityOfitems">
+                    {Object.keys(ls.get('basket') ? ls.get('basket') : {}).length}
+                </span>
+                    <UncontrolledDropdown>
+                        <DropdownToggle caret size="sm">
+                        <IoIosBasket id="toggler" onClick={this.menuForProduct} className="ioIosBasket"/>
+                        </DropdownToggle>
+                            <DropdownMenu >
+                            {this.state.dataUser.posts===undefined ?<Fragment>
+                                <DropdownItem  style={{color:'red'}} header> </DropdownItem>
+                                <DropdownItem divider />
+                                </Fragment> :Object.values(ls.get('basket') ? ls.get('basket') : {}).map((data,index) => {          
+                                return( 
+                                <Fragment key={index}>
+                                <DropdownItem  style={{color:'red'}} header>{data.name}:  {data.quantity}</DropdownItem>
+                                <DropdownItem divider />
+                                </Fragment>
+                                         )
+                                    })
+                            }
+                            </DropdownMenu>
+                    </UncontrolledDropdown>
             </div>
             </div>
         )
