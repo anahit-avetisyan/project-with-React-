@@ -5,7 +5,8 @@ import ls from 'local-storage';
 
 class ModalForOrder extends Component{
     state={
-        modal: false
+        modal: false,
+        mainResponse:{}
     }
 
     toggle=() =>{
@@ -16,7 +17,6 @@ class ModalForOrder extends Component{
       createOrder=()=>{
         let userInfo=ls.get('userData')
         let order= ls.get('basket')?ls.get('basket'):{}; 
-        console.log(this.dataBook)
             var dataOrder={
                 customer_phone:this.phoneNumber.value,
                 customer_address:this.address.value,
@@ -34,36 +34,46 @@ class ModalForOrder extends Component{
             })
                 .then(res => res.json())
                 .then(response => {
-                console.log(response);
+                this.setState({mainResponse:response});
                 })
-                .catch(error =>  ( error));   
-        this.setState(prevState => ({
-            modal: !prevState.modal
-          }));
-       
+                .catch(error =>  ( error)); 
+                
+      }
+      componentDidUpdate=(pevProps,prevState)=>{
+        if(this.state.mainResponse!==prevState.mainResponse){
+          if(this.state.mainResponse.success===true){
+            this.setState(prevState => ({
+                modal: !prevState.modal
+              }));
+            }
+            return null;
+        }
+
       }
      closeBtn = <button className="close" onClick={this.toggle}>&times;</button>;
     render(){
-        
+      console.log(this.state.mainResponse)
         return(
             <div>
         <Button color="danger" onClick={this.toggle}>Create Order</Button>
         <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-          <ModalHeader toggle={this.toggle}   close={this.closeBtn}>Create Order</ModalHeader>
-          <ModalBody>
-              <form>
-              <label>Phone Number: 
-             <input ref={el=>this.phoneNumber=el} type="text"  ></input>
-             </label>
-             <label>Address: 
-             <input type="text" ref={el=>this.address=el}></input>
-             </label>
-             </form>
-          </ModalBody>
-          <ModalFooter>
-            <Button color="primary"  onClick={this.createOrder}>Make Order</Button>{' '}
-            <Button color="secondary" onClick={this.toggle}>Cancel</Button>
-          </ModalFooter>
+            <ModalHeader toggle={this.toggle}   close={this.closeBtn}>Create Order</ModalHeader>
+              <ModalBody>
+                  <form className="mainForForms">
+                  {this.state.mainResponse.success===undefined?null:this.state.mainResponse.success===false?<p>{this.state.mainResponse.errors.customer_phone}</p>:null}
+                  <label>Phone Number: 
+                <input ref={el=>this.phoneNumber=el} type="text"  ></input>
+                </label>
+                {this.state.mainResponse.success===undefined?null:this.state.mainResponse.success===false?<p>{this.state.mainResponse.errors.customer_address}</p>:null}
+                <label>Address: 
+                <input type="text" ref={el=>this.address=el}></input>
+                </label>
+                </form>
+              </ModalBody>
+                <ModalFooter>
+                  <Button color="primary"  onClick={this.createOrder}>Make Order</Button>{' '}
+                  <Button color="secondary" onClick={this.toggle}>Cancel</Button>
+                </ModalFooter>
         </Modal>
       </div>
     );
