@@ -38,6 +38,9 @@ class SignIn extends Component{
                     return this.props.history.push('/products')
                     }
                 }
+                else{
+                    return null
+                }
              }
 
          }
@@ -61,7 +64,7 @@ class SignIn extends Component{
             }
              
         render(){
-            
+   
             return(
                 <React.Fragment>
                        {this.state.closeSignIn? null:<div className='popup'>

@@ -10,7 +10,6 @@ import ls from 'local-storage'
    state={
        basketData: ls.get("basket")? ls.get("basket") : {},
        booksData:{},
-
    }
     
     remove = (rowId) => {
@@ -23,18 +22,51 @@ import ls from 'local-storage'
         ls.set("basket",basketDataNew);
         this.setState({basketData:basketDataNew})
     };
-    increment=()=>{
+    increment=(id)=>{
+        this.refs['valueInput' + id].value= parseInt(this.refs['valueInput' + id].value)+ 1;
+        const basketDataNew=ls.get("basket");
+        Object.values(basketDataNew).map((objectKey, index)=> {
+            if(objectKey.id === id){
+                objectKey.quantity= this.refs['valueInput' + id].value;
+            }  
+        });
+        ls.set("basket",basketDataNew);
+        this.setState({basketData:basketDataNew})
+    }
+    
+    decrement=(id)=>{
+        this.refs['valueInput' + id].value= parseInt(this.refs['valueInput' + id].value)- 1;
+        const basketDataNew=ls.get("basket");
+        Object.values(basketDataNew).map((objectKey, index)=> {
+            if(objectKey.id === id){
+                objectKey.quantity= this.refs['valueInput' + id].value;
+            }  
+        });
+        ls.set("basket",basketDataNew);
+        this.setState({basketData:basketDataNew})
+         
+    }
+    ValuesForBasket=(id,quantity)=>{
         console.log(this.inputValue)
-        this.setState({value:this.state.value + 1})
-    }
-    quantityOf=(e)=>{
-         {this.setState({inputVal: e.target.value})}
-    }
-    componentDidMount=()=>{
+        let basket=ls.get('basket')? ls.get("basket") : {}
+        console.log(this.state.value)
+        Object.values(basket).map((objectKey, index)=> {
+            if(objectKey.id === id){
+             return    objectKey.quantity=quantity
+            }  
+        });
+     
 
+
+     }
+    componentDidMount=()=>{
+        let basket=ls.get('basket')? ls.get("basket") : {};
+        Object.values(basket).map((objectKey, index)=> {
+           return  this.refs['valueInput' + objectKey.id].value=objectKey.quantity
+        })
+        
     }
      render(){
-        console.log(this.inputValue)
          return(
             <Fragment>
                   <tbody>
@@ -48,11 +80,11 @@ import ls from 'local-storage'
                                 <td>{data.name}</td>
                                 <td>{data.price}</td> 
                                 <td> 
-                                    <button onClick={this.increment}>  +  </button>
-                                      <input ref={el=>this.inputValue=el} value={this.state.inputValue} onChange={(e) => {this.setState({inputVal: e.target.value})}} defaultValue={data.quantity}   type="number" ></input> 
-                                     <button>  -   </button>
+                                    <button onClick={()=>this.increment(data.id)} >  +  </button>
+                                      <input ref={`valueInput${data.id}`}   onChange={this.ValuesForBasket }    type="number" /> 
+                                     <button onClick={()=>this.decrement(data.id)} >  -   </button>
                                 </td>
-                                <td>{data.price*data.quantity}</td>
+                                <td>{data.price*data.quantity }</td>
                                 <td><IoIosClose onClick={() => this.remove(data.id)}/> </td>
                         </tr>   
                         )
