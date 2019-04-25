@@ -45,11 +45,16 @@ class ModalForOrder extends Component{
             this.setState(prevState => ({
                 modal: !prevState.modal
               }));
+             ls.remove('basket')
+             alert ("Your order has done")
+             this.setState({mainResponse:ls.get('basket')? ls.get('basket'):{}})
+              
             }
             return null;
         }
 
       }
+      
      closeBtn = <button className="close" onClick={this.toggle}>&times;</button>;
     render(){
       console.log(this.state.mainResponse)

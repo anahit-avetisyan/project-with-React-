@@ -100,6 +100,7 @@ componentDidUpdate=(prevProps)=>{
     dataUser = ls.get("userData") ? ls.get("userData") : {}
  
     render(){
+        console.log(this.data)
         return(
             <Fragment>
             {this.state.closePopup? null:<div className='popup'>

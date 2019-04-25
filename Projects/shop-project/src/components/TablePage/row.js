@@ -39,32 +39,35 @@ import ls from 'local-storage'
         const basketDataNew=ls.get("basket");
         Object.values(basketDataNew).map((objectKey, index)=> {
             if(objectKey.id === id){
+                if(this.refs['valueInput' + id].value<=0){
+                    this.refs['valueInput' + id].value=1
                 objectKey.quantity= this.refs['valueInput' + id].value;
             }  
+        }
         });
+        if(this.refs['valueInput' + id].value<=0){
+            this.refs['valueInput' + id].value=1
+        }
         ls.set("basket",basketDataNew);
         this.setState({basketData:basketDataNew})
          
     }
-    ValuesForBasket=(id,quantity)=>{
-        console.log(this.inputValue)
+    ValuesForBasket=()=>{
         let basket=ls.get('basket')? ls.get("basket") : {}
-        console.log(this.state.value)
         Object.values(basket).map((objectKey, index)=> {
-            if(objectKey.id === id){
-             return    objectKey.quantity=quantity
-            }  
-        });
-     
-
-
+            objectKey.quantity=parseInt(this.refs['valueInput' + objectKey.id].value)
+    }); 
+        ls.set("basket",basket)
+        this.setState({basketData:basket})
+        
      }
+     
     componentDidMount=()=>{
         let basket=ls.get('basket')? ls.get("basket") : {};
         Object.values(basket).map((objectKey, index)=> {
-           return  this.refs['valueInput' + objectKey.id].value=objectKey.quantity
+        this.refs['valueInput' + objectKey.id].value=objectKey.quantity
         })
-        
+        this.setState({basketData: ls.get("basket")? ls.get("basket") : {}})  
     }
      render(){
          return(
@@ -80,9 +83,9 @@ import ls from 'local-storage'
                                 <td>{data.name}</td>
                                 <td>{data.price}</td> 
                                 <td> 
+                                    <button onClick={()=>this.decrement(data.id)} >  -   </button>
+                                        <input ref={`valueInput${data.id}`}   onChange={this.ValuesForBasket } className="inputForQuantity"    type="text" /> 
                                     <button onClick={()=>this.increment(data.id)} >  +  </button>
-                                      <input ref={`valueInput${data.id}`}   onChange={this.ValuesForBasket }    type="number" /> 
-                                     <button onClick={()=>this.decrement(data.id)} >  -   </button>
                                 </td>
                                 <td>{data.price*data.quantity }</td>
                                 <td><IoIosClose onClick={() => this.remove(data.id)}/> </td>
