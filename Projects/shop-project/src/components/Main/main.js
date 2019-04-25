@@ -7,16 +7,18 @@ import Pagination from './Pagination';
 import ls from 'local-storage';
 import StarRatings from 'react-star-ratings';
 import ModalForComment from './modalForComments'
- 
+ import FieldForComment from './fieldForComment'
 
 
 class Main extends Component{
     state={
-        booksData:null,
+        booksData:{},
         rating:{
             
         },
-        dataUser: ls.get("userData") ? ls.get("userData") : {}
+        dataUser: ls.get("userData") ? ls.get("userData") : {},
+        responseForComment:{},
+        id:{}
     } 
     
     changeRating=( newRating, name )=> {
@@ -39,7 +41,6 @@ class Main extends Component{
             }    
         }
         addBasket=(id)=>{
-            console.log(this.refs['name'+id].textContent)
             this.props.InputValue(this.refs['input' + id].value);
             let basketData = ls.get("basket") ? ls.get("basket") : {};
                 if (basketData[id]!== undefined){
@@ -51,9 +52,7 @@ class Main extends Component{
                         'name':this.refs['name'+id].textContent,
                         'price':this.refs['price'+id].textContent
                     }
-                    this.refs['input' + id].value="";
                 }
-                this.refs['input' + id].value="";
             if(this.state.dataUser.posts===undefined){
                 alert ("please Log In");
             }
@@ -65,8 +64,10 @@ class Main extends Component{
         }
 
     sendData=(id)=>{
+       this.setState({id:id})
+       console.log(this.state.id,"aaaaaaaaa")
         let data={
-            id: id,
+            book_id: id,
             comment: this.refs['textInput' + id].value,
             rating: this.state.rating['rating' +id] 
         }
@@ -81,14 +82,17 @@ class Main extends Component{
             body: JSON.stringify(data)
         }).then(res => res.json())
             .then(response => {
-              console.log(response);
+                this.setState({responseForComment:response })
             })
-            .catch(error =>  ( error));    
+            .catch(error =>  ( error));   
+           
         }
         this.refs['textInput' + id].value=""
+        
     }
-   
+        
     componentDidMount=()=>{
+       
         let url=`http://books.test/api/books?page=1`;
         fetch(url)
         .then(response => response.json())
@@ -96,7 +100,8 @@ class Main extends Component{
             this.setState({ booksData:dataBook })
             )
         .catch(error =>  ( error));
-        this.userData()
+        this.userData();
+      
     }
     componentDidUpdate=(prevProps)=>{
         if (this.props.state.paginationPage !== prevProps.state.paginationPage ) {
@@ -108,41 +113,43 @@ class Main extends Component{
                         )
                     .catch(error =>  ( error));     
             }
-                
+            
             }
-        
+         
         render(){
-          
+      
+        
             return( 
                 
                 <div  className="wrapper" >
                 {this.state.dataUser.posts === undefined ? null: <p className="userName">User Name:{this.state.dataUser.posts.user.success===false?null:this.state.dataUser.posts.user.payload.name}</p>}
                     <h1>ONLINE FRUITS SHOP </h1>
                     <div className="main">  
-                        {this.state.booksData===null?null: this.state.booksData.payload.map((data,index) => {          
+                        {this.state.booksData.payload===undefined?null: this.state.booksData.payload.map((data,index) => {          
                         return( 
                             <div key={index} className="firstDiv">
-                        < img src={`http://${data.image}`} alt="img"  />
-                        <span>Name:</span>
-                        <p ref={`name${data.id}`} >{data.name}</p>
-                        <span>Price:</span>
-                        <p ref={`price${data.id}`} >{data.price} </p>
-                        <label ></label> <input placeholder="1" type="number" ref={`input${data.id}`}/>
-                        <button onClick={()=>this.addBasket(data.id)}  >ADD TO BASKET</button>
-                        <StarRatings
-                            rating={this.state.rating['rating'+data.id]}
-                            starRatedColor="yellow"
-                            starHoverColor="yellow"
-                            changeRating={this.changeRating}
-                            numberOfStars={5}
-                            name={`rating${data.id}`}
-                        />
-                        <span>Average Rate "{data.average_rating}"</span>
-                        <textarea ref={`textInput${data.id}`} rows="4" placeholder="Please leave comments" cols="50"></textarea>
-                        <div className="divForButtons">
-                        <button onClick={()=>this.sendData(data.id)} className="buttonForComment">Send Comment</button>
-                        <ModalForComment    reviews={data.reviews} />
-                        </div>
+                                <img src={`http://${data.image}`} alt="img"  />
+                                <span>Name:</span>
+                                <p ref={`name${data.id}`} >{data.name}</p>
+                                <span>Price:</span>
+                                <p ref={`price${data.id}`} >{data.price} </p>
+                                <label ></label> <input defaultValue="1" type="number" ref={`input${data.id}`}/>
+                                <button onClick={()=>this.addBasket(data.id)}  >ADD TO BASKET</button>
+                                <FieldForComment refId={data.id} mainId={this.state.id} booksData={this.state.booksData} responseData={this.state.responseForComment}/>
+                                <StarRatings
+                                    rating={this.state.rating['rating'+data.id]}
+                                    starRatedColor="yellow"
+                                    starHoverColor="yellow"
+                                    changeRating={this.changeRating}
+                                    numberOfStars={5}
+                                    name={`rating${data.id}`}
+                                />
+                                <span>Average Rate "{data.average_rating}"</span>
+                                <textarea ref={`textInput${data.id}`} rows="4" placeholder="Please leave comments" cols="50"></textarea>
+                                <div className="divForButtons">
+                                <button onClick={()=>this.sendData(data.id)} className="buttonForComment">Send Comment</button>
+                                <ModalForComment    reviews={data.reviews} />
+                                </div>
                         </div>
                                 );
                             })
