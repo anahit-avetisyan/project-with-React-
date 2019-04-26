@@ -3,7 +3,7 @@ import {IoIosBasket } from "react-icons/io";
 import './header.scss'
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux"
-import {InputValue} from '../reducer/action'
+import {BooksInformation} from '../reducer/action'
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import {Link } from 'react-router-dom';
 import ls from 'local-storage'
@@ -15,7 +15,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators(
         {
-            InputValue
+            BooksInformation
         },
         dispatch
     );
@@ -46,21 +46,22 @@ class Header extends Component {
         componentDidUpdate=(prevProps,prevState)=>{
             if(this.props.state.userReduser.posts!==prevProps.state.userReduser.posts){
                 if(this.props.state.userReduser.posts === undefined){
-                    
-                    return this.setState({dataUser:{}})
-                }
-                else if(this.props.state.userReduser.posts !== undefined && this.props.state.userReduser.posts.user.success===true){
-            
                     ls.set("userData",this.props.state.userReduser);
                     ls.get('userData') 
-                   return this.setState({dataUser:this.props.state.userReduser})
-                }    
+                    this.setState({dataUser:this.props.state.userReduser})
+                }
+                else if(this.props.state.userReduser.posts !== undefined && this.props.state.userReduser.posts.user.success===true){
+                    ls.set("userData",this.props.state.userReduser);
+                    ls.get('userData') 
+                   this.setState({dataUser:this.props.state.userReduser})
+                }  
             } 
-            
         }
-        
+        componentDidMount=()=>{
+            this.props.BooksInformation( ls.get('basket')  ? ls.get('basket') : {});
+        }
     render(){
-      
+        
         return(
         <div className="wrapper">
             <div className="header">
@@ -69,7 +70,8 @@ class Header extends Component {
                     <Link  to='/' onClick={this.homePage}> Home </Link>
                     <Link  to='/products' onClick={this.ProductPage}>Product </Link>
                     <Link to='/registration' onClick={this.Registration} >Registration</Link>
-                      <Link  to='/tablepage' onClick={this.tablePage}>My Basket </Link>
+                    <Link  to='/tablepage' onClick={this.tablePage}>My Basket </Link>
+                    <Link  to='/orders'  >My Orders </Link>
                 
                 </div>       
                       <span className="quantityOfitems">

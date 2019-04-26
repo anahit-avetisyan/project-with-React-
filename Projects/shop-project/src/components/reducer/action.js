@@ -1,5 +1,5 @@
 
-export function InputValue(value){
+export function BooksInformation(value){
 return{
     type:"CHANGE_VALUE",
     value

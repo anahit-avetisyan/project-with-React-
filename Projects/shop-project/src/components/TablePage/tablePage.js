@@ -11,6 +11,7 @@ class TablePage extends Component{
        
         return(
             <div >
+                 <p style={{color:"red",textAlign:'center'}}>  &hearts;  &hearts;  &hearts;  </p>
             <Table striped>
                 <thead>
                     <tr>

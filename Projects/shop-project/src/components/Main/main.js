@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {InputValue,fetchProducts,ChangePage} from '../reducer/action';
+import {BooksInformation,fetchProducts,ChangePage} from '../reducer/action';
 import './main.scss';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -41,11 +41,13 @@ class Main extends Component{
             }    
         }
         addBasket=(id)=>{
-            this.props.InputValue(this.refs['input' + id].value);
+          
             let basketData = ls.get("basket") ? ls.get("basket") : {};
+             this.props.BooksInformation( ls.get('basket')  ? ls.get('basket') : {});
                 if (basketData[id]!== undefined){
                     basketData[id].quantity = parseInt(this.refs['input' + id].value);  
-                } else {
+                } 
+                else {
                     basketData[id]= {
                         'id':id,
                         'quantity': parseInt(this.refs['input' + id].value),
@@ -57,15 +59,15 @@ class Main extends Component{
                 alert ("please Log In");
             }
                 else{
-
-                    ls.set("basket",basketData);
+                    ls.set("basket",basketData)
+                      this.props.BooksInformation( ls.get('basket')  ? ls.get('basket') : {});
+                   
                 }
             
         }
 
     sendData=(id)=>{
        this.setState({id:id})
-       console.log(this.state.id,"aaaaaaaaa")
         let data={
             book_id: id,
             comment: this.refs['textInput' + id].value,
@@ -92,7 +94,7 @@ class Main extends Component{
     }
         
     componentDidMount=()=>{
-       
+         this.props.BooksInformation( ls.get('basket')  ? ls.get('basket') : {});
         let url=`http://books.test/api/books?page=1`;
         fetch(url)
         .then(response => response.json())
@@ -117,8 +119,6 @@ class Main extends Component{
             }
          
         render(){
-      
-        
             return( 
                 
                 <div  className="wrapper" >
@@ -170,7 +170,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators(
         {
-            InputValue,
+            BooksInformation,
             fetchProducts,
             ChangePage
         },
