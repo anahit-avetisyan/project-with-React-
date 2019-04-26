@@ -5,7 +5,7 @@ import SignUp from './signUp';
 import './Index.scss'
 import {Link} from 'react-router-dom';
 import { connect } from "react-redux";
-import {fetchProducts} from '../reducer/action';
+import {fetchProducts,BooksInformation} from '../reducer/action';
 import {LogOut} from '../reducer/action'
 import { bindActionCreators } from "redux"; 
 import ls from 'local-storage';
@@ -38,6 +38,7 @@ class PopUp extends Component {
         this.props.fetchProducts(url,header);
         ls.clear();
         this.setState({dataUser:{}})
+        this.props.BooksInformation( ls.get('basket')  ? ls.get('basket') : {});
         
     }
        
@@ -61,7 +62,8 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(
       {
         LogOut,
-        fetchProducts
+        fetchProducts,
+        BooksInformation
       },
       dispatch
   );

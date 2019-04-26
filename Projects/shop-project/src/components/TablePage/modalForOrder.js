@@ -1,7 +1,9 @@
 import React,{Component} from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import ls from 'local-storage';
-
+import { BooksInformation} from '../reducer/action';
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
 class ModalForOrder extends Component{
     state={
@@ -37,27 +39,27 @@ class ModalForOrder extends Component{
                 this.setState({mainResponse:response});
                 })
                 .catch(error =>  ( error)); 
-                
+                console.log(this.state.mainResponse.success)
       }
       componentDidUpdate=(pevProps,prevState)=>{
-        if(this.state.mainResponse!==prevState.mainResponse){
-          if(this.state.mainResponse.success===true){
-            this.setState(prevState => ({
-                modal: !prevState.modal
-              }));
-             ls.remove('basket')
-             alert ("Your order has done")
-             this.setState({mainResponse:ls.get('basket')? ls.get('basket'):{}})
-              
-            }
-            return null;
-        }
+          if(this.state.mainResponse!==prevState.mainResponse){
+                if(this.state.mainResponse.success===true){
+                    this.setState(prevState => ({
+                        modal: !prevState.modal
+                      }));
+                    ls.remove('basket')
+                    alert ("Your order has done")
+                    this.setState({mainResponse:ls.get('basket')? ls.get('basket'):{}})
+                    this.props.BooksInformation( ls.get('basket')  ? ls.get('basket') : {});
+                    
+                }
+                    return null;
+          }
 
       }
       
      closeBtn = <button className="close" onClick={this.toggle}>&times;</button>;
     render(){
-      console.log(this.state.mainResponse)
         return(
             <div>
         <Button color="danger" onClick={this.toggle}>Create Order</Button>
@@ -80,8 +82,25 @@ class ModalForOrder extends Component{
                   <Button color="secondary" onClick={this.toggle}>Cancel</Button>
                 </ModalFooter>
         </Modal>
+       
       </div>
     );
   }
 }
-export default ModalForOrder
+function mapStateToProps(state) {
+  
+  return {
+       state
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(
+      {
+          BooksInformation
+      },
+      dispatch
+  );
+}   
+
+export default connect(mapStateToProps,mapDispatchToProps)(ModalForOrder)

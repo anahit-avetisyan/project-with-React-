@@ -1,6 +1,6 @@
 import { combineReducers} from 'redux';
 
-    function changeQuantityApple(state =1, action) {
+    function booksInfoBasket(state ={}, action) {
             switch (action.type){
                 case "CHANGE_VALUE":
                 return action.value
@@ -32,6 +32,6 @@ import { combineReducers} from 'redux';
         }
     }
 
-    const reducer = combineReducers({changeQuantityApple,userReduser,paginationPage});
+    const reducer = combineReducers({booksInfoBasket,userReduser,paginationPage});
       
       export default reducer;
