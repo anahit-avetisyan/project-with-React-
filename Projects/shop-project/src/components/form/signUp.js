@@ -1,14 +1,8 @@
 import React,{Component,Fragment} from 'react';
 import { connect } from "react-redux";
-import {fetchProducts} from '../reducer/action';
+import {fetchProducts} from '../Reducer/action';
 import ls from 'local-storage';  
  
-
-function mapStateToProps(state) {
-    return {
-         state,
-    };
-}
 
 class SignUp extends Component {
     state={
@@ -18,50 +12,33 @@ class SignUp extends Component {
         email:"",
         password:"",
         repassword:"",
-        allfields:"",
     }
-  
-  
-    closed=()=>{
-        this.setState({closePopup:true})  
-    }
-    nameChange=()=>{
-        let regexpName =/[A-Z][a-zA-Z][^#&<>"~;$^%{}?]{1,6}$/;
-        if(regexpName.test(this.name.value)===false){
-            this.setState({name:"Please Input Right Format"})
-        } 
-        else{
-            this.setState({name:""})
-        }
-    }
-    mailChange=()=>{
+
+    functionForEmail=()=>{
         let mailformat = /^(([^<>()/[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g;
         if(mailformat.test(this.email.value)===false){
             this.setState({email:"Please Input Right Format"})
-        } 
-        else{
+        } else {
             this.setState({email:""})
         }
     } 
-    passwordChange = () => {
+    functionForPassword = () => {
         let regpass = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;   
         if(regpass.test(this.password.value)===false){
             this.setState({password:"Please input correct format"})
-        }
-            else{
-                this.setState({password:""})
-            }   
+        }else{
+            this.setState({password:""})
+        }   
     }
-    repasswordChange=()=>{
+    functionForRepeatPassword=()=>{
         if(this.password.value!==this.repassword.value){
           this.setState({repassword:"That password does not match.Try again"})  
-        }
-        else{
+        } else {
             this.setState({repassword:""})
         }
     }
     
-    myFunction=()=>{
+    myFunctionSignUp=()=>{
         let regexpName =/[A-Z][a-zA-Z][^#&<>"~;$^%{}?]{1,6}$/;
         let regpass = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/; 
         let mailformat =/^(([^<>()/[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g
@@ -72,62 +49,67 @@ class SignUp extends Component {
                 password:this.password.value,    
             }
             let method="POST"
-          let url="http://books.test/api/register"
+            let url="http://books.test/api/register"
             this.props.fetchProducts(url,method,data)  
+        } else {
+            alert("Please fill all fileds Right Format")
+        } 
+        this.name.value=""
+        this.email.value=""
+        this.password.value=""
+        this.repassword.value=""   
+    }    
+    componentDidUpdate=(prevProps)=>{
+        if(this.props.state.userReduser.posts!==prevProps.state.userReduser.posts){
+            if(this.props.state.userReduser.posts===undefined){
+                this.refs.errorInput.textContent=null
+            }
+            else if(this.props.state.userReduser.posts!==undefined){
+                if(this.props.state.userReduser.posts.user.success===false){
+                    this.refs.errorInput.textContent=this.props.state.userReduser.posts.user.errors
+                }
+                else if(this.props.state.userReduser.posts.user.success===true){
+                    if(this.props.history!==undefined){
+                    return this.props.history.push('/products')
+                    }
+                }
+            }
         }
 
-    else{
-        alert("Please fill all fileds Right Format")
-     
-    } 
-     this.name.value=""
-     this.email.value=""
-     this.password.value=""
-     this.repassword.value=""   
-   
-
-}    
-componentDidUpdate=(prevProps)=>{
-    if(this.props.state.userReduser.posts!==prevProps.state.userReduser.posts){
-       if(this.props.state.userReduser.posts.user.success===true){
-           if(this.props.history!==undefined){
-           return this.props.history.push('/products')
-           }
-       }
     }
-
-}
     dataUser = ls.get("userData") ? ls.get("userData") : {}
  
     render(){
-        console.log(this.data)
         return(
             <Fragment>
-            {this.state.closePopup? null:<div className='popup'>
-                <div className='popup_inner'>
-                  <div className="DivForForms">
-                    {this.state.signIn? null:<div id ="DivForSignUp"  ref={el=>this.SignUp=el}>
-                    <h2>Creat Account</h2>
-                    <form id="signUp" > 
-                        <p>{this.state.allfields}</p>
-                        <input  onChange={this.nameChange} type="text"   placeholder="Name" id="loginName" ref={input=>this.name=input} />
-                        <p>{this.state.name}</p>
-                        <input onChange={this.mailChange} type="mail" placeholder="Your Email" id="loginEmail" ref={input=>this.email=input}/>
-                        {this.props.state.userReduser.posts===undefined? null:<p>{this.props.state.userReduser.success===false?this.props.state.userReduser.posts.user.errors.email:null}</p>}
-                        <input  onChange={this.passwordChange} type="password" placeholder="Password" id="loginPassword" ref={input=>this.password=input}/>
-                        <p>{this.state.password}</p>
-                        <input onChange={this.repasswordChange} type="password" placeholder="Repeat your password" id= "RepeatPassword" ref={input=>this.repassword=input}/>
-                        <p>{this.state.repassword}</p>
-                      
-                        <button ref={button=>this.button1=button}   id="buttonOne" type="button" onClick={this.myFunction}>CREAT ACCOUNT</button>    
-                        <p ref={checkbox=>this.checkbox1=checkbox} id="footer">Have already an account? <b><a href="/registration/signIn" target = "_self"  > Login here </a> </b></p>
-                </form>
-                </div>}
-            </div>
+                {this.state.closePopup? null:<div className='popup'>
+                    <div className='popup_inner'>
+                        <div className="DivForForms">
+                                {this.state.signIn? null:<div id ="DivForSignUp"  ref={el=>this.SignUp=el}>
+                                <h2>Creat Account</h2>
+                                    <form > 
+                                        <input   type="text"   placeholder="Name"   ref={input=>this.name=input} />
+                                            <p>{this.state.password}</p>
+                                        <input onBlur={this.functionForEmail} type="mail" placeholder="Your Email"  ref={input=>this.email=input}/>
+                                            <p ref="errorInput"> </p>
+                                        <input  onBlur={this.functionForPassword} type="password" placeholder="Password"  ref={input=>this.password=input}/>
+                                            <p>{this.state.password}</p>
+                                        <input onBlur={this.functionForRepeatPassword} type="password" placeholder="Repeat your password" className= "RepeatPassword" ref={input=>this.repassword=input}/>
+                                            <p>{this.state.repassword}</p>
+                                        <button ref={button=>this.buttonSignUp=button}   type="button" onClick={this.myFunctionSignUp}>CREAT ACCOUNT</button>    
+                                        <p ref={checkbox=>this.checkbox1=checkbox} id="footer">Have already an account? <b><a href="/registration/signIn" target = "_self"  > Login here </a> </b></p>
+                                </form>
+                            </div>}
+                        </div>
                     </div>
-              </div>}  
-</Fragment>
+                </div>}  
+            </Fragment>
         )
     }
 }
+    function mapStateToProps(state) {
+        return {
+            state,
+        };
+    }
 export default connect(mapStateToProps,{fetchProducts})(SignUp) ;

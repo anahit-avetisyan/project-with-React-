@@ -8,14 +8,14 @@ import { combineReducers} from 'redux';
                 return state 
             }
         };
-        function paginationPage(state=1,action){
-            switch (action.type) {
-                case "CHANGE_PAGE":
-                return action.page  
-                default:
-                return state;
+    function paginationPage(state=1,action){
+        switch (action.type) {
+            case "CHANGE_PAGE":
+            return action.page  
+            default:
+            return state;
         }   
-        }
+    };
      
     const initialState = {}
     function userReduser(state=initialState,action){

@@ -8,7 +8,6 @@ class FieldForComment extends Component {
         responseData=this.props.responseData;
         if(booksData.payload!==undefined){ 
             if(responseData.success!==undefined&&responseData.success===false){
-        
                 if(responseData.success===false&&responseData.errors.rating===undefined&&responseData.errors.comment===undefined){
                     if(this.refs['comment'+ id]!==undefined){
                         this.refs['comment'+ id].textContent=responseData.errors
@@ -34,8 +33,7 @@ class FieldForComment extends Component {
                 alert ("Your comment has sent")
             }
         }
-            
-          
+                
     }
     render(){
         this.functionForComment();

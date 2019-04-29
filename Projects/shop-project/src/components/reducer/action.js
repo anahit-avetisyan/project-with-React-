@@ -1,9 +1,9 @@
 
 export function BooksInformation(value){
-return{
-    type:"CHANGE_VALUE",
-    value
-}
+  return{
+      type:"CHANGE_VALUE",
+      value
+  }
 }
 export function fetchProducts(url,method="GET",data="",header="") {
     return (dispatch) => {
@@ -20,36 +20,36 @@ export function fetchProducts(url,method="GET",data="",header="") {
         })
         .catch(error => dispatch(fetchProductsFailure(error)));
     };
-  }
+}
 
 export function fetchProductsBegin(){
     return{
-  type: "FETCH_PRODUCTS_BEGIN"
+        type: "FETCH_PRODUCTS_BEGIN"
     }
 };
 
 export function  fetchProductsSuccess(user){
     return{
-  type: "FETCH_PRODUCTS_SUCCESS",
-  payload: { user }
+        type: "FETCH_PRODUCTS_SUCCESS",
+        payload: { user }
     }
 };
 
 export function fetchProductsFailure(error){
     return{
-  type: "FETCH_PRODUCTS_FAILURE",
-  payload: { error }
+        type: "FETCH_PRODUCTS_FAILURE",
+        payload: { error }
     }
 };
 export function LogOut(value){
-  return {
-    type:"LOG_OUT",
-    value
-  }
+    return {
+        type:"LOG_OUT",
+        value
+    }
 }
 export function ChangePage(page){
-  return{
-    type:"CHANGE_PAGE",
-    page
-  }
+    return{
+        type:"CHANGE_PAGE",
+        page
+    }
 }
