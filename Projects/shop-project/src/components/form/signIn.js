@@ -1,89 +1,92 @@
 import React,{Component} from 'react'
 import { connect } from "react-redux";
-import {fetchProducts} from '../reducer/action';
+import {fetchProducts} from '../Reducer/action';
 import ls from 'local-storage'; 
+
 class SignIn extends Component{
     state={ 
         closeSignIn:false,
-        nameIn: "",
+        email:"",
         repasswordIn:"",
         userInfo:this.props.state.userReduser,
+    }
+        dataUser = ls.get("userData") ? ls.get("userData") : {};
+
+    closed=()=>{
+        this.setState({closeSignIn:true})   
+    }
+    
+    functionForMail=()=>{
+        let mailformat = /^(([^<>()/[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g;
+        if(mailformat.test(this.email.value)===false){
+            this.setState({email:"Please Input Right Format"})
+        } else {
+            this.setState({email:""})
         }
-        dataUser = ls.get("userData") ? ls.get("userData") : {}
-        closed=()=>{
-            this.setState({closeSignIn:true})   
-        }
-        mailChange=()=>{
-            let mailformat = /^(([^<>()/[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g;
-            if(mailformat.test(this.email.value)===false){
-                this.setState({email:"Please Input Right Format"})
-            } 
-            else{
-                this.setState({email:""})
-            }
+    } 
+    functionForPassword = () => {
+        let regpass = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;   
+        if(regpass.test(this.passwordIn.value)===false){
+            this.setState({passwordIn:"Please input correct format"})
+        } else {
+            this.setState({passwordIn:""})
         } 
-        passwordChangeIn = () => {
-            let regpass = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;   
-            if(regpass.test(this.passwordIn.value)===false){
-                this.setState({passwordIn:"Please input correct format"})
+    }
+    componentDidUpdate=(prevProps)=>{
+        if(this.props.state.userReduser.posts!==prevProps.state.userReduser.posts){
+            if(this.props.state.userReduser.posts===undefined){
+                this.refs.errorInput.textContent=null
             }
-                else{
-                    this.setState({passwordIn:""})
-                } 
-        }
-         componentDidUpdate=(prevProps)=>{
-             if(this.props.state.userReduser.posts!==prevProps.state.userReduser.posts){
-                if(this.props.state.userReduser.posts.user.success===true){
+            else if(this.props.state.userReduser.posts!==undefined){
+                if(this.props.state.userReduser.posts.user.success===false){
+                    this.refs.errorInput.textContent=this.props.state.userReduser.posts.user.errors
+                }
+                else if(this.props.state.userReduser.posts.user.success===true){
                     if(this.props.history!==undefined){
-                    return this.props.history.push('/products')
+                        return this.props.history.push('/products')
                     }
                 }
-                else{
-                    return null
-                }
-             }
+            }
+        }
 
-         }
-        myFunctionOne=()=>{
-            let mailformat =/^(([^<>()/[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g
-            let regpass = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;   
-            let  data1={
+    }
+    myFunctionSignIn=()=>{
+        let mailformat =/^(([^<>()/[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g
+        let regpass = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;   
+        let  dataSingIn={
                 email:this.email.value,
                 password:this.passwordIn.value,    
-                    }
-                if(mailformat.test(this.email.value)===true && regpass.test(this.passwordIn.value)===true){     
-                    let method="POST"
-                    let url="http://books.test/api/login";
-                    this.props.fetchProducts(url,method,data1)
-                    }
-                    else{
-                        alert("Please fill all fileds Right Format")
-                    }
-                    this.email.value="";
+        }
+        if(mailformat.test(this.email.value)===true && regpass.test(this.passwordIn.value)===true){     
+            let method="POST"
+            let url="http://books.test/api/login";
+            this.props.fetchProducts(url,method,dataSingIn); 
+        } else{
+            alert("Please fill all fileds Right Format")
+        }
                     this.passwordIn.value="";
-            }
+        }
              
         render(){
             return(
                 <React.Fragment>
-                       {this.state.closeSignIn? null:<div className='popup'>
-                  <div className='popup_inner'>
-                  <div className="DivForForms">
-                    <div  id ="DivForSignIn" ref={el=>this.SignIn=el}>
-                    <form id="signIn">
-                        <h2>LOGIN</h2>
-                        {this.props.state.userReduser.posts===undefined? null:<p>{this.props.state.userReduser.posts.user.success===false?this.props.state.userReduser.posts.user.errors:null}</p>}
-                             <input onChange={this.mailChange} type="mail" placeholder="Your Email" id="loginEmail" ref={input=>this.email=input}/>
-                                <p  >{this.state.mail}</p>
-                            <input onChange={this.passwordChangeIn}   type="password" placeholder="Password" id="loginPasswordOne" ref={input=>this.passwordIn=input}/>
-                                <p>{this.state.passwordIn}</p>
-                            <button ref={button=>this.button2=button}   id="buttonTwo" type="button" onClick={this.myFunctionOne}>LOG IN</button>
-                    </form>  
-                    </div>
-                  </div>
-                  </div>
-              </div>} 
-               
+                    {this.state.closeSignIn? null:<div className='popup'>
+                        <div className='popup_inner'>
+                            <div className="DivForForms">
+                                <div  id ="DivForSignIn" ref={el=>this.SignIn=el}>
+                                    <form  >
+                                        <h2>LOGIN</h2>
+                                        <p ref="errorInput"> </p>
+                                        <input onBlur={this.functionForMail} type="mail" placeholder="Your Email"   ref={input=>this.email=input}/>
+                                            <p >{this.state.email}</p>
+                                        <input onBlur={this.functionForPassword}   type="password" placeholder="Password"  ref={input=>this.passwordIn=input}/>
+                                            <p>{this.state.passwordIn}</p>
+                                        <button ref={button=>this.buttonSignIn=button}    type="button" onClick={this.myFunctionSignIn}>LOG IN</button>
+                                    </form>  
+                                </div>
+                            </div>
+                        </div>
+                    </div>} 
                 </React.Fragment>
             )  
         }

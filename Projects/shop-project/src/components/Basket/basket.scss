@@ -1,0 +1,21 @@
+.mainForForms{
+    padding: 1em;
+    border: 0.2px solid grey;
+        input{
+            width: 32em;
+            margin: 0.3em 0.5em 0.3em 1em;
+        }
+        label{
+            margin: 1em;
+            font-size: 0.8em
+        }
+        p{
+            color:red;
+            font-size: 0.7em;
+            text-align: center;
+        }
+}
+.inputForQuantity{
+    width: 5em;
+    text-align: center;
+}
