@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux"
 import {BooksInformation} from '../Reducer/action'
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-import {Link } from 'react-router-dom';
+import Links from './links'
 import ls from 'local-storage'
 function mapStateToProps(state) {
     return {
@@ -61,35 +61,30 @@ class Header extends Component {
         return(
             <div className="wrapper">
                 <div className="header">
-                    <div className="combineLinks">
-                        <Link  to='/' onClick={this.homePage}> Home </Link>
-                        <Link  to='/products' onClick={this.ProductPage}>Product </Link>
-                        <Link to='/registration' onClick={this.Registration} >Registration</Link>
-                        <Link  to='/myBasket' onClick={this.tablePage}>My Basket </Link>
-                        <Link  to='/orders'  > My Orders </Link>
-                    </div>       
+                    <Links/>     
                     <span className="quantityOfitems">
                         {Object.keys(ls.get('basket') ? ls.get('basket') : {}).length}
                     </span>
-                        <UncontrolledDropdown>
-                            <DropdownToggle caret size="sm">
+                    <UncontrolledDropdown>
+                        <DropdownToggle caret size="sm">
                             <IoIosBasket id="toggler" onClick={this.menuForProduct} className="ioIosBasket"/>
-                            </DropdownToggle>
-                            <DropdownMenu >
-                                {this.state.dataUser.posts===undefined ?<Fragment>
-                                    <DropdownItem  style={{color:'red'}} header> </DropdownItem>
-                                    <DropdownItem divider />
-                                </Fragment> :Object.values(ls.get('basket') ? ls.get('basket') : {}).map((data,index) => {          
-                                    return( 
-                                        <Fragment key={index}>
-                                            <DropdownItem  style={{color:'red'}} header>{data.name}:  {data.quantity}</DropdownItem>
-                                            <DropdownItem divider />
-                                        </Fragment>
-                                    )
-                                })
-                                }
-                            </DropdownMenu>
-                        </UncontrolledDropdown>
+                        </DropdownToggle>
+                        <DropdownMenu >
+                            {this.state.dataUser.posts===undefined ?
+                            <Fragment>
+                                <DropdownItem  style={{color:'red'}} header> </DropdownItem>
+                                <DropdownItem divider />
+                            </Fragment>:Object.values(ls.get('basket') ? ls.get('basket') : {}).map((data,index) => {          
+                                return( 
+                                    <Fragment key={index}>
+                                        <DropdownItem  style={{color:'red'}} header>{data.name}:  {data.quantity}</DropdownItem>
+                                        <DropdownItem divider />
+                                    </Fragment>
+                                )
+                            })
+                            }
+                        </DropdownMenu>
+                    </UncontrolledDropdown>
                 </div>
             </div>
         )

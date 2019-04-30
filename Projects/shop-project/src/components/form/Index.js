@@ -9,7 +9,7 @@ import {fetchProducts,BooksInformation} from '../Reducer/action';
 import {LogOut} from '../Reducer/action'
 import { bindActionCreators } from "redux"; 
 import ls from 'local-storage';
-
+import Button from '../Product/button'
 class PopUp extends Component {
    
     state={
@@ -45,7 +45,8 @@ class PopUp extends Component {
                     <Link to="/registration/signIn"> <span onClick={this.signIn} className="mainButtonSignIn"> SIGN IN </span></Link>
                     <Link to='/registration/signUp'>   <span onClick={this.signUp} className="mainButtonSignUP"> SIGN UP </span></Link> 
                 </div>:null}
-                    {this.state.dataUser.posts===undefined?null:this.state.dataUser.posts.user.success===false?null:<button  className="mainButtonSignUP" onClick={this.logOut}>Log Out</button>}
+                    {this.state.dataUser.posts===undefined?null:this.state.dataUser.posts.user.success===false?null:
+                    <Button name="Log Out" className="mainButtonSignUP" callback={this.logOut}/>}
                 <div className="DivForForms">
                     {this.state.signIn? null: <SignIn/>}
                     {this.state.signUp? null: <SignUp/>}

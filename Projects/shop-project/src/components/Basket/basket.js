@@ -22,7 +22,7 @@ class Basket extends Component{
                                 <td>#</td>
                             </tr>
                         </thead>
-                                <NewRow  />
+                        <NewRow  />
                     </Table>
                         <ModalForOrder/>
             </div>
