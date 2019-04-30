@@ -1,25 +1,27 @@
 import React,{Component,Fragment} from 'react';
 import ls from 'local-storage';
 import {Table} from 'reactstrap';
+
 class Order extends Component{
     state={
         data:{},
         dataUser: ls.get("userData") ? ls.get("userData") : {},
         error:"",
-        resevedData:{},
-        isLoading: false,
+        receivedData:{},
+        
     }
+    _isMounted = false
     componentDidUpdate=(prevProps,prevState)=>{
         if(this.state.data!==prevState.data){
             if(this.state.data.success===false){
               this.setState({error:this.state.data.payload})
             }else{
-                this.setState({resevedData:this.state.data.payload})    
+                this.setState({receivedData:this.state.data.payload})    
             }
         }
     }
     componentDidMount=()=>{
-        this.setState({ isLoading: true });
+        this._isMounted = true;
         if(this.state.dataUser.posts===undefined){
             alert ("please Log In");
             return null;
@@ -31,53 +33,66 @@ class Order extends Component{
             })
             .then(res => res.json())
             .then(response => { 
-                this.setState({data:response,isLoading: false})
+               return this._isMounted ? this.setState({data:response }):null;
             })
             .catch(error =>  ( error)); 
-            
+          
         }
     }
-    
+    componentWillUnmount() {
+        this._isMounted = false
+    }
+ 
     render(){
-      console.log(this.state.data)
         return(
             <div >
                 <p style={{color:"#DC3545",textAlign:'center'}}>{this.state.error}</p>
                 <p style={{color:"#DC3545",textAlign:'center'}}>  &hearts;  &hearts;  &hearts;  </p>
-                {this.state.resevedData[0]===undefined?null:Object.values(this.state.resevedData).map((data,index)=>{
-                    return(                                       
+                {this.state.receivedData[0]===undefined?null:Object.values(this.state.receivedData).map((data,index)=>{
+                   this.totalSum=0;
+                   return(                                       
                         <Fragment key={index} > 
                             <Table dark>
                                 <thead>
                                     <tr>
-                                        <td>Oredr's number  {data.order_id}</td>
+                                        <td>Order's number  {data.order_id}</td>
                                         <td>Product name</td>
                                         <td>Product quantity</td>
                                         <td>Product price</td>
-                                        <td>#</td>
+                                        <td>Total price</td>
+                                        <td>&hearts;</td>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 {Object.values(data.order_books).map((mainData,index)=>{
+                                    this.totalSum+=mainData.price * mainData.count
                                     return(
                                         <tr key={index} >
                                             <td>#</td>
                                             <td>{mainData.book}</td>
                                             <td>{mainData.count}</td>
                                             <td>{mainData.price}</td>
+                                            <td>{mainData.price * mainData.count}</td>
                                             <td>#</td>
                                         </tr>
-                                    )
-                                    })
-                                    }
+                                         )
+                                        })
+                                        }
+                                        <tr>
+                                            <td>Total Sum</td>
+                                            <td>#</td>
+                                            <td>#</td>
+                                            <td>#</td>
+                                            <td>{this.totalSum}</td>
+                                            <td>#</td>
+                                        </tr>
                                 </tbody>
                             </Table>
                                 <p style={{color:"#DC3545",textAlign:'center'}}>  &hearts;  &hearts;  &hearts;  </p>
                         </Fragment> 
-                )
-            }) 
-            }
-           
+                    )
+                }) 
+                }          
             </div>
         )
     }

@@ -7,19 +7,19 @@ import Pagination from './Pagination';
 import ls from 'local-storage';
 import StarRatings from 'react-star-ratings';
 import ModalForComment from './modalForComments'
- import FieldForComment from './fieldForComment'
-
+import FieldForComment from './fieldForComment'
+import Button from './button'
 
 class Main extends Component{
+    
     state={
         booksData:{},
         rating:{},
         dataUser: ls.get("userData") ? ls.get("userData") : {},
         responseForComment:{},
         id:{},
-        isLoading: false,
     } 
-    
+    _isMounted = false
     changeRating=( newRating, name )=> {
         let ratingNew = Object.assign({}, this.state.rating); 
         ratingNew[name] = newRating
@@ -41,6 +41,10 @@ class Main extends Component{
         let basketData = ls.get("basket") ? ls.get("basket") : {};
         this.props.BooksInformation( ls.get('basket')  ? ls.get('basket') : {});
         if (basketData[id]!== undefined){
+            if(this.refs['input' + id].value<=1){
+                basketData[id].quantity=1
+                this.refs['input' + id].value=1
+            }
             basketData[id].quantity = parseInt(this.refs['input' + id].value);  
         } else {
             basketData[id]= {
@@ -48,6 +52,10 @@ class Main extends Component{
                 'quantity': parseInt(this.refs['input' + id].value),
                 'name':this.refs['name'+id].textContent,
                 'price':this.refs['price'+id].textContent
+            }
+            if(this.refs['input' + id].value<=1){
+                basketData[id].quantity=1
+                this.refs['input' + id].value=1
             }
         };
         if(this.state.dataUser.posts===undefined){
@@ -84,14 +92,14 @@ class Main extends Component{
         this.refs['textInput' + id].value="";   
     }    
     componentDidMount=()=>{
-        this.setState({ isLoading: true });
+        this._isMounted = true;
         this.props.BooksInformation( ls.get('basket')  ? ls.get('basket') : {});
         let url=`http://books.test/api/books?page=1`;
         fetch(url)
             .then(response => response.json())
-            .then(dataBook=> 
-            this.setState({ booksData:dataBook,isLoading: false })
-            )
+            .then(dataBook=> {
+            return  this._isMounted ? this.setState({ booksData:dataBook  }):null
+            })
             .catch(error =>  ( error));
             this.userData();
     }
@@ -106,13 +114,16 @@ class Main extends Component{
                 .catch(error =>  ( error));     
         }
     }
-    user=this.state.dataUser.posts
-    userName= this.state.dataUser.posts.user.payload.name
+    componentWillUnmount() {
+        this._isMounted = false
+    }
+   
+ 
     render(){
         return( 
                 <div  className="wrapper" >
-                    {this.user === undefined ? null: <p className="userName">User Name:{this.user.user.success===false?null:this.userName}</p>}
-                        <h1>ONLINE FRUITS SHOP </h1>
+                    {this.state.dataUser.posts=== undefined ? null: <p className="userName">User Name:{this.state.dataUser.posts.user.success===false?null:this.state.dataUser.posts.user.payload.name}</p>}
+                        <h1>ONLINE SHOPPING</h1>
                         <div className="main">  
                             {this.state.booksData.payload===undefined?null: this.state.booksData.payload.map((data,index) => {         
                                 return( 
@@ -121,9 +132,9 @@ class Main extends Component{
                                         <span>Name:</span>
                                         <p ref={`name${data.id}`} >{data.name}</p>
                                         <span>Price:</span>
-                                        <p ref={`price${data.id}`} >{data.price} </p>
-                                        <label ></label> <input defaultValue="1" type="number" ref={`input${data.id}`}/>
-                                        <button onClick={()=>this.addToBasket(data.id)}  >ADD TO BASKET</button>
+                                        <p ref={`price${data.id}`} >{data.price}</p>
+                                        <input defaultValue="1" type="number" ref={`input${data.id}`}/>
+                                        <Button callback={()=>this.addToBasket(data.id)}  name="ADD TO BASKET"/>
                                         <FieldForComment refId={data.id} mainId={this.state.id} booksData={this.state.booksData} responseData={this.state.responseForComment}/>
                                         <StarRatings
                                             rating={this.state.rating['rating'+data.id]}
@@ -136,7 +147,7 @@ class Main extends Component{
                                         <span>Average Rate "{data.average_rating}"</span>
                                         <textarea ref={`textInput${data.id}`} rows="4" placeholder="Please leave comments" cols="50"></textarea>
                                         <div className="divForButtons">
-                                            <button onClick={()=>this.sendData(data.id)} className="buttonForComment">Send Comment</button>
+                                            <Button callback={()=>this.sendData(data.id)}  className="buttonForComment" name="Send Comment"/>
                                             <ModalForComment    reviews={data.reviews} />
                                         </div>
                                     </div>

@@ -2,10 +2,9 @@ import React,{Component} from 'react'
 import { connect } from "react-redux";
 import {fetchProducts} from '../Reducer/action';
 import ls from 'local-storage'; 
-
+import Button from '../Product/button'
 class SignIn extends Component{
     state={ 
-        closeSignIn:false,
         email:"",
         repasswordIn:"",
         userInfo:this.props.state.userReduser,
@@ -70,23 +69,23 @@ class SignIn extends Component{
         render(){
             return(
                 <React.Fragment>
-                    {this.state.closeSignIn? null:<div className='popup'>
+                    <div className='popup'>
                         <div className='popup_inner'>
                             <div className="DivForForms">
-                                <div  id ="DivForSignIn" ref={el=>this.SignIn=el}>
+                                <div  id ="DivForSignIn" >
                                     <form  >
                                         <h2>LOGIN</h2>
-                                        <p ref="errorInput"> </p>
+                                        <p ref="errorInput"></p>
                                         <input onBlur={this.functionForMail} type="mail" placeholder="Your Email"   ref={input=>this.email=input}/>
                                             <p >{this.state.email}</p>
                                         <input onBlur={this.functionForPassword}   type="password" placeholder="Password"  ref={input=>this.passwordIn=input}/>
                                             <p>{this.state.passwordIn}</p>
-                                        <button ref={button=>this.buttonSignIn=button}    type="button" onClick={this.myFunctionSignIn}>LOG IN</button>
+                                        <Button type="button" callback={this.myFunctionSignIn} name="LOG IN"/>
                                     </form>  
                                 </div>
                             </div>
                         </div>
-                    </div>} 
+                    </div> 
                 </React.Fragment>
             )  
         }

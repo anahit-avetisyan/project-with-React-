@@ -1,13 +1,13 @@
 import { combineReducers} from 'redux';
 
     function booksInfoBasket(state ={}, action) {
-            switch (action.type){
-                case "CHANGE_VALUE":
-                return action.value
-                default :
-                return state 
-            }
-        };
+        switch (action.type){
+            case "CHANGE_VALUE":
+            return action.value
+            default :
+            return state 
+        }
+    };
     function paginationPage(state=1,action){
         switch (action.type) {
             case "CHANGE_PAGE":
@@ -34,4 +34,4 @@ import { combineReducers} from 'redux';
 
     const reducer = combineReducers({booksInfoBasket,userReduser,paginationPage});
       
-      export default reducer;
+    export default reducer;

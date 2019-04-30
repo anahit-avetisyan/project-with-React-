@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { BooksInformation} from '../Reducer/action';
 import { bindActionCreators } from "redux";
 import ls from 'local-storage'
- 
+import Button from "../Product/button"
  
  class NewRow extends Component {
     state={
@@ -31,8 +31,14 @@ import ls from 'local-storage'
         const basketDataNew=ls.get("basket");
         Object.values(basketDataNew).forEach((objectKey, index)=> {
             if(objectKey.id === id){
-                objectKey.quantity= this.refs['valueInput' + id].value;
+                if( this.refs['valueInput' + id].value===""){
+                    this.refs['valueInput' + id].value=1
+                    objectKey.quantity=1
+                }else{
+                    objectKey.quantity= this.refs['valueInput' + id].value;
+                }
             }  
+           
         });
         ls.set("basket",basketDataNew);
         this.setState({basketData:basketDataNew})
@@ -48,8 +54,7 @@ import ls from 'local-storage'
                 if(this.refs['valueInput' + id].value<=0){
                     this.refs['valueInput' + id].value=1
                 objectKey.quantity= this.refs['valueInput' + id].value;
-                }  
-                else{
+                } else {
                     objectKey.quantity= this.refs['valueInput' + id].value;
                 }
             };
@@ -65,8 +70,8 @@ import ls from 'local-storage'
             objectKey.quantity=parseInt(this.refs['valueInput' + objectKey.id].value)
                 if(objectKey.quantity<=0){
                     alert("please fill positive number");
-                    objectKey.quantity=null
-                    this.refs['valueInput' + objectKey.id].value="";
+                    objectKey.quantity=1
+                    this.refs['valueInput' + objectKey.id].value=1;
                 }
             }); 
         ls.set("basket",basket)
@@ -97,9 +102,9 @@ import ls from 'local-storage'
                                 <td>{data.name}</td>
                                 <td>{data.price}</td> 
                                 <td> 
-                                    <button onClick={()=>this.decrement(data.id)} >  -   </button>
+                                    <Button callback={()=>this.decrement(data.id)} name="-"/>
                                         <input ref={`valueInput${data.id}`}   onChange={this.valuesForBasket } className="inputForQuantity"    type="number" /> 
-                                    <button onClick={()=>this.increment(data.id)} >  +  </button>
+                                    <Button callback={()=>this.increment(data.id)} name="+"/>
                                 </td>
                                 <td>{data.price*data.quantity }</td>
                                 <td><IoIosClose onClick={() => this.remove(data.id)}/> </td>
