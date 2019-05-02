@@ -71,18 +71,16 @@ class SignIn extends Component{
                 <React.Fragment>
                     <div className='popup'>
                         <div className='popup_inner'>
-                            <div className="DivForForms">
-                                <div  id ="DivForSignIn" >
-                                    <form  >
-                                        <h2>LOGIN</h2>
-                                        <p ref="errorInput"></p>
-                                        <input onBlur={this.functionForMail} type="mail" placeholder="Your Email"   ref={input=>this.email=input}/>
-                                            <p >{this.state.email}</p>
-                                        <input onBlur={this.functionForPassword}   type="password" placeholder="Password"  ref={input=>this.passwordIn=input}/>
-                                            <p>{this.state.passwordIn}</p>
-                                        <Button type="button" callback={this.myFunctionSignIn} name="LOG IN"/>
-                                    </form>  
-                                </div>
+                            <div  id ="DivForSignIn" >
+                                <form  >
+                                    <h2>LOGIN</h2>
+                                    <p ref="errorInput"></p>
+                                    <input onBlur={this.functionForMail} type="mail" placeholder="Your Email"   ref={input=>this.email=input}/>
+                                    <p >{this.state.email}</p>
+                                    <input onBlur={this.functionForPassword}   type="password" placeholder="Password"  ref={input=>this.passwordIn=input}/>
+                                    <p>{this.state.passwordIn}</p>
+                                    <Button type="button" callback={this.myFunctionSignIn} name="LOG IN"/>
+                                </form>  
                             </div>
                         </div>
                     </div> 

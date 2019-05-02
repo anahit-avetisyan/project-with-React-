@@ -7,19 +7,7 @@ import {BooksInformation} from '../Reducer/action'
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import Links from './links'
 import ls from 'local-storage'
-function mapStateToProps(state) {
-    return {
-         state
-    };
-}
-function mapDispatchToProps(dispatch) {
-    return bindActionCreators(
-        {
-            BooksInformation
-        },
-        dispatch
-    );
-}
+
 class Header extends Component {
    
     state = { 
@@ -54,9 +42,6 @@ class Header extends Component {
             }  
         } 
     }
-    componentDidMount=()=>{
-        this.props.BooksInformation( ls.get('basket')  ? ls.get('basket') : {});
-    }
     render(){   
         return(
             <div className="wrapper">
@@ -90,6 +75,18 @@ class Header extends Component {
         )
     }
 }
-
+    function mapStateToProps(state) {
+        return {
+            state
+        };
+    }
+    function mapDispatchToProps(dispatch) {
+        return bindActionCreators(
+            {
+                BooksInformation
+            },
+            dispatch
+        );
+    }
 export default connect(mapStateToProps,mapDispatchToProps)(Header);
  

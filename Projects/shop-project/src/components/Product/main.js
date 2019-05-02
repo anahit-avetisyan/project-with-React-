@@ -18,15 +18,18 @@ class Main extends Component{
         dataUser: ls.get("userData") ? ls.get("userData") : {},
         responseForComment:{},
         id:{},
-    } 
+    };
+
     _isMounted = false
+
     changeRating=( newRating, name )=> {
         let ratingNew = Object.assign({}, this.state.rating); 
         ratingNew[name] = newRating
         this.setState({
             rating: ratingNew
         });
-    }
+    };
+
     userData=()=>{
         if(this.props.state.userReduser.posts === undefined){
             return this.dataUser
@@ -36,7 +39,8 @@ class Main extends Component{
             ls.get('userData') 
             this.setState({dataUser:this.props.state.userReduser})
         }    
-    }
+    };
+
     addToBasket=(id)=>{
         let basketData = ls.get("basket") ? ls.get("basket") : {};
         this.props.BooksInformation( ls.get('basket')  ? ls.get('basket') : {});
@@ -61,11 +65,10 @@ class Main extends Component{
         if(this.state.dataUser.posts===undefined){
             alert ("please Log In");
         } else {
-            ls.set("basket",basketData)
-            this.props.BooksInformation(ls.get('basket')  ? ls.get('basket') : {});   
-        }
-            
-    }
+            ls.set("basket",basketData)  
+        }    
+    };
+
     sendData=(id)=>{
         this.setState({id:id})
         let data={
@@ -76,21 +79,22 @@ class Main extends Component{
         if(this.state.dataUser.posts===undefined){
             alert ("please Log In ");
         } else {
+           let user=this.state.dataUser.posts.user.payload
             fetch("http://books.test/api/book-rating",{
                 method:"POST",  
                 headers: {"Content-Type": "application/json",
-                "Authorization" : `Bearer ${this.state.dataUser.posts.user.payload.token}`        },
+                "Authorization" : `Bearer ${user.token}`        },
                 body: JSON.stringify(data)
             })
                 .then(res => res.json())
                 .then(response => {
                 this.setState({responseForComment:response })
                 })
-                .catch(error =>  ( error));   
-           
+                .catch(error =>  ( error));     
         }
         this.refs['textInput' + id].value="";   
-    }    
+    };
+
     componentDidMount=()=>{
         this._isMounted = true;
         this.props.BooksInformation( ls.get('basket')  ? ls.get('basket') : {});
@@ -102,8 +106,9 @@ class Main extends Component{
             })
             .catch(error =>  ( error));
             this.userData();
-    }
-    componentDidUpdate=(prevProps)=>{
+    };
+
+    componentDidUpdate=(prevProps,prevState)=>{
         if (this.props.state.paginationPage !== prevProps.state.paginationPage ) {
             let url=`http://books.test/api/books?page=${this.props.state.paginationPage}`;
             fetch(url)
@@ -113,51 +118,55 @@ class Main extends Component{
                 )
                 .catch(error =>  ( error));     
         }
-    }
+        else if(this.state.dataUser.posts!==prevState.dataUser.posts){
+            let userName=this.state.dataUser.posts.user.payload.name
+            this.name=userName
+        }
+    };
+
     componentWillUnmount() {
         this._isMounted = false
-    }
+    };
    
  
     render(){
         return( 
-                <div  className="wrapper" >
-                    {this.state.dataUser.posts=== undefined ? null: <p className="userName">User Name:{this.state.dataUser.posts.user.success===false?null:this.state.dataUser.posts.user.payload.name}</p>}
-                        <h1>ONLINE SHOPPING</h1>
-                        <div className="main">  
-                            {this.state.booksData.payload===undefined?null: this.state.booksData.payload.map((data,index) => {         
-                                return( 
-                                    <div key={index} className="firstDiv">
-                                        <img src={`http://${data.image}`} alt="img"  />
-                                        <span>Name:</span>
-                                        <p ref={`name${data.id}`} >{data.name}</p>
-                                        <span>Price:</span>
-                                        <p ref={`price${data.id}`} >{data.price}</p>
-                                        <input defaultValue="1" type="number" ref={`input${data.id}`}/>
-                                        <Button callback={()=>this.addToBasket(data.id)}  name="ADD TO BASKET"/>
-                                        <FieldForComment refId={data.id} mainId={this.state.id} booksData={this.state.booksData} responseData={this.state.responseForComment}/>
-                                        <StarRatings
-                                            rating={this.state.rating['rating'+data.id]}
-                                            starRatedColor="yellow"
-                                            starHoverColor="yellow"
-                                            changeRating={this.changeRating}
-                                            numberOfStars={5}
-                                            name={`rating${data.id}`}
-                                        />
-                                        <span>Average Rate "{data.average_rating}"</span>
-                                        <textarea ref={`textInput${data.id}`} rows="4" placeholder="Please leave comments" cols="50"></textarea>
-                                        <div className="divForButtons">
-                                            <Button callback={()=>this.sendData(data.id)}  className="buttonForComment" name="Send Comment"/>
-                                            <ModalForComment    reviews={data.reviews} />
-                                        </div>
+            <div  className="wrapper" >
+                 <p className="userName">User Name: {this.name===undefined?this.state.dataUser.posts.user.payload.name:this.name}</p>
+                    <h1>ONLINE SHOPPING</h1>
+                    <div className="main">  
+                        {this.state.booksData.payload===undefined?null: this.state.booksData.payload.map((data,index) => {         
+                            return( 
+                                <div key={index} className="firstDiv">
+                                    <img src={`http://${data.image}`} alt="img"  />
+                                    <span>Name:</span>
+                                    <p ref={`name${data.id}`} >{data.name}</p>
+                                    <span>Price:</span>
+                                    <p ref={`price${data.id}`} >{data.price}</p>
+                                    <input defaultValue="1" type="number" ref={`input${data.id}`}/>
+                                    <Button   callback={()=>this.addToBasket(data.id)}  name="ADD TO BASKET"/>
+                                    <FieldForComment refId={data.id} mainId={this.state.id} booksData={this.state.booksData} responseData={this.state.responseForComment}/>
+                                    <StarRatings
+                                        rating={this.state.rating['rating'+data.id]}
+                                        starRatedColor="yellow"
+                                        starHoverColor="yellow"
+                                        changeRating={this.changeRating}
+                                        numberOfStars={5}
+                                        name={`rating${data.id}`}
+                                    />
+                                    <span>Average Rate "{data.average_rating}"</span>
+                                    <textarea ref={`textInput${data.id}`} rows="4" placeholder="Please leave comments" cols="50"></textarea>
+                                    <div className="divForButtons">
+                                        <Button callback={()=>this.sendData(data.id)}  className="buttonForComment" name="Send Comment"/>
+                                        <ModalForComment    reviews={data.reviews} />
                                     </div>
+                                </div>
                                 );
                             })
                             }
                         </div>
                     <Pagination  className="pagination" />
                 </div> 
-       
                 )
             }
         }
@@ -166,7 +175,7 @@ class Main extends Component{
         state,
     
         };
-    }
+    };
     function mapDispatchToProps(dispatch) {
         return bindActionCreators(
             {
@@ -176,5 +185,6 @@ class Main extends Component{
             },
             dispatch
         );
-    }
+    };
+
 export default connect(mapStateToProps,mapDispatchToProps)(Main);

@@ -26,10 +26,11 @@ class Order extends Component{
             alert ("please Log In");
             return null;
         } else{
+            const user=this.state.dataUser.posts.user.payload
             fetch("http://books.test/api/ordered-book",{
                 method:"GET",  
                 headers:{"Content-Type": "application/json",
-                "Authorization" : `Bearer ${this.state.dataUser.posts.user.payload.token}`}
+                "Authorization" : `Bearer ${user.token}`}
             })
             .then(res => res.json())
             .then(response => { 
