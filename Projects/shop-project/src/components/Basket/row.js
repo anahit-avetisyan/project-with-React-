@@ -10,7 +10,6 @@ import Button from "../Product/button"
     state={
         basketData: ls.get("basket")? ls.get("basket") : {},
         booksData:{},
-        books: ls.get("basket")? ls.get("basket") : {}
     };
     
     remove = (rowId) => {
@@ -23,7 +22,7 @@ import Button from "../Product/button"
         });
         ls.set("basket",basketDataNew);
         this.setState({basketData:basketDataNew});
-        this.props.BooksInformation( ls.get('basket')  ? ls.get('basket') : {});
+        this.props.BooksInformation( ls.get('basket')  ? ls.get('basket') : {}); 
     };
 
     increment=(id)=>{
@@ -43,7 +42,7 @@ import Button from "../Product/button"
         ls.set("basket",basketDataNew);
         this.setState({basketData:basketDataNew})
         ls.get('basket')
-        this.props.BooksInformation( ls.get('basket')  ? ls.get('basket') : {});
+        this.props.BooksInformation( ls.get('basket')  ? ls.get('basket') : {}); 
     }
     
     decrement=(id)=>{
@@ -61,9 +60,10 @@ import Button from "../Product/button"
         });
         ls.set("basket",basketDataNew);
         this.setState({basketData:basketDataNew})
-        ls.get('basket')
-        this.props.BooksInformation( ls.get('basket')  ? ls.get('basket') : {});   
-    }
+        ls.get('basket')  
+        this.props.BooksInformation( ls.get('basket')  ? ls.get('basket') : {});  
+    };
+    
     valuesForBasket=()=>{
         let basket=ls.get('basket')? ls.get("basket") : {}
         Object.values(basket).forEach((objectKey, index)=> {
@@ -76,8 +76,9 @@ import Button from "../Product/button"
             }); 
         ls.set("basket",basket)
         this.setState({basketData:basket}) 
-        ls.get('basket')
-        this.props.BooksInformation( ls.get('basket')  ? ls.get('basket') : {});
+        ls.get('basket');
+        this.props.BooksInformation( ls.get('basket')  ? ls.get('basket') : {}); 
+         
      }
      
     componentDidMount=()=>{

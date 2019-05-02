@@ -81,22 +81,20 @@ class SignUp extends Component {
             <Fragment>
                 <div className='popup'>
                     <div className='popup_inner'>
-                        <div className="DivForForms">
-                            <div id ="DivForSignUp"  >
-                                <h2>Creat Account</h2>
-                                    <form > 
-                                        <input   type="text"   placeholder="Name"   ref={input=>this.name=input} />
-                                            <p>{this.state.password}</p>
-                                        <input onBlur={this.functionForEmail} type="mail" placeholder="Your Email"  ref={input=>this.email=input}/>
-                                            <p ref="errorInput"></p>
-                                        <input  onBlur={this.functionForPassword} type="password" placeholder="Password"  ref={input=>this.password=input}/>
-                                            <p>{this.state.password}</p>
-                                        <input onBlur={this.functionForRepeatPassword} type="password" placeholder="Repeat your password" className= "RepeatPassword" ref={input=>this.repassword=input}/>
-                                            <p>{this.state.repassword}</p>
-                                        <Button type="button" callback={this.myFunctionSignUp} name="CREAT ACCOUNT"/>   
-                                        <p   id="footer">Have already an account? <b><a href="/registration/signIn" target = "_self"  > Login here </a> </b></p>
-                                </form>
-                            </div>
+                        <div id ="DivForSignUp"  >
+                            <h2>Creat Account</h2>
+                            <form > 
+                                <input   type="text"   placeholder="Name"   ref={input=>this.name=input} />
+                                <p>{this.state.password}</p>
+                                <input onBlur={this.functionForEmail} type="mail" placeholder="Your Email"  ref={input=>this.email=input}/>
+                                <p ref="errorInput"></p>
+                                <input  onBlur={this.functionForPassword} type="password" placeholder="Password"  ref={input=>this.password=input}/>
+                                <p>{this.state.password}</p>
+                                <input onBlur={this.functionForRepeatPassword} type="password" placeholder="Repeat your password" className= "RepeatPassword" ref={input=>this.repassword=input}/>
+                                <p>{this.state.repassword}</p>
+                                <Button type="button" callback={this.myFunctionSignUp} name="CREAT ACCOUNT"/>   
+                                <p  id="footer">Have already an account? <b><a href="/registration/signIn" target = "_self"  > Login here </a> </b></p>
+                            </form>
                         </div>
                     </div>
                 </div> 
