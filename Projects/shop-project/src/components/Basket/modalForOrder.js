@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import ls from 'local-storage';
-import { BooksInformation} from '../Reducer/action';
+import { BooksInformation} from '../../reducers/action';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import history from '../Header/history'
@@ -71,7 +71,7 @@ class ModalForOrder extends Component{
             }
         })
         if(Object.entries(booksInfo).length === 0 && booksInfo.constructor === Object){
-            alert("You dont select product")
+            alert("Please choose product")
         }else{
             return this.toggle()
         }

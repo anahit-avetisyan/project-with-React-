@@ -1,6 +1,6 @@
-import { combineReducers} from 'redux';
+import { combineReducers } from 'redux';
 
-    function booksInfoBasket(state ={}, action) {
+    function booksInformation(state ={}, action) {
         switch (action.type){
             case "CHANGE_VALUE":
             return action.value
@@ -20,18 +20,14 @@ import { combineReducers} from 'redux';
     const initialState = {}
     function userReduser(state=initialState,action){
         switch (action.type) {
-            case  "FETCH_PRODUCTS_BEGIN":
-                return initialState;
-            case "FETCH_PRODUCTS_SUCCESS":       
+            case "FETCH_REQUEST_SUCCESS":       
                 return {...state, 
-                posts: action.payload};
-            case "LOG_OUT":
-            return initialState;
+                user: action.payload};
             default:
             return state;
         }
     }
 
-    const reducer = combineReducers({booksInfoBasket,userReduser,paginationPage});
+    const reducer = combineReducers({booksInformation,userReduser,paginationPage});
       
     export default reducer;

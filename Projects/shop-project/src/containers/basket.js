@@ -1,8 +1,8 @@
 import React,{Component} from 'react';
 import {Table} from 'reactstrap';
-import ModalForOrder from './modalForOrder';
-import NewRow from './row';
-import './basket.scss';
+import ModalForOrder from '../components/Basket/modalForOrder';
+import NewRow from '../components/Basket/row'
+import '../style/basket.scss';
  
 
 class Basket extends Component{

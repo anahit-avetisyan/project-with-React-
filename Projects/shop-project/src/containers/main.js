@@ -1,14 +1,14 @@
 import React,{Component} from 'react';
-import {BooksInformation,fetchProducts,ChangePage} from '../Reducer/action';
-import './main.scss';
+import {BooksInformation,request,ChangePage} from '../reducers/action';
+import '../style/main.scss';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import Pagination from './Pagination';
+import Pagination from '../components/Product/Pagination';
 import ls from 'local-storage';
 import StarRatings from 'react-star-ratings';
-import ModalForComment from './modalForComments'
-import FieldForComment from './fieldForComment'
-import Button from './button'
+import ModalForComment from '../components/Product/modalForComments'
+import FieldForComment from '../components/Product/fieldForComment'
+import Button from '../components/Product/button'
 
 class Main extends Component{
     
@@ -45,21 +45,23 @@ class Main extends Component{
         let basketData = ls.get("basket") ? ls.get("basket") : {};
         this.props.BooksInformation( ls.get('basket')  ? ls.get('basket') : {});
         if (basketData[id]!== undefined){
-            if(this.refs['input' + id].value<=1){
-                basketData[id].quantity=1
+            if(this.refs['input' + id].value<=0){
+                alert("Please fill positive number")
                 this.refs['input' + id].value=1
+            }else{
+                basketData[id].quantity = parseInt(this.refs['input' + id].value); 
             }
-            basketData[id].quantity = parseInt(this.refs['input' + id].value);  
         } else {
-            basketData[id]= {
-                'id':id,
-                'quantity': parseInt(this.refs['input' + id].value),
-                'name':this.refs['name'+id].textContent,
-                'price':this.refs['price'+id].textContent
-            }
-            if(this.refs['input' + id].value<=1){
-                basketData[id].quantity=1
+            if(this.refs['input' + id].value<=0){
+                alert("Please fill positive number");
                 this.refs['input' + id].value=1
+            }else{
+                basketData[id]= {
+                    'id':id,
+                    'quantity': parseInt(this.refs['input' + id].value),
+                    'name':this.refs['name'+id].textContent,
+                    'price':this.refs['price'+id].textContent
+                }
             }
         };
         if(this.state.dataUser.posts===undefined){
@@ -119,8 +121,11 @@ class Main extends Component{
                 .catch(error =>  ( error));     
         }
         else if(this.state.dataUser.posts!==prevState.dataUser.posts){
-            let userName=this.state.dataUser.posts.user.payload.name
-            this.name=userName
+            if(this.state.dataUser.posts.user.success===false){
+                this.name=null
+            }else{
+                this.name=this.state.dataUser.posts.user.payload.name
+            }  
         }
     };
 
@@ -132,7 +137,7 @@ class Main extends Component{
     render(){
         return( 
             <div  className="wrapper" >
-                 <p className="userName">User Name: {this.name===undefined?this.state.dataUser.posts.user.payload.name:this.name}</p>
+                 <p className="userName">User Name:  {this.state.dataUser.posts!==undefined?this.state.dataUser.posts.user.payload.name:this.name}</p>
                     <h1>ONLINE SHOPPING</h1>
                     <div className="main">  
                         {this.state.booksData.payload===undefined?null: this.state.booksData.payload.map((data,index) => {         
@@ -180,7 +185,7 @@ class Main extends Component{
         return bindActionCreators(
             {
                 BooksInformation,
-                fetchProducts,
+                request,
                 ChangePage
             },
             dispatch

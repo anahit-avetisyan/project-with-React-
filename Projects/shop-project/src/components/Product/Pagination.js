@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import {ChangePage} from '../Reducer/action'
+import {ChangePage} from '../../reducers/action';
 import Pagination from "react-js-pagination";
  
 

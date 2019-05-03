@@ -1,15 +1,14 @@
  
 import React, { Component,Fragment } from 'react';
-import SignIn from './signIn';
-import SignUp from './signUp';
-import './Index.scss'
+import SignIn from '../components/Form/signIn';
+import SignUp from '../components/Form/signUp';
+import '../style/form.scss'
 import {Link} from 'react-router-dom';
 import { connect } from "react-redux";
-import {fetchProducts,BooksInformation} from '../Reducer/action';
-import {LogOut} from '../Reducer/action'
+import {request,BooksInformation} from '../reducers/action';
 import { bindActionCreators } from "redux"; 
 import ls from 'local-storage';
-import Button from '../Product/button'
+import Button from '../components/Product/button'
 class PopUp extends Component {
    
     state={
@@ -63,8 +62,7 @@ class PopUp extends Component {
     function mapDispatchToProps(dispatch) {
       return bindActionCreators(
           {
-            LogOut,
-            fetchProducts,
+            request,
             BooksInformation
           },
           dispatch
