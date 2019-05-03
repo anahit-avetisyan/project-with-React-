@@ -1,7 +1,7 @@
 import React,{Component,Fragment } from 'react'
 import { IoIosClose } from "react-icons/io";
 import { connect } from "react-redux";
-import { BooksInformation} from '../Reducer/action';
+import { BooksInformation} from '../../reducers/action';
 import { bindActionCreators } from "redux";
 import ls from 'local-storage'
 import Button from "../Product/button"

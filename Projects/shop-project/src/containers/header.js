@@ -1,11 +1,11 @@
 import React,{Component,Fragment} from 'react'
 import {IoIosBasket } from "react-icons/io";
-import './header.scss'
+import '../style/header.scss'
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux"
-import {BooksInformation} from '../Reducer/action'
+import {BooksInformation} from '../reducers/action'
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-import Links from './links'
+import Links from '../components/Header/links'
 import ls from 'local-storage'
 
 class Header extends Component {
@@ -42,7 +42,7 @@ class Header extends Component {
             }  
         } 
     }
-    render(){   
+    render(){  
         return(
             <div className="wrapper">
                 <div className="header">
@@ -77,7 +77,8 @@ class Header extends Component {
 }
     function mapStateToProps(state) {
         return {
-            state
+            state,
+            // user : state.userReduser.user ? state.userReduser.user : state.userReduser
         };
     }
     function mapDispatchToProps(dispatch) {

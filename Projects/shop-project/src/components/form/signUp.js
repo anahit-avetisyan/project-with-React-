@@ -1,6 +1,6 @@
 import React,{Component,Fragment} from 'react';
 import { connect } from "react-redux";
-import {fetchProducts} from '../Reducer/action';
+import {request} from '../../reducers/action';
 import Button from '../Product/button'
  
 
@@ -48,7 +48,7 @@ class SignUp extends Component {
             }
             let method="POST"
             let url="http://books.test/api/register"
-            this.props.fetchProducts(url,method,data)  
+            this.props.request(url,method,data)  
         } else {
             alert("Please fill all fileds Right Format")
         } 
@@ -107,4 +107,4 @@ class SignUp extends Component {
             state,
         };
     }
-export default connect(mapStateToProps,{fetchProducts})(SignUp) ;
+export default connect(mapStateToProps,{request})(SignUp) ;
