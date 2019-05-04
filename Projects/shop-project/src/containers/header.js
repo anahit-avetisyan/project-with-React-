@@ -6,7 +6,8 @@ import { bindActionCreators } from "redux"
 import {BooksInformation} from '../reducers/action'
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import Links from '../components/Header/links'
-import ls from 'local-storage'
+import ls from 'local-storage';
+import Form from './form'
 
 class Header extends Component {
    
@@ -18,41 +19,31 @@ class Header extends Component {
     menuForProduct=()=>{
         this.setState(state => ({ collapse: !state.collapse }));
     }
-    userData=()=>{
-        if(this.props.state.userReduser.posts === undefined){
-            return this.state.dataUser
-        }
-        else if(this.props.state.userReduser.posts !== undefined && this.props.state.userReduser.posts.user.success===true){
-            ls.set("userData",this.props.state.userReduser);
-            ls.get('userData') 
-            this.setState({dataUser:this.props.state.userReduser})
-        }    
-    }
     componentDidUpdate=(prevProps,prevState)=>{
-        if(this.props.state.userReduser.posts!==prevProps.state.userReduser.posts){
-            if(this.props.state.userReduser.posts === undefined){
-                ls.set("userData",this.props.state.userReduser);
+        if(this.props.user!==prevProps.user){
+            if(this.props.user){
+                ls.set("userData",this.props.user);
                 ls.get('userData') 
-                this.setState({dataUser:this.props.state.userReduser})
+                this.setState({dataUser:this.props.user})
             }
-            else if(this.props.state.userReduser.posts !== undefined && this.props.state.userReduser.posts.user.success===true){
-                ls.set("userData",this.props.state.userReduser);
-                ls.get('userData') 
-                this.setState({dataUser:this.props.state.userReduser})
-            }  
-        } 
+        }  
     }
     render(){  
         return(
             <div className="wrapper">
                 <div className="header">
-                    <Links/>     
+                    <Links/> 
+                    <Form/> 
                     <span className="quantityOfitems">
                         {Object.keys(ls.get('basket') ? ls.get('basket') : {}).length}
                     </span>
                     <UncontrolledDropdown>
                         <DropdownToggle caret size="sm">
-                            <IoIosBasket id="toggler" onClick={this.menuForProduct} className="ioIosBasket"/>
+                            <IoIosBasket 
+                                id="toggler" 
+                                onClick={this.menuForProduct} 
+                                className="ioIosBasket"
+                            />
                         </DropdownToggle>
                         <DropdownMenu >
                             {this.state.dataUser.posts===undefined ?
@@ -78,7 +69,7 @@ class Header extends Component {
     function mapStateToProps(state) {
         return {
             state,
-            // user : state.userReduser.user ? state.userReduser.user : state.userReduser
+            user : state.userReduser.user ? state.userReduser.user.payload : state.userReduser,
         };
     }
     function mapDispatchToProps(dispatch) {

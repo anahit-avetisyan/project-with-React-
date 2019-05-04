@@ -17,9 +17,8 @@ class Routing extends Component {
                 <Router history={history}>
                     <Route path='/' component={Header}/>
                     <Route path='/myBasket'  component={Basket}/>
-                    <Route path='/registration' component={PopUp}/>
-                    <Route path='/registration/signIn' component={SignIn}/>
-                    <Route path='/registration/signUp' component={SignUp}/>
+                    <Route path='/signIn' component={SignIn}/>
+                    <Route path='/signUp' component={SignUp}/>
                     <Route path='/products' component={Main}/>
                     <Route path='/orders' component={Order}/>
                 </Router>  
