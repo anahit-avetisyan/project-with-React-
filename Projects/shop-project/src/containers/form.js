@@ -9,14 +9,14 @@ import {request,BooksInformation} from '../reducers/action';
 import { bindActionCreators } from "redux"; 
 import ls from 'local-storage';
 import Button from '../components/Product/button'
-class PopUp extends Component {
+class Form extends Component {
    
     state={
       signIn:true,
       signUp:true,
-      dataUser:ls.get("userData") ? ls.get("userData") : {}
+      
     }
-  
+    dataUser=ls.get("userData") ? ls.get("userData") : {}
     signIn=()=>{
         this.setState({signIn:false});
         this.setState({signUp:true});
@@ -26,26 +26,37 @@ class PopUp extends Component {
         this.setState({signUp:false});
     }
     logOut=()=>{  
-        let url="http://books.test/api/logout"
         let header={
-          "Authorization" : `Bearer ${this.state.dataUser.posts.user.payload.token}`
+          "Authorization" : `Bearer ${this.props.user.token}`
         };
-        this.props.fetchProducts(url,header);
+        this.props.request("http://books.test/api/logout",header);
+        console.log(header)
         ls.clear();
-        this.setState({dataUser:{}});
+        this.dataUser={};
         this.props.BooksInformation( ls.get('basket')  ? ls.get('basket') : {});
         
     }
        
     render(){
+        console.log(this.dataUser)
+    const user=this.dataUser
         return(
             <Fragment>
-                {this.state.dataUser.posts===undefined||this.state.dataUser.posts.user.success===false?<div className="divForMainButtons">
-                    <Link to="/registration/signIn"> <span onClick={this.signIn} className="mainButtonSignIn"> SIGN IN </span></Link>
-                    <Link to='/registration/signUp'>   <span onClick={this.signUp} className="mainButtonSignUP"> SIGN UP </span></Link> 
+                {this.props.error||this.dataUser.id===undefined?<div className="divForMainButtons">
+                    <Link to="/signIn"> 
+                        <span onClick={this.signIn} className="mainButtonSignIn"> SIGN IN </span>
+                    </Link>
+                    <Link to='/signUp'> 
+                        <span onClick={this.signUp} className="mainButtonSignUP"> SIGN UP </span>
+                    </Link> 
                 </div>:null}
-                    {this.state.dataUser.posts===undefined?null:this.state.dataUser.posts.user.success===false?null:
-                    <Button name="Log Out" className="mainButtonSignUP" callback={this.logOut}/>}
+                    {this.props.error||this.dataUser.id===undefined?null:
+                    <Button 
+                        name="Log Out" 
+                        className="mainButtonSignUP" 
+                        callback={this.logOut}
+                    />
+                }
                 <div className="DivForForms">
                     {this.state.signIn? null: <SignIn/>}
                     {this.state.signUp? null: <SignUp/>}
@@ -55,8 +66,10 @@ class PopUp extends Component {
     }
 }
     function mapStateToProps(state) {
-      return {
-          state,
+        return {
+            state,
+            user : state.userReduser.user ? state.userReduser.user.payload : state.userReduser,
+            error: state.userReduser.user ?  state.userReduser.user.errors : state.userReduser 
       };
     }
     function mapDispatchToProps(dispatch) {
@@ -68,4 +81,4 @@ class PopUp extends Component {
           dispatch
       );
     }
-export default  connect(mapStateToProps,mapDispatchToProps)(PopUp);
+export default  connect(mapStateToProps,mapDispatchToProps)(Form);

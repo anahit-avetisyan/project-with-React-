@@ -31,13 +31,10 @@ class Main extends Component{
     };
 
     userData=()=>{
-        if(this.props.state.userReduser.posts === undefined){
-            return this.dataUser
-        }
-        else if(this.props.state.userReduser.posts !== undefined && this.props.state.userReduser.posts.user.success===true){
-            ls.set("userData",this.props.state.userReduser);
+        if(this.props.user){
+            ls.set("userData",this.props.user);
             ls.get('userData') 
-            this.setState({dataUser:this.props.state.userReduser})
+            this.setState({dataUser:this.props.user})
         }    
     };
 
@@ -64,7 +61,8 @@ class Main extends Component{
                 }
             }
         };
-        if(this.state.dataUser.posts===undefined){
+        if(this.state.dataUser.id===undefined){
+            console.log(this.state.dataUser)
             alert ("please Log In");
         } else {
             ls.set("basket",basketData)  
@@ -78,10 +76,10 @@ class Main extends Component{
             comment: this.refs['textInput' + id].value,
             rating: this.state.rating['rating' +id] 
         }
-        if(this.state.dataUser.posts===undefined){
+        if(!this.props.user){
             alert ("please Log In ");
         } else {
-           let user=this.state.dataUser.posts.user.payload
+           let user=this.props.user
             fetch("http://books.test/api/book-rating",{
                 method:"POST",  
                 headers: {"Content-Type": "application/json",
@@ -120,12 +118,9 @@ class Main extends Component{
                 )
                 .catch(error =>  ( error));     
         }
-        else if(this.state.dataUser.posts!==prevState.dataUser.posts){
-            if(this.state.dataUser.posts.user.success===false){
-                this.name=null
-            }else{
-                this.name=this.state.dataUser.posts.user.payload.name
-            }  
+        else if(this.state.dataUser!==prevState.dataUser.user){
+           
+                this.name=this.state.dataUser.name  
         }
     };
 
@@ -137,7 +132,7 @@ class Main extends Component{
     render(){
         return( 
             <div  className="wrapper" >
-                 <p className="userName">User Name:  {this.state.dataUser.posts!==undefined?this.state.dataUser.posts.user.payload.name:this.name}</p>
+                 <p className="userName">User Name:  {this.state.dataUser.id!==undefined?this.state.dataUser.name:this.name}</p>
                     <h1>ONLINE SHOPPING</h1>
                     <div className="main">  
                         {this.state.booksData.payload===undefined?null: this.state.booksData.payload.map((data,index) => {         
