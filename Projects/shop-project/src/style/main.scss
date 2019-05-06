@@ -1,0 +1,72 @@
+ 
+h1{
+    text-align: center;
+    margin: 0.3em;
+    padding: 1em
+}
+.wrapper{
+    display: flex;
+    flex-direction: column;
+        
+}
+.main{
+    margin-top: 3em;    
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    div{
+        padding:1em;
+     
+        display: flex;
+        flex-direction: column;
+        button{
+            margin-top:0.5em
+        }
+        p{
+            margin: 0;
+        } 
+    }
+        div img{
+            height: 20em;
+            width: 18em;
+        }
+}
+    .pagination{
+        display: flex;
+        justify-content: center;
+    }
+    .firstDiv{
+        border:0.1px solid grey;
+        margin-right: 0.5em;
+        img{
+            margin: auto
+        }
+    }
+    .star-ratings{
+        text-align:center;
+            div{
+            margin-right: 1em;
+        }
+    }
+    textarea,input{
+        outline: none;
+    }
+    .userName{
+        padding: 0.5em;
+        border:0.2px solid grey;
+        width: 10em
+    }
+    .pagination {
+        margin:1em;
+        li{
+        border: 0.2px solid grey;
+        border-right: none;
+        padding: 0.7em 1em
+        }
+    }
+    .fieldForResponse{
+        color:red;
+        font-size: 0.7em;
+        text-align: center;
+    }

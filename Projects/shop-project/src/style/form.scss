@@ -1,0 +1,108 @@
+    %message-sharedTwo{
+        padding: 1em;
+        margin:0.5em 2em;
+        border-radius: 0.5em;
+        border: none;
+        background-color:  rgba(255, 255, 255, 0.938);
+        outline: none;
+        font-size: 0.6em;
+    }
+    %message-shared {
+        display: flex;
+    }
+    .formContainer{
+        .mainButtonSignIn,.mainButtonSignUP,button{
+                background-color:ghostwhite;
+                margin-right:2em;
+                border: 0.1em solid gray;
+                padding:0 1em
+            }
+    }
+    .divForMainButtons {
+        display:flex;
+        justify-content: flex-end;
+        margin-bottom: 2em;
+    }
+    .popup{
+        height: 80%;
+        width: 100%;
+        position: absolute;
+        z-index: 500;
+        @extend %message-shared;
+        justify-content: center;
+        align-items: center;
+
+      }
+    .popup_inner{
+        position: absolute;
+        height:fit-content;
+        min-height: 30em;
+        width:25em ;
+        background-color:  rgb(240, 233, 233);
+    }
+    #DivForSignIn{
+        text-align: center;
+        transform: translateY(50%);
+        form{
+            width: 100%;
+            @extend %message-shared;
+            border-radius: 0.4em;
+            min-width: 15em;
+            width: 18em;
+            max-width: 25em;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        input{
+            @extend %message-sharedTwo ;
+        }
+        button{
+            @extend %message-sharedTwo ;
+            background-color: #c2d6d6; 
+        }
+        a {
+            color:black;
+        }
+        p{
+            text-align: center;
+            color: red;
+            font-size: 1vw;
+        }
+    }
+    #DivForSignUp{
+        text-align: center;
+        padding-top: 1em;
+        form{
+            width: 100%;
+            @extend %message-shared;
+            border-radius: 0.4em;
+            min-width: 15em;
+            width: 18em;
+            max-width: 25em;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        input{
+            @extend %message-sharedTwo  
+        }
+        button{
+            @extend %message-sharedTwo ;
+            background-color: #c2d6d6; 
+        }
+        a {
+            color: black;
+        }
+        p{
+            text-align: center;
+            color: red;
+            font-size: 1vw;
+        }
+    }
+    .labelForCheckbox {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 0.5em;
+        color: black;
+        margin-bottom: 0.1em
+    }

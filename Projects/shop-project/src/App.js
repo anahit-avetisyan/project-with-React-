@@ -1,19 +1,17 @@
 import React, { Component } from "react";
-import Index from './components/index'
-import "./App.scss";
-
-
+import Routing from './routers/routes'
  
 class App extends Component {
   
-    
-  render() {
-    return (
-      <div className="App">
-         <Index/>   
-      </div>
-    );
-  }
+  
+
+    render() {
+        return (
+            <div className="App">
+                <Routing/>   
+            </div>
+        );
+    }
 }
 
 export default App;
