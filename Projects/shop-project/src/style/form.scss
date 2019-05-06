@@ -10,15 +10,13 @@
     %message-shared {
         display: flex;
     }
-   .mainButtonSignIn{
-        margin-right:2em;
-        border: 0.1em solid gray;
-        padding:0 1em
-    }
-    .mainButtonSignUP{
-        margin-right:2em;
-        border: 0.1em solid gray;
-        padding:0 1em
+    .formContainer{
+        .mainButtonSignIn,.mainButtonSignUP,button{
+                background-color:ghostwhite;
+                margin-right:2em;
+                border: 0.1em solid gray;
+                padding:0 1em
+            }
     }
     .divForMainButtons {
         display:flex;

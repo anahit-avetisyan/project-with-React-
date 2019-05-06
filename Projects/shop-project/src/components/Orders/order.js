@@ -11,22 +11,14 @@ class Order extends Component{
         
     }
     _isMounted = false
-    componentDidUpdate=(prevProps,prevState)=>{
-        if(this.state.data!==prevState.data){
-            if(this.state.data.success===false){
-              this.setState({error:this.state.data.payload})
-            }else{
-                this.setState({receivedData:this.state.data.payload})    
-            }
-        }
-    }
+  
     componentDidMount=()=>{
         this._isMounted = true;
-        if(this.state.dataUser.posts===undefined){
+        if(this.state.dataUser.id===undefined){
             alert ("please Log In");
             return null;
         } else{
-            const user=this.state.dataUser.posts.user.payload
+            const user=this.state.dataUser
             fetch("http://books.test/api/ordered-book",{
                 method:"GET",  
                 headers:{"Content-Type": "application/json",
@@ -38,6 +30,16 @@ class Order extends Component{
             })
             .catch(error =>  ( error)); 
           
+        }
+    }
+    componentDidUpdate=(prevProps,prevState)=>{
+        console.log(this.state.data)
+        if(this.state.data!==prevState.data){
+            if(this.state.data.success===false){
+              this.setState({error:this.state.data.payload})
+            }else{
+                this.setState({receivedData:this.state.data.payload})    
+            }
         }
     }
     componentWillUnmount() {

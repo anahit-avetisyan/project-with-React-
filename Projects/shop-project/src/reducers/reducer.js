@@ -23,6 +23,8 @@ import { combineReducers } from 'redux';
             case "FETCH_REQUEST_SUCCESS":       
                 return {...state, 
                 user: action.payload};
+            case "LOG_OUT":
+                return initialState;
             default:
             return state;
         }

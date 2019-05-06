@@ -7,7 +7,7 @@ import reducer from './reducers/reducer'
 import { createStore,applyMiddleware } from 'redux';
 import thunk  from 'redux-thunk';
 import App from './App'
-
+ 
 const store=createStore(reducer,applyMiddleware(thunk))
  
 ReactDOM.render(

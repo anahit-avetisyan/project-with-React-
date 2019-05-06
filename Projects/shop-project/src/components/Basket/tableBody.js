@@ -6,7 +6,7 @@ import { bindActionCreators } from "redux";
 import ls from 'local-storage'
 import Button from "../Product/button"
  
- class NewRow extends Component {
+ class TableBody extends Component {
     state={
         basketData: ls.get("basket")? ls.get("basket") : {},
         booksData:{},
@@ -90,6 +90,7 @@ import Button from "../Product/button"
         this.props.BooksInformation( ls.get('basket')  ? ls.get('basket') : {});
     }
      render(){
+         console.log(this.props,"table")
          return(
             <Fragment>
                 <tbody>
@@ -134,5 +135,5 @@ import Button from "../Product/button"
         );
     }   
             
-  export default connect(mapStateToProps,mapDispatchToProps)(NewRow)
+  export default connect(mapStateToProps,mapDispatchToProps)(TableBody)
  

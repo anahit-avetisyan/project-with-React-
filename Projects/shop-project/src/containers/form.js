@@ -1,11 +1,11 @@
  
-import React, { Component,Fragment } from 'react';
+import React, { Component} from 'react';
 import SignIn from '../components/Form/signIn';
 import SignUp from '../components/Form/signUp';
 import '../style/form.scss'
 import {Link} from 'react-router-dom';
 import { connect } from "react-redux";
-import {request,BooksInformation} from '../reducers/action';
+import {request,BooksInformation,logOut} from '../reducers/action';
 import { bindActionCreators } from "redux"; 
 import ls from 'local-storage';
 import Button from '../components/Product/button'
@@ -14,6 +14,7 @@ class Form extends Component {
     state={
       signIn:true,
       signUp:true,
+      dataUser: ls.get("userData") ? ls.get("userData") : {},
       
     }
     dataUser=ls.get("userData") ? ls.get("userData") : {}
@@ -25,35 +26,33 @@ class Form extends Component {
         this.setState({signIn:true});
         this.setState({signUp:false});
     }
+     initialState = {}
     logOut=()=>{  
         let header={
           "Authorization" : `Bearer ${this.props.user.token}`
         };
         this.props.request("http://books.test/api/logout",header);
-        console.log(header)
         ls.clear();
-        this.dataUser={};
+        this.setState({dataUser:{}});
+        this.props.logOut();
         this.props.BooksInformation( ls.get('basket')  ? ls.get('basket') : {});
         
     }
-       
+    
     render(){
-        console.log(this.dataUser)
-    const user=this.dataUser
         return(
-            <Fragment>
-                {this.props.error||this.dataUser.id===undefined?<div className="divForMainButtons">
+            <div className='formContainer'>
+                {this.props.error===false ||(this.state.dataUser.id===undefined && this.props.userId===undefined)?<div className="divForMainButtons">
                     <Link to="/signIn"> 
                         <span onClick={this.signIn} className="mainButtonSignIn"> SIGN IN </span>
                     </Link>
                     <Link to='/signUp'> 
                         <span onClick={this.signUp} className="mainButtonSignUP"> SIGN UP </span>
                     </Link> 
-                </div>:null}
-                    {this.props.error||this.dataUser.id===undefined?null:
+                </div>:
                     <Button 
                         name="Log Out" 
-                        className="mainButtonSignUP" 
+                        className="buttonLogOut"    
                         callback={this.logOut}
                     />
                 }
@@ -61,7 +60,7 @@ class Form extends Component {
                     {this.state.signIn? null: <SignIn/>}
                     {this.state.signUp? null: <SignUp/>}
                 </div> 
-            </Fragment> 
+            </div> 
         )
     }
 }
@@ -69,14 +68,17 @@ class Form extends Component {
         return {
             state,
             user : state.userReduser.user ? state.userReduser.user.payload : state.userReduser,
-            error: state.userReduser.user ?  state.userReduser.user.errors : state.userReduser 
+            error: state.userReduser.success ?   state.userReduser.success : {},
+            userId: state.userReduser.user ? state.userReduser.user.payload?state.userReduser.user.payload.id:state.userReduser.user.payload : state.userReduser.user
       };
+      
     }
     function mapDispatchToProps(dispatch) {
       return bindActionCreators(
           {
             request,
-            BooksInformation
+            BooksInformation,
+            logOut
           },
           dispatch
       );

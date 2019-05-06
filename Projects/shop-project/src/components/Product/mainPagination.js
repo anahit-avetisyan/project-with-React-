@@ -5,7 +5,7 @@ import {ChangePage} from '../../reducers/action';
 import Pagination from "react-js-pagination";
  
 
-  class PaginationExample extends Component {
+  class MainPagination extends Component {
     
     handlePageChange=(pageNumber)=> {
         return this.props.ChangePage(pageNumber);  
@@ -38,4 +38,4 @@ import Pagination from "react-js-pagination";
             dispatch
         );
     }
-export default connect(mapStateToProps,mapDispatchToProps)(PaginationExample);
+export default connect(mapStateToProps,mapDispatchToProps)(MainPagination);

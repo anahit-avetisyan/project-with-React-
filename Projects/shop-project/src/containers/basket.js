@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import {Table} from 'reactstrap';
 import ModalForOrder from '../components/Basket/modalForOrder';
-import NewRow from '../components/Basket/row'
+import TableBody from '../components/Basket/tableBody'
 import '../style/basket.scss';
  
 
@@ -22,7 +22,7 @@ class Basket extends Component{
                             <td>#</td>
                         </tr>
                     </thead>
-                    <NewRow/>
+                    <TableBody/>
                 </Table>
                 <ModalForOrder/>
             </div>

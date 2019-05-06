@@ -5,74 +5,33 @@ import Button from '../Product/button'
  
 
 class SignUp extends Component {
-    state={
-        name:"",
-        email:"",
-        password:"",
-        repassword:"",
-    }
 
-    functionForEmail=()=>{
-        let mailformat = /^(([^<>()/[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g;
-        if(mailformat.test(this.email.value)===false){
-            this.setState({email:"Please Input Right Format"})
-        } else {
-            this.setState({email:""})
-        }
-    } 
-    functionForPassword = () => {
-        let regpass = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;   
-        if(regpass.test(this.password.value)===false){
-            this.setState({password:"Please input correct format"})
-        }else{
-            this.setState({password:""})
-        }   
-    }
-    functionForRepeatPassword=()=>{
-        if(this.password.value!==this.repassword.value){
-          this.setState({repassword:"That password does not match.Try again"})  
-        } else {
-            this.setState({repassword:""})
-        }
-    }
-    
     myFunctionSignUp=()=>{
-        let regexpName =/[A-Z][a-zA-Z][^#&<>"~;$^%{}?]{1,6}$/;
-        let regpass = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/; 
-        let mailformat =/^(([^<>()/[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g
-        if(regexpName.test(this.name.value)&& mailformat.test(this.email.value)&& regpass.test(this.password.value)===true){
-            let  data={
-                name:this.name.value,
-                email:this.email.value,
-                password:this.password.value,    
-            }
-            let method="POST"
-            let url="http://books.test/api/register"
-            this.props.request(url,method,data)  
-        } else {
-            alert("Please fill all fileds Right Format")
-        } 
-        this.name.value=""
-        this.email.value=""
-        this.password.value=""
-        this.repassword.value=""   
-    }    
-    componentDidUpdate=(prevProps)=>{
-        if(this.props.state.userReduser.posts!==prevProps.state.userReduser.posts){
-            if(this.props.state.userReduser.posts===undefined){
-                this.refs.errorInput.textContent=null
-            }
-            else if(this.props.state.userReduser.posts!==undefined){
-                if(this.props.state.userReduser.posts.user.success===false){
-                    this.refs.errorInput.textContent=this.props.state.userReduser.posts.user.errors.email
-                }
-                else if(this.props.state.userReduser.posts.user.success===true){
-                    if(this.props.history!==undefined){
-                    return this.props.history.push('/products')
-                    }
-                }
-            }
+        let  signUpFormData = {
+            name : this.name.value,
+            email : this.email.value,
+            password : this.password.value,    
         }
+        this.props.request("http://books.test/api/register","POST",signUpFormData)  
+        
+    }    
+    componentDidUpdate = (prevProps) => {
+        if(this.props.error !== prevProps.error){
+            if(this.props.user){
+                 if(this.props.history !== undefined){
+                     return this.props.history.push('/products')
+                 }  
+            }else{   
+                //Checked and showed errors
+                 let emailError = this.props.error.email;
+                 let passwordError = this.props.error.password;
+                 let nameError = this.props.error.name
+                 this.refs.passwordError.textContent = passwordError ? passwordError : null;
+                 this.refs.emailError.textContent = emailError ? emailError : null;
+                 this.refs.nameError.textContent = nameError ? nameError : null;
+                  
+            }
+         }
 
     }
  
@@ -83,17 +42,36 @@ class SignUp extends Component {
                     <div className='popup_inner'>
                         <div id ="DivForSignUp"  >
                             <h2>Creat Account</h2>
-                            <form > 
-                                <input   type="text"   placeholder="Name"   ref={input=>this.name=input} />
-                                <p>{this.state.password}</p>
-                                <input onBlur={this.functionForEmail} type="mail" placeholder="Your Email"  ref={input=>this.email=input}/>
-                                <p ref="errorInput"></p>
-                                <input  onBlur={this.functionForPassword} type="password" placeholder="Password"  ref={input=>this.password=input}/>
-                                <p>{this.state.password}</p>
-                                <input onBlur={this.functionForRepeatPassword} type="password" placeholder="Repeat your password" className= "RepeatPassword" ref={input=>this.repassword=input}/>
-                                <p>{this.state.repassword}</p>
-                                <Button type="button" callback={this.myFunctionSignUp} name="CREAT ACCOUNT"/>   
-                                <p  id="footer">Have already an account? <b><a href="/registration/signIn" target = "_self"  > Login here </a> </b></p>
+                            <form >
+                                <input   
+                                    type="text"   
+                                    placeholder="Name"   
+                                    ref={input=>this.name=input} 
+                                />
+                                <p ref = "nameError"></p>
+                                <input   
+                                    type="mail" 
+                                    placeholder="Your Email"  
+                                    ref={input=>this.email=input}
+                                />
+                                <p ref="emailError"></p>
+                                <input   
+                                    type="password" 
+                                    placeholder="Password"  
+                                    ref={input=>this.password=input}
+                                />
+                                <p ref = "passwordError"></p>
+                                <input   
+                                    type="password" 
+                                    placeholder="Repeat your password" 
+                                    ref={input=>this.repassword=input}
+                                /> 
+                                <Button 
+                                    type="button" 
+                                    callback={this.myFunctionSignUp} 
+                                    name="CREAT ACCOUNT"
+                                />   
+                                <p  id = "footer" >Have already an account? <b><a href = "/registration/signIn" target = "_self"  > Login here </a> </b></p>
                             </form>
                         </div>
                     </div>
@@ -105,6 +83,8 @@ class SignUp extends Component {
     function mapStateToProps(state) {
         return {
             state,
+            user : state.userReduser.user ? state.userReduser.user.payload : state.userReduser,
+            error: state.userReduser.user ?  state.userReduser.user.errors : state.userReduser 
         };
     }
 export default connect(mapStateToProps,{request})(SignUp) ;

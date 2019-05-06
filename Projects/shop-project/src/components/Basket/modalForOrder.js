@@ -34,7 +34,7 @@ class ModalForOrder extends Component{
         fetch("http://books.test/api/create-order",{
             method:"POST",  
             headers: {"Content-Type": "application/json",
-            "Authorization" : `Bearer ${userInfo.posts.user.payload.token}`        },
+            "Authorization" : `Bearer ${userInfo.token}`        },
             body: JSON.stringify(dataOrder)
         })
             .then(res => res.json())
@@ -45,7 +45,7 @@ class ModalForOrder extends Component{
     }
     componentDidUpdate=(pevProps,prevState)=>{
         if(this.state.mainResponse!==prevState.mainResponse){
-            const booksInfo=this.props.state.booksInfoBasket;
+            const booksInfo=this.props.books;
             this.props.BooksInformation( ls.get('basket')  ? ls.get('basket') : {});
             Object.values(booksInfo).forEach((data,index) =>{
                 if(data.quantity===null){
@@ -56,15 +56,19 @@ class ModalForOrder extends Component{
                         ls.remove('basket')
                         this.setState({mainResponse:ls.get('basket')? ls.get('basket'):{}});
                         history.push('/orders')
-                    };
-                    return null;
+                    }else{
+                        let error =this.state.mainResponse.errors
+                        this.customerPhoneError.textContent = error.customer_phone ? error.customer_phone : null;
+                        this.customerAddressError.textContent = error.customer_address ? error.customer_address : null;
+                    }
+                
                 }
             })
         };
     }
     
     booksOrder=()=>{
-        const booksInfo=this.props.state.booksInfoBasket;
+        const booksInfo=this.props.books
         Object.values(booksInfo).forEach((data,index) =>{
             if(data.quantity===null){
                 alert("Order books quantity field is required. Please fill quantity") 
@@ -87,11 +91,11 @@ class ModalForOrder extends Component{
                     <ModalBody>
                         <form className="mainForForms">
                             <p>{this.error}</p>
-                            {this.state.mainResponse.success===undefined?null:this.state.mainResponse.success===false?<p>{this.state.mainResponse.errors.customer_phone}</p>:null}
+                             <p ref={el=>this.customerPhoneError=el}></p> 
                             <label>Phone Number: 
                                 <input ref={el=>this.phoneNumber=el} type="text"  ></input>
                             </label>
-                            {this.state.mainResponse.success===undefined?null:this.state.mainResponse.success===false?<p>{this.state.mainResponse.errors.customer_address}</p>:null}
+                             <p ref={el=>this.customerAddressError=el}></p>
                             <label>Address: 
                                 <input type="text" ref={el=>this.address=el}></input>
                             </label>
@@ -108,7 +112,8 @@ class ModalForOrder extends Component{
 }
     function mapStateToProps(state) { 
       return {
-          state
+          state,
+          books: state.booksInformation ? state.booksInformation:{}
       };
     }
 

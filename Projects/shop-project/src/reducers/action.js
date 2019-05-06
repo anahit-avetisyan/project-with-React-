@@ -36,7 +36,12 @@
             payload: error 
         }
     };
-
+    export function logOut(){
+        return{
+            type:"LOG_OUT",
+          
+        }
+    };
     export function ChangePage(page){
         return{
             type:"CHANGE_PAGE",

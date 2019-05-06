@@ -4,11 +4,6 @@ import { request } from '../../reducers/action';
 import Button from '../Product/button'
 
 class SignIn extends Component{
-    state={ 
-        email:"",
-        repassword:"",
-    }
-        
 
     closed=()=>{
         this.setState({closeSignIn:true})   
@@ -20,12 +15,12 @@ class SignIn extends Component{
                 if(this.props.history!==undefined){
                     return this.props.history.push('/products')
                 }  
-           }else{
-               console.log(this.props.error.password===undefined && this.props.error.email===undefined)
+           }else{   
                //Checked and showed errors
-                this.refs.errorInputMailError.textContent=this.props.error.password===undefined && this.props.error.email===undefined?"aaaa":null
-                this.refs.errorInputPasswordError.textContent=this.props.error.password ? this.props.error.password : null
-                this.refs.errorInputMailError.textContent=this.props.error.email ? this.props.error.email : null
+                let emailError = this.props.error.email;
+                let passwordError = this.props.error.password;
+                this.refs.errorInputPasswordError.textContent=passwordError ? passwordError : emailError === undefined ? this.props.error : null;
+                this.refs.errorInputMailError.textContent=emailError ? emailError :null
            }
         }
     }
@@ -38,7 +33,6 @@ class SignIn extends Component{
         }
         // Make a request to login endpoint with login form data :) 
         this.props.request("http://books.test/api/login" , "POST" , signInFormData);
-            
     }
              
         render(){
@@ -50,11 +44,17 @@ class SignIn extends Component{
                                 <form>
                                     <h2>LOGIN</h2>
                                     <p ref="errorInputMailError"></p>
-                                    <input onBlur={this.functionForMail} type="mail" placeholder="Your Email"   ref={input=>this.email=input}/>
-                                    <p >{this.state.email}</p>
+                                    <input 
+                                        type="mail"
+                                        placeholder="Your Email"   
+                                        ref={input=>this.email=input}
+                                    />
                                     <p ref="errorInputPasswordError"></p>
-                                    <input onBlur={this.functionForPassword}   type="password" placeholder="Password"  ref={input=>this.password=input}/>
-                                    <p>{this.state.password}</p>
+                                    <input    
+                                        type="password" 
+                                        placeholder="Password"  
+                                        ref={input=>this.password=input}
+                                    />
                                     <Button type="button" callback={this.signIn} name="LOG IN"/>
                                 </form>  
                             </div>
