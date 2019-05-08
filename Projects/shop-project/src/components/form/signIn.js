@@ -1,31 +1,24 @@
 import React,{Component} from 'react'
 import { connect } from "react-redux";
 import { request } from '../../reducers/action';
-import Button from '../Product/button'
+import Button from '../Product/button';
+import history from '../Header/history';
 
 class SignIn extends Component{
-    state={ 
-        email:"",
-        repassword:"",
-    }
-        
-
-    closed=()=>{
-        this.setState({closeSignIn:true})   
-    }
 
     componentDidUpdate=(prevProps)=>{  
-        if(this.props.error!==prevProps.error){
-           if(this.props.user){
-                if(this.props.history!==undefined){
-                    return this.props.history.push('/products')
-                }  
-           }else{
-               console.log(this.props.error.password===undefined && this.props.error.email===undefined)
+        const { error , userIsAuthenticatedInReduxStorage } = this.props;
+
+        if(error !== prevProps.error){
+           if(userIsAuthenticatedInReduxStorage){
+                return history.push('/products')
+         
+           }else{   
                //Checked and showed errors
-                this.refs.errorInputMailError.textContent=this.props.error.password===undefined && this.props.error.email===undefined?"aaaa":null
-                this.refs.errorInputPasswordError.textContent=this.props.error.password ? this.props.error.password : null
-                this.refs.errorInputMailError.textContent=this.props.error.email ? this.props.error.email : null
+                let emailError = error.email ? error.email : null;
+                let passwordError = error.password ? error.password : null;
+                this.refs.errorInputMailError.textContent=emailError;
+                this.refs.errorInputPasswordError.textContent=passwordError;
            }
         }
     }
@@ -38,7 +31,6 @@ class SignIn extends Component{
         }
         // Make a request to login endpoint with login form data :) 
         this.props.request("http://books.test/api/login" , "POST" , signInFormData);
-            
     }
              
         render(){
@@ -50,12 +42,14 @@ class SignIn extends Component{
                                 <form>
                                     <h2>LOGIN</h2>
                                     <p ref="errorInputMailError"></p>
-                                    <input onBlur={this.functionForMail} type="mail" placeholder="Your Email"   ref={input=>this.email=input}/>
-                                    <p >{this.state.email}</p>
+                                    <input type="mail" placeholder="Your Email" ref={input=>this.email=input} />
                                     <p ref="errorInputPasswordError"></p>
-                                    <input onBlur={this.functionForPassword}   type="password" placeholder="Password"  ref={input=>this.password=input}/>
-                                    <p>{this.state.password}</p>
-                                    <Button type="button" callback={this.signIn} name="LOG IN"/>
+                                    <input type="password" placeholder="Password" ref={input=>this.password=input} />
+                                    <Button 
+                                        type="button" 
+                                        callback={this.signIn} 
+                                        name="LOG IN"
+                                    />
                                 </form>  
                             </div>
                         </div>
@@ -67,9 +61,8 @@ class SignIn extends Component{
     function mapStateToProps(state) {
         return {
             state,
-            user : state.userReduser.user ? state.userReduser.user.payload : state.userReduser,
-            error: state.userReduser.user ?  state.userReduser.user.errors : state.userReduser 
-           
+            userIsAuthenticatedInReduxStorage : state.userReduser.user && state.userReduser.user.success === true ? true : false,
+            error: state.userReduser.user && state.userReduser.user.success === false ? state.userReduser.user.errors : {} 
         };
     }
     export default connect(mapStateToProps,{request})(SignIn) ;

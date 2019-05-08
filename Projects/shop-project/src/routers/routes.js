@@ -5,8 +5,7 @@ import Main from '../containers/main';
 import Header from '../containers/header';
 import SignIn from '../components/Form/signIn';
 import SignUp from '../components/Form/signUp';
-import PopUp from '../containers/form';
-import Order from '../components/Orders/orders';
+import Order from '../components/Orders/order';
 import history from '../components/Header/history';
 
  

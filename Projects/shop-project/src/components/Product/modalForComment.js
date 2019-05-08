@@ -9,18 +9,19 @@ class ModalForComment extends React.Component {
             modal: !prevState.modal
         }));
     }
-
+    reviews = this.props.reviews 
   render() {
+      const { reviews } = this.props;
       return (
         <div>
-            <Button color="secondary" onClick={this.toggle}>View the last Comments</Button>
+            <Button color="secondary" onClick={this.toggle}> View  Comments </Button>
             <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-                <ModalHeader toggle={this.toggle}>The last three comments</ModalHeader>
+                <ModalHeader toggle={this.toggle}> The last three comments </ModalHeader>
                     <ModalBody>
                         <ul>
-                            {this.props.reviews.map((data,index)=>{
+                            {reviews.map((data,index)=>{
                                 return(
-                                    <li key={index}>Name:  {data.user_name} <p>Comment: {data.comment}</p></li>
+                                    <li key = {index}> Name:  {data.user_name} <p> Comment: {data.comment}</p></li>
                                 )
                             })
                             }  

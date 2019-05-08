@@ -1,43 +1,45 @@
 import React,{Component,Fragment} from 'react';
 import ls from 'local-storage';
 import {Table} from 'reactstrap';
-
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import {request} from '../../reducers/action'
 class Order extends Component{
     state={
         data:{},
-        dataUser: ls.get("userData") ? ls.get("userData") : {},
+        userIsAuthenticatedInLocalStorage: ls.get('userData') && ls.get('userData').id ? ls.get('userData') : {},
         error:"",
-        receivedData:{},
         
     }
     _isMounted = false
+  
+    componentDidMount=()=>{
+        this._isMounted = true;
+        const {userIsAuthenticatedInLocalStorage}=this.state
+        const {userIsAuthenticatedInRedux} = this.props
+        if(userIsAuthenticatedInRedux){
+            fetch("http://books.test/api/ordered-book",{
+                method:"GET",  
+                headers:{"Content-Type": "application/json",
+                "Authorization" : `Bearer ${userIsAuthenticatedInLocalStorage.token}`}
+            })
+            .then(res => res.json())
+            .then(response => { 
+                return this._isMounted ? this.setState({data:response }):null;
+             
+            })
+            .catch(error =>  (error)); 
+        }else{
+            return null;
+        }
+    }
     componentDidUpdate=(prevProps,prevState)=>{
         if(this.state.data!==prevState.data){
             if(this.state.data.success===false){
               this.setState({error:this.state.data.payload})
             }else{
-                this.setState({receivedData:this.state.data.payload})    
+                return this.state.data  
             }
-        }
-    }
-    componentDidMount=()=>{
-        this._isMounted = true;
-        if(this.state.dataUser.posts===undefined){
-            alert ("please Log In");
-            return null;
-        } else{
-            const user=this.state.dataUser.posts.user.payload
-            fetch("http://books.test/api/ordered-book",{
-                method:"GET",  
-                headers:{"Content-Type": "application/json",
-                "Authorization" : `Bearer ${user.token}`}
-            })
-            .then(res => res.json())
-            .then(response => { 
-               return this._isMounted ? this.setState({data:response }):null;
-            })
-            .catch(error =>  ( error)); 
-          
         }
     }
     componentWillUnmount() {
@@ -45,18 +47,20 @@ class Order extends Component{
     }
  
     render(){
+        const {data} = this.state
+        const {userIsAuthenticatedInRedux} = this.props
         return(
             <div >
-                <p style={{color:"#DC3545",textAlign:'center'}}>{this.state.error}</p>
-                <p style={{color:"#DC3545",textAlign:'center'}}>  &hearts;  &hearts;  &hearts;  </p>
-                {this.state.receivedData[0]===undefined?null:Object.values(this.state.receivedData).map((data,index)=>{
+                <p style={{color:"#A63F5F",textAlign:'center'}}>{this.state.error}</p>
+                <p style={{color:"#A63F5F",textAlign:'center'}}>  &hearts;  &hearts;  &hearts;  </p>
+                {Object.keys(userIsAuthenticatedInRedux).length === 0 ? null : !data.payload ? null : Object.values(data.payload).map((dataOfOrders,index)=>{
                    this.totalSum=0;
                    return(                                       
                         <Fragment key={index} > 
                             <Table dark>
                                 <thead>
                                     <tr>
-                                        <td>Order's number  {data.order_id}</td>
+                                        <td>Order's number  {dataOfOrders.order_id}</td>
                                         <td>Product name</td>
                                         <td>Product quantity</td>
                                         <td>Product price</td>
@@ -65,7 +69,7 @@ class Order extends Component{
                                     </tr>
                                 </thead>
                                 <tbody>
-                                {Object.values(data.order_books).map((mainData,index)=>{
+                                {Object.values(dataOfOrders.order_books).map((mainData,index)=>{
                                     this.totalSum+=mainData.price * mainData.count
                                     return(
                                         <tr key={index} >
@@ -89,7 +93,7 @@ class Order extends Component{
                                         </tr>
                                 </tbody>
                             </Table>
-                                <p style={{color:"#DC3545",textAlign:'center'}}>  &hearts;  &hearts;  &hearts;  </p>
+                                <p style={{color:"#A63F5F",textAlign:'center'}}>  &hearts;  &hearts;  &hearts;  </p>
                         </Fragment> 
                     )
                 }) 
@@ -98,4 +102,18 @@ class Order extends Component{
         )
     }
 }
-export default Order;
+function mapStateToProps(state) {
+    return {
+        state,  
+        userIsAuthenticatedInRedux: state.user&& state.user.success === true ? state.user.payload : ls.get('userData') ? ls.get('userData') : {}        };
+};
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators(
+        {
+            request,
+        },
+        dispatch
+    );
+};
+
+export default connect(mapStateToProps,mapDispatchToProps)(Order);

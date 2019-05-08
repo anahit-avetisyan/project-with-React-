@@ -7,11 +7,11 @@
         height: 8em;
     }
     a{
-        color:#02007F
+        color:rgb(97, 12, 41);
     }
     .dropdown,.dropdown-toggle{
-       background-color:#02007F;
-       border:none;
+       background-color:#A63F5F;
+      
     }
     .header{
         display:flex;
@@ -20,12 +20,12 @@
         height: 7em;
         padding:2em;
         position: fixed;
-        background-color: #8750AD;
+        background-color: #A63F5F;
         h6{
             display: flex
         }
         p{
-            color: red ;
+            color: rgb(97, 12, 41);;
             margin-left:1em
         }
     }
@@ -34,7 +34,7 @@
         cursor: pointer;
     }
     .quantityOfitems{
-        color: red;
+        color: rgb(97, 12, 41);
         margin:0 1em
     }
     .combineLinks >*{
