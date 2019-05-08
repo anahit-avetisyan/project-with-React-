@@ -11,44 +11,54 @@ import Button from "../Product/button"
         basketData: ls.get("basket")? ls.get("basket") : {},
         booksData:{},
     };
-    
-    remove = (rowId) => {
-        const basketDataNew=ls.get("basket");
-        this.props.BooksInformation( ls.get("basket"));
-        Object.values(basketDataNew).forEach((objectKey, index)=> {
-            if(objectKey.id === rowId){
-                return   delete basketDataNew[rowId];
-            }  
-        });
-        ls.set("basket",basketDataNew);
-        this.setState({basketData:basketDataNew});
-        this.props.BooksInformation( ls.get('basket')  ? ls.get('basket') : {}); 
-    };
-
-    increment=(id)=>{
-        this.refs['valueInput' + id].value= parseInt(this.refs['valueInput' + id].value)+ 1;
-        const basketDataNew=ls.get("basket");
-        Object.values(basketDataNew).forEach((objectKey, index)=> {
-            if(objectKey.id === id){
-                if( this.refs['valueInput' + id].value===""){
-                    this.refs['valueInput' + id].value=1
-                    objectKey.quantity=1
-                }else{
-                    objectKey.quantity= this.refs['valueInput' + id].value;
-                }
-            }  
-           
-        });
-        ls.set("basket",basketDataNew);
-        this.setState({basketData:basketDataNew})
-        ls.get('basket')
-        this.props.BooksInformation( ls.get('basket')  ? ls.get('basket') : {}); 
+    componentDidMount=()=>{
+        let basket = ls.get('basket')? ls.get("basket") : {};
+        this.setState({basketData:basket}) ;
+        this.props.BooksInformation(basket);
+    }
+    componentDidUpdate = (prevProps,prevState) => {
+        if(this.state.basketData !== prevState.basketData){
+            let basket = ls.get('basket')? ls.get("basket") : {};
+            Object.values(basket).map((objectKey, index)=> 
+                this.refs['valueInput' + objectKey.id].value = objectKey.quantity
+            )
+        }
     }
     
-    decrement=(id)=>{
+    removeDataFromBasket = (rowId) => {
+        const newDataAfterRemoving=ls.get("basket");
+        Object.values(newDataAfterRemoving).forEach((objectKey, index) => {
+            if(objectKey.id === rowId){
+                delete newDataAfterRemoving[rowId];
+            }
+        });
+        ls.set("basket", newDataAfterRemoving);
+        this.setState({basketData : newDataAfterRemoving});
+        this.props.BooksInformation(newDataAfterRemoving)
+    };
+
+    increment = (id) => {
+        this.refs['valueInput' + id].value = parseInt(this.refs['valueInput' + id].value)+ 1;
+        const dataAfterIncrement = ls.get("basket");
+        Object.values(dataAfterIncrement).forEach((objectKey, index) => {
+            if(objectKey.id === id){
+                if( this.refs['valueInput' + id].value === ""){
+                    this.refs['valueInput' + id].value = 1
+                    objectKey.quantity = 1
+                }else{
+                    objectKey.quantity = this.refs['valueInput' + id].value;
+                }
+            }   
+        });
+        ls.set("basket",dataAfterIncrement);
+        this.setState({basketData : dataAfterIncrement})
+        this.props.BooksInformation( dataAfterIncrement); 
+    }
+    
+    decrement = (id) => {
         this.refs['valueInput' + id].value= parseInt(this.refs['valueInput' + id].value)- 1;
-        const basketDataNew=ls.get("basket");
-        Object.values(basketDataNew).forEach((objectKey, index)=> {
+        const dataAfterDecrement=ls.get("basket");
+        Object.values(dataAfterDecrement).forEach((objectKey, index)=> {
             if(objectKey.id === id){
                 if(this.refs['valueInput' + id].value<=0){
                     this.refs['valueInput' + id].value=1
@@ -58,43 +68,38 @@ import Button from "../Product/button"
                 }
             };
         });
-        ls.set("basket",basketDataNew);
-        this.setState({basketData:basketDataNew})
+        ls.set("basket",dataAfterDecrement);
+        this.setState({basketData : dataAfterDecrement})
         ls.get('basket')  
-        this.props.BooksInformation( ls.get('basket')  ? ls.get('basket') : {});  
+        this.props.BooksInformation(dataAfterDecrement);  
     };
     
-    valuesForBasket=()=>{
-        let basket=ls.get('basket')? ls.get("basket") : {}
-        Object.values(basket).forEach((objectKey, index)=> {
+    handleChangeQuantity = () => {
+        let dataAfterHandleChange=ls.get('basket')? ls.get("basket") : {}
+        Object.values(dataAfterHandleChange).forEach((objectKey, index)=> {
             objectKey.quantity=parseInt(this.refs['valueInput' + objectKey.id].value)
                 if(objectKey.quantity<=0){
                     alert("please fill positive number");
                     objectKey.quantity=1
-                    this.refs['valueInput' + objectKey.id].value=1;
-                }
+                    this.refs['valueInput' + objectKey.id].value = 1;
+                } 
             }); 
-        ls.set("basket",basket)
-        this.setState({basketData:basket}) 
+        ls.set("basket",dataAfterHandleChange)
+        this.setState({basketData:dataAfterHandleChange}) 
         ls.get('basket');
-        this.props.BooksInformation( ls.get('basket')  ? ls.get('basket') : {}); 
+        this.props.BooksInformation( dataAfterHandleChange); 
          
      }
+    
+
      
-    componentDidMount=()=>{
-        let basket=ls.get('basket')? ls.get("basket") : {};
-        Object.values(basket).map((objectKey, index)=> 
-        this.refs['valueInput' + objectKey.id].value=objectKey.quantity
-        )
-        this.setState({basketData: ls.get("basket")? ls.get("basket") : {}}) ;
-        this.props.BooksInformation( ls.get('basket')  ? ls.get('basket') : {});
-    }
-     render(){
-         console.log(this.props,"table")
-         return(
+    render(){
+        const {chosenBooks} = this.props;
+        return(
             <Fragment>
                 <tbody>
-                    {Object.values(ls.get('basket') ? ls.get('basket') : {}).map((data,index) => {          
+                   
+                    {Object.values(chosenBooks).map((data,index) => {          
                         return( 
                             <tr key={index}>  
                                 <th  scope="row" onClick={this.onClick}
@@ -105,11 +110,11 @@ import Button from "../Product/button"
                                 <td>{data.price}</td> 
                                 <td> 
                                     <Button callback={()=>this.decrement(data.id)} name="-"/>
-                                        <input ref={`valueInput${data.id}`}   onChange={this.valuesForBasket } className="inputForQuantity"    type="number" /> 
+                                        <input ref={`valueInput${data.id}`}    onChange={this.handleChangeQuantity } className="inputForQuantity"    type="number"/>  
                                     <Button callback={()=>this.increment(data.id)} name="+"/>
                                 </td>
                                 <td>{data.price*data.quantity }</td>
-                                <td><IoIosClose onClick={() => this.remove(data.id)}/> </td>
+                                <td><IoIosClose onClick={() => this.removeDataFromBasket(data.id)}/> </td>
                             </tr>   
                         )
                     })
@@ -119,21 +124,22 @@ import Button from "../Product/button"
          )
      }
  }
-    function mapStateToProps(state) {
+ function mapStateToProps(state) {
     
-        return {
-            state
-        };
-    }
+    return {
+        state,
+        chosenBooks: Object.keys(state.booksInformation) !==0 ? state.booksInformation : ls.get('basket') 
+    };
+}
 
-    function mapDispatchToProps(dispatch) {
-        return bindActionCreators(
-            {
-                BooksInformation
-            },
-            dispatch
-        );
-    }   
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators(
+        {
+            BooksInformation
+        },
+        dispatch
+    );
+}      
             
   export default connect(mapStateToProps,mapDispatchToProps)(TableBody)
  

@@ -7,7 +7,7 @@ import Pagination from "react-js-pagination";
 
   class MainPagination extends Component {
     
-    handlePageChange=(pageNumber)=> {
+    handlePageChange = (pageNumber) => {
         return this.props.ChangePage(pageNumber);  
     }
     render() {
@@ -15,11 +15,11 @@ import Pagination from "react-js-pagination";
       return (
           <div>
               <Pagination
-                activePage={this.props.state.paginationPage}
-                itemsCountPerPage={2}
-                totalItemsCount={450}
-                pageRangeDisplayed={5}
-                onChange={this.handlePageChange}
+                activePage = {this.props.state.paginationPage}
+                itemsCountPerPage = {2}
+                totalItemsCount = {450}
+                pageRangeDisplayed = {5}
+                onChange = {this.handlePageChange}
               />
           </div>
       );
@@ -27,7 +27,7 @@ import Pagination from "react-js-pagination";
   }
     function mapStateToProps(state) {
       return {
-      state
+        state,
       };
     }
     function mapDispatchToProps(dispatch) {

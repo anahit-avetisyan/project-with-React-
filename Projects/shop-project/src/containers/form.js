@@ -9,40 +9,49 @@ import {request,BooksInformation,logOut} from '../reducers/action';
 import { bindActionCreators } from "redux"; 
 import ls from 'local-storage';
 import Button from '../components/Product/button'
+
 class Form extends Component {
-   
-    state={
-      signIn:true,
-      signUp:true,
-      dataUser: ls.get("userData") ? ls.get("userData") : {},
-      
+  
+    state = {
+      signIn : true,
+      signUp : true,
+      userIsAuthenticatedInLocalStorage : ls.get('userData') && ls.get('userData').id ? true : false
     }
-    dataUser=ls.get("userData") ? ls.get("userData") : {}
-    signIn=()=>{
+   
+    signIn = () => {
         this.setState({signIn:false});
         this.setState({signUp:true});
     }
-    signUp=()=>{
+    signUp = () => {
         this.setState({signIn:true});
         this.setState({signUp:false});
     }
-     initialState = {}
-    logOut=()=>{  
+
+    logOut = () => {
+        let authUserData = ls.get('userData');
+
         let header={
-          "Authorization" : `Bearer ${this.props.user.token}`
+          "Authorization" : `Bearer ${authUserData.token}`
         };
         this.props.request("http://books.test/api/logout",header);
+
         ls.clear();
-        this.setState({dataUser:{}});
+
+        this.setState({userIsAuthenticatedInLocalStorage : false});
+
         this.props.logOut();
-        this.props.BooksInformation( ls.get('basket')  ? ls.get('basket') : {});
-        
+        this.props.BooksInformation({}); 
     }
     
     render(){
+        
+        const { userIsAuthenticatedInReduxStorage } = this.props; 
+        const { userIsAuthenticatedInLocalStorage } = this.state;
+            
         return(
             <div className='formContainer'>
-                {this.props.error===false ||(this.state.dataUser.id===undefined && this.props.userId===undefined)?<div className="divForMainButtons">
+                {userIsAuthenticatedInReduxStorage === false && userIsAuthenticatedInLocalStorage === false ?
+                <div className="divForMainButtons">
                     <Link to="/signIn"> 
                         <span onClick={this.signIn} className="mainButtonSignIn"> SIGN IN </span>
                     </Link>
@@ -67,9 +76,7 @@ class Form extends Component {
     function mapStateToProps(state) {
         return {
             state,
-            user : state.userReduser.user ? state.userReduser.user.payload : state.userReduser,
-            error: state.userReduser.success ?   state.userReduser.success : {},
-            userId: state.userReduser.user ? state.userReduser.user.payload?state.userReduser.user.payload.id:state.userReduser.user.payload : state.userReduser.user
+            userIsAuthenticatedInReduxStorage : state.userReduser.user ? true : false,
       };
       
     }
