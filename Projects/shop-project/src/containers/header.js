@@ -1,7 +1,6 @@
 import React,{Component,Fragment} from 'react'
 import '../style/header.scss'
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux"
 import {BooksInformation} from '../reducers/action'
 import DropDownList from '../components/Header/dropDownList'
 import Links from '../components/Header/links'
@@ -19,17 +18,18 @@ class Header extends Component {
         
     }
     render(){
+        const {orderBooks} = this.props
         return(
             <div className="wrapper">
                 <div className="header">
                     <Links/> 
                     <Form/> 
-                    {Object.keys(this.props.orderBooks).length === 0 ? null:
+                    {Object.keys(orderBooks).length === 0 ? null:
                     <Fragment>
                     <span className="quantityOfitems">
-                        {Object.keys(this.props.orderBooks).length}
+                        {Object.keys(orderBooks).length}
                     </span>
-                    <DropDownList booksData={this.props.orderBooks}/>
+                    <DropDownList booksData={orderBooks}/>
                     </Fragment>
                     }
                 </div>
@@ -45,14 +45,6 @@ function mapStateToProps(state) {
         orderBooks: state.booksInformation 
     };
 }
-
-function mapDispatchToProps(dispatch) {
-    return bindActionCreators(
-        {
-            BooksInformation
-        },
-        dispatch
-    );
-}    
-export default connect(mapStateToProps,mapDispatchToProps)(Header);
+   
+export default connect(mapStateToProps,{BooksInformation})(Header);
  

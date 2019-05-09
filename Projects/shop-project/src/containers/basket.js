@@ -7,7 +7,7 @@ import '../style/basket.scss';
 
 class Basket extends Component{
   
-    render(){   
+    render(){  
         return(
             <div >
                 <p style={{color:"#DC3545",textAlign:'center'}}>  &hearts;  &hearts;  &hearts;  </p>

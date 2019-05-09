@@ -15,7 +15,8 @@
                 background-color:rgba(255, 255, 255, 0.938);
                 margin-right:2em;
                 border: 0.1em solid gray;
-                padding:0 1em
+                padding:0 1em;
+                cursor: pointer;
             }
     }
     .divForMainButtons {
@@ -73,6 +74,7 @@
     #DivForSignUp{
         text-align: center;
         padding-top: 1em;
+        transform: translateY(20%);
         form{
             width: 100%;
             @extend %message-shared;

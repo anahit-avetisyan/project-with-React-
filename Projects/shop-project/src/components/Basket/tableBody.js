@@ -22,7 +22,10 @@ import Button from "../Product/button"
             Object.values(basket).map((objectKey, index)=> 
                 this.refs['valueInput' + objectKey.id].value = objectKey.quantity
             )
+            ls.get('basket');
+            this.props.BooksInformation(basket);
         }
+      
     }
     
     removeDataFromBasket = (rowId) => {
@@ -34,6 +37,7 @@ import Button from "../Product/button"
         });
         ls.set("basket", newDataAfterRemoving);
         this.setState({basketData : newDataAfterRemoving});
+        ls.get('basket');
         this.props.BooksInformation(newDataAfterRemoving)
     };
 
@@ -51,7 +55,7 @@ import Button from "../Product/button"
             }   
         });
         ls.set("basket",dataAfterIncrement);
-        this.setState({basketData : dataAfterIncrement})
+        this.setState({basketData : ls.get('basket')})
         this.props.BooksInformation( dataAfterIncrement); 
     }
     
@@ -66,7 +70,7 @@ import Button from "../Product/button"
                 } else {
                     objectKey.quantity= this.refs['valueInput' + id].value;
                 }
-            };
+            }
         });
         ls.set("basket",dataAfterDecrement);
         this.setState({basketData : dataAfterDecrement})
@@ -75,25 +79,27 @@ import Button from "../Product/button"
     };
     
     handleChangeQuantity = () => {
-        let dataAfterHandleChange=ls.get('basket')? ls.get("basket") : {}
-        Object.values(dataAfterHandleChange).forEach((objectKey, index)=> {
-            objectKey.quantity=parseInt(this.refs['valueInput' + objectKey.id].value)
-                if(objectKey.quantity<=0){
+        let {chosenBooks} =  this.props
+        Object.values(chosenBooks).forEach((objectKey, index)=> {
+            objectKey.quantity = parseInt(this.refs['valueInput' + objectKey.id].value)
+                if(objectKey.quantity <= 0 ){
                     alert("please fill positive number");
                     objectKey.quantity=1
                     this.refs['valueInput' + objectKey.id].value = 1;
-                } 
+                }
+               
             }); 
-        ls.set("basket",dataAfterHandleChange)
-        this.setState({basketData:dataAfterHandleChange}) 
+        ls.set("basket",chosenBooks)
+        this.setState({basketData:chosenBooks}) 
         ls.get('basket');
-        this.props.BooksInformation( dataAfterHandleChange); 
+        this.props.BooksInformation( chosenBooks); 
          
-     }
+    }
     
 
      
     render(){
+       
         const {chosenBooks} = this.props;
         return(
             <Fragment>
@@ -101,9 +107,9 @@ import Button from "../Product/button"
                    
                     {Object.values(chosenBooks).map((data,index) => {          
                         return( 
-                            <tr key={index}>  
-                                <th  scope="row" onClick={this.onClick}
-                                style={{
+                            <tr key = {index}>  
+                                <th  scope = "row" onClick={this.onClick}
+                                style = {{
                                 textDecoration: this.completed ? 'line-through' : 'none'
                                 }}>{index+1}</th>
                                 <td>{data.name}</td>
@@ -113,7 +119,7 @@ import Button from "../Product/button"
                                         <input ref={`valueInput${data.id}`}    onChange={this.handleChangeQuantity } className="inputForQuantity"    type="number"/>  
                                     <Button callback={()=>this.increment(data.id)} name="+"/>
                                 </td>
-                                <td>{data.price*data.quantity }</td>
+                                <td>{isNaN(data.quantity) ? 0 : data.price * data.quantity }</td>
                                 <td><IoIosClose onClick={() => this.removeDataFromBasket(data.id)}/> </td>
                             </tr>   
                         )
@@ -128,7 +134,7 @@ import Button from "../Product/button"
     
     return {
         state,
-        chosenBooks: Object.keys(state.booksInformation) !==0 ? state.booksInformation : ls.get('basket') 
+        chosenBooks: Object.keys(state.booksInformation) !==0 ? state.booksInformation : ls.get('basket') ? ls.get('basket') : {} 
     };
 }
 

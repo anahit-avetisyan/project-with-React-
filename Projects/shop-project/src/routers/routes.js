@@ -15,10 +15,10 @@ class Routing extends Component {
             <div className="App">
                 <Router history={history}>
                     <Route path='/' component={Header}/>
-                    <Route path='/myBasket'  component={Basket}/>
+                    <Route path='/products' component={Main}/>
                     <Route path='/signIn' component={SignIn}/>
                     <Route path='/signUp' component={SignUp}/>
-                    <Route path='/products' component={Main}/>
+                    <Route path='/myBasket'  component={Basket}/>
                     <Route path='/orders' component={Order}/>
                 </Router>  
             </div>

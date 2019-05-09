@@ -53,7 +53,7 @@ class Order extends Component{
             <div >
                 <p style={{color:"#A63F5F",textAlign:'center'}}>{this.state.error}</p>
                 <p style={{color:"#A63F5F",textAlign:'center'}}>  &hearts;  &hearts;  &hearts;  </p>
-                {Object.keys(userIsAuthenticatedInRedux).length === 0 ? null : !data.payload ? null : Object.values(data.payload).map((dataOfOrders,index)=>{
+                {Object.keys(userIsAuthenticatedInRedux).length === 0 ? null : Object.keys(data).length === 0 || data.success === false? null : Object.values(data.payload).map((dataOfOrders,index)=>{
                    this.totalSum=0;
                    return(                                       
                         <Fragment key={index} > 
@@ -69,7 +69,7 @@ class Order extends Component{
                                     </tr>
                                 </thead>
                                 <tbody>
-                                {Object.values(dataOfOrders.order_books).map((mainData,index)=>{
+                                {!dataOfOrders ? null : Object.values(dataOfOrders.order_books).map((mainData,index)=>{
                                     this.totalSum+=mainData.price * mainData.count
                                     return(
                                         <tr key={index} >
@@ -105,7 +105,8 @@ class Order extends Component{
 function mapStateToProps(state) {
     return {
         state,  
-        userIsAuthenticatedInRedux: state.user&& state.user.success === true ? state.user.payload : ls.get('userData') ? ls.get('userData') : {}        };
+        userIsAuthenticatedInRedux: state.user&& state.user.success === true ? state.user.payload : ls.get('userData') ? ls.get('userData') : {}        
+    };
 };
 function mapDispatchToProps(dispatch) {
     return bindActionCreators(

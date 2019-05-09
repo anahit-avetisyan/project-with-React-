@@ -1,30 +1,23 @@
  
 import React, { Component} from 'react';
-import SignIn from '../components/Form/signIn';
-import SignUp from '../components/Form/signUp';
-import '../style/form.scss'
-import {Link} from 'react-router-dom';
+import '../style/form.scss';
 import { connect } from "react-redux";
 import {request,BooksInformation,logOut} from '../reducers/action';
 import { bindActionCreators } from "redux"; 
 import ls from 'local-storage';
 import Button from '../components/Product/button'
+import history from '../components/Header/history'
 
 class Form extends Component {
   
     state = {
-      signIn : true,
-      signUp : true,
-      userIsAuthenticatedInLocalStorage : ls.get('userData') && ls.get('userData').id ? true : false
+        userIsAuthenticatedInLocalStorage : ls.get('userData') && ls.get('userData').id ? true : false
     }
-   
     signIn = () => {
-        this.setState({signIn:false});
-        this.setState({signUp:true});
+        history.push('/signIn')
     }
-    signUp = () => {
-        this.setState({signIn:true});
-        this.setState({signUp:false});
+    signUp = () => {  
+        history.push('/signUp')
     }
 
     logOut = () => {
@@ -36,15 +29,14 @@ class Form extends Component {
         this.props.request("http://books.test/api/logout",header);
 
         ls.clear();
-
         this.setState({userIsAuthenticatedInLocalStorage : false});
 
         this.props.logOut();
+
         this.props.BooksInformation({}); 
     }
     
     render(){
-        
         const { userIsAuthenticatedInReduxStorage } = this.props; 
         const { userIsAuthenticatedInLocalStorage } = this.state;
             
@@ -52,23 +44,23 @@ class Form extends Component {
             <div className='formContainer'>
                 {userIsAuthenticatedInReduxStorage === false && userIsAuthenticatedInLocalStorage === false ?
                 <div className="divForMainButtons">
-                    <Link to="/signIn"> 
-                        <span onClick={this.signIn} className="mainButtonSignIn"> SIGN IN </span>
-                    </Link>
-                    <Link to='/signUp'> 
-                        <span onClick={this.signUp} className="mainButtonSignUP"> SIGN UP </span>
-                    </Link> 
+                    <Button 
+                        name="SIGN IN" 
+                        className="mainButtonSignIn"    
+                        callback={this.signIn}
+                    /> 
+                     <Button 
+                        name="SIGN UP" 
+                        className="mainButtonSignUp"    
+                        callback={this.signUp}
+                    />   
                 </div>:
                     <Button 
                         name="Log Out" 
                         className="buttonLogOut"    
                         callback={this.logOut}
-                    />
+                    /> 
                 }
-                <div className="DivForForms">
-                    {this.state.signIn? null: <SignIn/>}
-                    {this.state.signUp? null: <SignUp/>}
-                </div> 
             </div> 
         )
     }
