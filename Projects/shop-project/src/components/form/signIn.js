@@ -1,17 +1,24 @@
-import React,{Component} from 'react'
+import React,{Component, Fragment} from 'react'
 import { connect } from "react-redux";
 import { request } from '../../reducers/action';
 import Button from '../Product/button';
 import history from '../Header/history';
+import { bindActionCreators } from "redux";
 
 class SignIn extends Component{
 
+    state ={
+        deleteSignIn : false
+    }
     componentDidUpdate=(prevProps)=>{  
         const { error , userIsAuthenticatedInReduxStorage } = this.props;
-
         if(error !== prevProps.error){
            if(userIsAuthenticatedInReduxStorage){
-                return history.push('/products')
+                history.push('/products')
+                if(history.push('/products')){
+                    this.setState({deleteSignIn : true})
+                }
+             
          
            }else{   
                //Checked and showed errors
@@ -22,9 +29,8 @@ class SignIn extends Component{
            }
         }
     }
-
+    
     signIn=()=>{
-         
         let signInFormData={
                 email:this.email.value,
                 password:this.password.value,    
@@ -35,8 +41,8 @@ class SignIn extends Component{
              
         render(){
             return(
-                <React.Fragment>
-                    <div className='popup'>
+                <Fragment>
+                    {this.deleteSignIn ? null : <div className='popup'>
                         <div className='popup_inner'>
                             <div id ="DivForSignIn" >
                                 <form>
@@ -54,15 +60,26 @@ class SignIn extends Component{
                             </div>
                         </div>
                     </div> 
-                </React.Fragment>
+                    }
+                </Fragment>
             )  
         }
     }
     function mapStateToProps(state) {
+        console.log(state.userReduser)
         return {
+           
             state,
             userIsAuthenticatedInReduxStorage : state.userReduser.user && state.userReduser.user.success === true ? true : false,
             error: state.userReduser.user && state.userReduser.user.success === false ? state.userReduser.user.errors : {} 
         };
     }
-    export default connect(mapStateToProps,{request})(SignIn) ;
+    function mapDispatchToProps(dispatch) {
+        return bindActionCreators(
+            {
+                request,
+            },
+            dispatch
+        );
+    };
+    export default connect(mapStateToProps, mapDispatchToProps)(SignIn) ;

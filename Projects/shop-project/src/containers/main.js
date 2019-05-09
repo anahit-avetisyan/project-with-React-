@@ -23,7 +23,7 @@ class Main extends Component{
     _isMounted = false
 
     componentDidMount=()=>{
-
+        this.setState({rating: 5})
         this._isMounted = true;
         this.props.BooksInformation( ls.get('basket')  ? ls.get('basket') : {});
 
@@ -130,6 +130,7 @@ class Main extends Component{
  
     render(){
         const { booksData } = this.state;  
+        console.log(this.state)
         return(
             <Fragment>
             
@@ -141,10 +142,8 @@ class Main extends Component{
                             return( 
                                 <div key={index} className="productData">
                                     <img src={`http://${data.image}`} alt="img"  />
-                                    <span>Name:</span>
-                                    <p ref={`name${data.id}`} > {data.name} </p>
-                                    <span>Price:</span>
-                                    <p ref={`price${data.id}`}> {data.price} </p>
+                                    <span>Name: {data.name}</span>
+                                    <span>Price: {data.price}</span>
                                     <input defaultValue="1" type="number" ref={`input${data.id}`}   />
                                     <Button   
                                         callback={()=>this.addToBasket(data.id)} 
@@ -155,9 +154,8 @@ class Main extends Component{
                                         mainId={this.state.id} 
                                         responseData={this.state.responseForComment}
                                     />
-                                    <p ref = {`comment${this.props.refId}`} className='fieldForResponse'></p>
-                                    <p ref = {`rating${this.props.refId}`} className='fieldForResponse'></p>
                                     <StarRatings
+                                        starDimension="30px"
                                         rating={this.state.rating['rating'+data.id]}
                                         starRatedColor="#A63F5F"
                                         starHoverColor="#A63F5F"
@@ -165,7 +163,9 @@ class Main extends Component{
                                         numberOfStars={5}
                                         name={`rating${data.id}`}
                                     />
-                                    <span>Average Rate "{data.average_rating}"</span>
+                                    <span>
+                                        Average Rate "{data.average_rating}" 
+                                    </span>
                                     <textarea ref={`textInput${data.id}`} rows="4" placeholder="Please leave comments" cols="50"></textarea>
                                     <div className="divForButtons">
                                         <Button 

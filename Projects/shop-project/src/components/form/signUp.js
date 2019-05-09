@@ -18,7 +18,7 @@ class SignUp extends Component {
     componentDidUpdate = (prevProps) => {
 
         const {error , userIsAuthenticatedInReduxStorage} = this.props;
-
+     
         if(error !== prevProps.error){
             if(userIsAuthenticatedInReduxStorage){
                 return history.push('/products')  
