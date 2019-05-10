@@ -66,7 +66,6 @@ class SignIn extends Component{
         }
     }
     function mapStateToProps(state) {
-        console.log(state.userReduser)
         return {
            
             state,

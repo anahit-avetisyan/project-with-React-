@@ -130,7 +130,6 @@ class Main extends Component{
  
     render(){
         const { booksData } = this.state;  
-        console.log(this.state)
         return(
             <Fragment>
             
@@ -142,8 +141,10 @@ class Main extends Component{
                             return( 
                                 <div key={index} className="productData">
                                     <img src={`http://${data.image}`} alt="img"  />
-                                    <span>Name: {data.name}</span>
-                                    <span>Price: {data.price}</span>
+                                    <span>Name:</span>
+                                    <p ref={`name${data.id}`} >{data.name}</p>
+                                    <span>Price:</span>
+                                    <p ref={`price${data.id}`} >{data.price}</p>
                                     <input defaultValue="1" type="number" ref={`input${data.id}`}   />
                                     <Button   
                                         callback={()=>this.addToBasket(data.id)} 
@@ -191,7 +192,7 @@ class Main extends Component{
         state,  
         };
     };
-    function mapDispatchToProps(dispatch) {
+    function mapDispatchToProps(dispatch) { 
         return bindActionCreators(
             {
                 BooksInformation,
