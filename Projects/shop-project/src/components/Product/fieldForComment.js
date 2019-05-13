@@ -17,6 +17,10 @@ class FieldForComment extends Component {
             }
             else if (responseData.success === true && Object.keys(responseData).length !== 0){
                 alert ("Your comment has sent")
+                if(this.props.mainId === this.props.refId ){
+                this.refs['comment'+ id].textContent = ""
+                this.refs['rating'+ id].textContent = ""
+                }
             } 
         }              
     }

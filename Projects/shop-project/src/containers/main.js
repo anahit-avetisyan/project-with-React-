@@ -22,31 +22,31 @@ class Main extends Component{
 
     _isMounted = false
 
-    componentDidMount=()=>{
+    componentDidMount = () => {
         this.setState({rating: 5})
         this._isMounted = true;
         this.props.BooksInformation( ls.get('basket')  ? ls.get('basket') : {});
 
         fetch(`http://books.test/api/books?page=1`)
             .then(response => response.json())
-            .then(response=> {
+            .then(response => {
                 return this._isMounted ? this.setState({ booksData : response.payload }) : false;
             })
             .catch(error => (error));
     };
 
-    componentDidUpdate=(prevProps,prevState)=>{
+    componentDidUpdate = (prevProps,prevState) => {
         
         if (this.props.state.paginationPage !== prevProps.state.paginationPage ) {
             fetch(`http://books.test/api/books?page=${this.props.state.paginationPage}`)
                 .then(response => response.json())
-                .then(response=> 
+                .then(response => 
                     this.setState({ booksData : response.payload }) 
                 )
                 .catch(error =>  ( error));     
         }
-        else if(this.state.dataUser!==prevState.dataUser.user){
-            let userInformation= ls.get("userData") ? ls.get("userData") : {}
+        else if(this.state.dataUser !== prevState.dataUser.user){
+            let userInformation = ls.get("userData") ? ls.get("userData") : {}
             this.refs.userName.textContent = userInformation.name ? `User Name: ${userInformation.name}` : this.name
             
         }
@@ -99,17 +99,17 @@ class Main extends Component{
     
     };
     // create a comment / review
-    createCommentAndReview=(id)=>{
-        this.setState({id:id})
-        let commentRatingData={
-            book_id: id,
-            comment: this.refs['textInput' + id].value,
-            rating: this.state.rating['rating' +id] 
+    createCommentAndReview = (id) => {
+        this.setState({id : id})
+        let commentRatingData = {
+            book_id : id,
+            comment : this.refs['textInput' + id].value,
+            rating : this.state.rating['rating' +id] 
         }
         if(!this.state.dataUser.id){
             alert ("please Log In ");
         } else {
-           let user=this.state.dataUser
+           let user = this.state.dataUser
             fetch("http://books.test/api/book-rating",{
                 method:"POST",  
                 headers: {"Content-Type": "application/json",
@@ -130,58 +130,59 @@ class Main extends Component{
  
     render(){
         const { booksData } = this.state;  
+
         return(
             <Fragment>
             
-            <div  className="wrapper" >
+            <div  className = "wrapper" >
                  <p ref = "userName">  </p>
                     <h1>ONLINE BOOK-SHOP</h1>
-                    <div className="main">  
+                    <div className = "main">  
                         {Object.values(booksData).map((data,index) => {         
                             return( 
-                                <div key={index} className="productData">
-                                    <img src={`http://${data.image}`} alt="img"  />
+                                <div key = {index} className="productData">
+                                    <img src = {`http://${data.image}`} alt = "img"  />
                                     <span>Name:</span>
-                                    <p ref={`name${data.id}`} >{data.name}</p>
+                                    <p ref = {`name${data.id}`} >{data.name}</p>
                                     <span>Price:</span>
-                                    <p ref={`price${data.id}`} >{data.price}</p>
-                                    <input defaultValue="1" type="number" ref={`input${data.id}`}   />
+                                    <p ref = {`price${data.id}`} >{data.price}</p>
+                                    <input defaultValue = "1" type = "number" ref = {`input${data.id}`}   />
                                     <Button   
-                                        callback={()=>this.addToBasket(data.id)} 
+                                        callback = {() => this.addToBasket(data.id)} 
                                         name="ADD TO BASKET"
                                     />
                                     <FieldForComment 
-                                        refId={data.id} 
-                                        mainId={this.state.id} 
-                                        responseData={this.state.responseForComment}
+                                        refId = {data.id} 
+                                        mainId = {this.state.id} 
+                                        responseData = {this.state.responseForComment}
                                     />
                                     <StarRatings
-                                        starDimension="30px"
-                                        rating={this.state.rating['rating'+data.id]}
-                                        starRatedColor="#A63F5F"
-                                        starHoverColor="#A63F5F"
-                                        changeRating={this.changeRating}
-                                        numberOfStars={5}
-                                        name={`rating${data.id}`}
+                                        starDimension = "30px"
+                                        rating = {this.state.rating['rating'+data.id]}
+                                        starRatedColor = "#A63F5F"
+                                        starHoverColor = "#A63F5F"
+                                        changeRating = {this.changeRating}
+                                        numberOfStars = {5}
+                                        name = {`rating${data.id}`}
                                     />
                                     <span>
                                         Average Rate "{data.average_rating}" 
                                     </span>
-                                    <textarea ref={`textInput${data.id}`} rows="4" placeholder="Please leave comments" cols="50"></textarea>
-                                    <div className="divForButtons">
+                                    <textarea ref = {`textInput${data.id}`} rows = "4" placeholder = "Please leave comments" cols = "50"></textarea>
+                                    <div className = "divForButtons">
                                         <Button 
-                                            callback={()=>this.createCommentAndReview(data.id)}  
-                                            className="buttonForComment" 
-                                            name="Send Comment"
+                                            callback = {() => this.createCommentAndReview(data.id)}  
+                                            className = "buttonForComment" 
+                                            name = "Send Comment"
                                         />
-                                        <ModalForComment reviews={data.reviews} />
+                                        <ModalForComment reviews = {data.reviews} />
                                     </div>
                                 </div>
                                 );
                             })
                             }
                         </div>
-                    <Pagination  className="pagination" />
+                    <Pagination  className = "pagination" />
                 </div> 
                 </Fragment> 
                 )

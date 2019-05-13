@@ -29,13 +29,13 @@ class ModalForOrder extends Component{
         };
     }
 
-    toggle=() =>{
+    toggle = () => {
         this.setState(prevState => ({
           modal: !prevState.modal
         }));
     }
     
-    createOrder=()=>{
+    createOrder = () => {
         let userInformationFromLocalStorage = ls.get('userData');
         let chosenBooksFromLocalStorage = ls.get('basket')?ls.get('basket'):{}; 
         let dataForMakingOrder = {
@@ -61,10 +61,11 @@ class ModalForOrder extends Component{
             .catch(error =>  ( error)); 
     }
    //checked if user chose product
-    booksOrder=()=>{
+    booksOrder = () => {
         const { chosenBooksForOrder } = this.props 
         Object.values(chosenBooksForOrder).forEach((data,index) => {
             if(data.quantity === null){
+                alert("Your order quantity isn't fill,so it will be '1'. Please add or change quantity ")
                 data.quantity = 1 ;
                 ls.set('basket',chosenBooksForOrder)
             
