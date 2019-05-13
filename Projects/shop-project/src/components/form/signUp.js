@@ -38,24 +38,24 @@ class SignUp extends Component {
     render(){
         return(
             <Fragment>
-                <div className='popup'>
-                    <div className='popup_inner'>
+                <div className = 'popup'>
+                    <div className = 'popup_inner'>
                         <div id ="DivForSignUp"  >
                             <h2>Creat Account</h2>
                             <form >
-                                <input  type="text"   placeholder="Name"   ref={input=>this.name=input} />
+                                <input  type="text"   placeholder="Name"   ref = {input => this.name = input} />
                                 <p ref = "nameError"></p>
-                                <input  type="mail" placeholder="Your Email" ref={input=>this.email=input}  />
-                                <p ref="emailError"></p>
-                                <input  type="password"  placeholder="Password"  ref={input=>this.password=input} /> 
+                                <input  type="mail" placeholder="Your Email" ref = {input => this.email = input}  />
+                                <p ref = "emailError"></p>
+                                <input type = "password"  placeholder="Password"  ref = {input => this.password = input} /> 
                                 <p ref = "passwordError"></p>
-                                <input   type="password"  placeholder="Repeat your password"  /> 
+                                <input   type="password"  placeholder = "Repeat your password"  /> 
                                 <Button 
-                                    type="button" 
-                                    callback={this.signUp} 
-                                    name="CREATE ACCOUNT"
+                                    type = "button" 
+                                    callback = {this.signUp} 
+                                    name = "CREATE ACCOUNT"
                                 />   
-                                <p  id = "footer" >Have already an account? <b><a href = "/registration/signIn" target = "_self"  > Login here </a> </b></p>
+                                <p  id = "footer" >Have already an account? <b><a href = "/signIn" target = "_self"  > Login here </a> </b></p>
                             </form>
                         </div>
                     </div>

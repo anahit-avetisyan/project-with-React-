@@ -12,16 +12,16 @@ import history from '../components/Header/history';
 class Routing extends Component {
     render() {
         return (
-            <div className="App">
-                <Router history={history}>
+            <div className = "App">
+                <Router history = {history}>
                     <div>
                         <Header/> 
                         <Switch>
-                            <Route path='/products' component={Main}/>
-                            <Route path='/signIn' component={SignIn}/>
-                            <Route path='/signUp' component={SignUp}/>
-                            <Route path='/myBasket'  component={Basket}/>
-                            <Route path='/orders' component={Order}/>
+                            <Route path = '/products' component = {Main}/>
+                            <Route path = '/signIn' component = {SignIn}/>
+                            <Route path = '/signUp' component = {SignUp}/>
+                            <Route path = '/myBasket'  component = {Basket}/>
+                            <Route path = '/orders' component = {Order}/>
                         </Switch>
                     </div>
                 </Router>  

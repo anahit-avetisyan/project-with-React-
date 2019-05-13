@@ -42,7 +42,7 @@ import Button from "../Product/button"
     };
 
     increment = (id) => {
-        this.refs['valueInput' + id].value = parseInt(this.refs['valueInput' + id].value)+ 1;
+        this.refs['valueInput' + id].value = Math.floor(this.refs['valueInput' + id].value) + 1;
         const dataAfterIncrement = ls.get("basket");
         Object.values(dataAfterIncrement).forEach((objectKey, index) => {
             if(objectKey.id === id){
@@ -60,15 +60,15 @@ import Button from "../Product/button"
     }
     
     decrement = (id) => {
-        this.refs['valueInput' + id].value= parseInt(this.refs['valueInput' + id].value)- 1;
-        const dataAfterDecrement=ls.get("basket");
+        this.refs['valueInput' + id].value = this.refs['valueInput' + id].value - 1;
+        const dataAfterDecrement = ls.get("basket");
         Object.values(dataAfterDecrement).forEach((objectKey, index)=> {
             if(objectKey.id === id){
-                if(this.refs['valueInput' + id].value<=0){
-                    this.refs['valueInput' + id].value=1
-                objectKey.quantity= this.refs['valueInput' + id].value;
+                if(this.refs['valueInput' + id].value <= 0){
+                    this.refs['valueInput' + id].value = 1
+                objectKey.quantity = this.refs['valueInput' + id].value;
                 } else {
-                    objectKey.quantity= this.refs['valueInput' + id].value;
+                    objectKey.quantity = this.refs['valueInput' + id].value;
                 }
             }
         });
@@ -84,7 +84,7 @@ import Button from "../Product/button"
             objectKey.quantity = parseInt(this.refs['valueInput' + objectKey.id].value)
                 if(objectKey.quantity <= 0 ){
                     alert("please fill positive number");
-                    objectKey.quantity=1
+                    objectKey.quantity = 1
                     this.refs['valueInput' + objectKey.id].value = 1;
                 }
                
@@ -115,12 +115,12 @@ import Button from "../Product/button"
                                 <td>{data.name}</td>
                                 <td>{data.price}</td> 
                                 <td> 
-                                    <Button callback={()=>this.decrement(data.id)} name="-"/>
-                                        <input ref={`valueInput${data.id}`}    onChange={this.handleChangeQuantity } className="inputForQuantity"    type="number"/>  
-                                    <Button callback={()=>this.increment(data.id)} name="+"/>
+                                    <Button callback = {() => this.decrement(data.id)} name = "-"/>
+                                        <input ref = {`valueInput${data.id}`}  step  = "1" onChange = {this.handleChangeQuantity } className = "inputForQuantity"    type = "number"/>  
+                                    <Button callback = {()=>this.increment(data.id)} name = "+"/>
                                 </td>
                                 <td>{isNaN(data.quantity) ? 0 : data.price * data.quantity }</td>
-                                <td><IoIosClose onClick={() => this.removeDataFromBasket(data.id)}/> </td>
+                                <td><IoIosClose onClick = {() => this.removeDataFromBasket(data.id)}/> </td>
                             </tr>   
                         )
                     })

@@ -3,14 +3,13 @@ import { connect } from "react-redux";
 import { request } from '../../reducers/action';
 import Button from '../Product/button';
 import history from '../Header/history';
-import { bindActionCreators } from "redux";
 
 class SignIn extends Component{
 
-    state ={
+    state = {
         deleteSignIn : false
     }
-    componentDidUpdate=(prevProps)=>{  
+    componentDidUpdate = (prevProps) => {  
         const { error , userIsAuthenticatedInReduxStorage } = this.props;
         if(error !== prevProps.error){
            if(userIsAuthenticatedInReduxStorage){
@@ -30,10 +29,10 @@ class SignIn extends Component{
         }
     }
     
-    signIn=()=>{
-        let signInFormData={
-                email:this.email.value,
-                password:this.password.value,    
+    signIn = () => {
+        let signInFormData = {
+                email : this.email.value,
+                password : this.password.value,    
         }
         // Make a request to login endpoint with login form data :) 
         this.props.request("http://books.test/api/login" , "POST" , signInFormData);
@@ -43,18 +42,18 @@ class SignIn extends Component{
             return(
                 <Fragment>
                     {this.deleteSignIn ? null : <div className='popup'>
-                        <div className='popup_inner'>
-                            <div id ="DivForSignIn" >
+                        <div className = 'popup_inner'>
+                            <div id = "DivForSignIn" >
                                 <form>
                                     <h2>LOGIN</h2>
-                                    <p ref="errorInputMailError"></p>
-                                    <input type="mail" placeholder="Your Email" ref={input=>this.email=input} />
-                                    <p ref="errorInputPasswordError"></p>
-                                    <input type="password" placeholder="Password" ref={input=>this.password=input} />
+                                    <p ref = "errorInputMailError"></p>
+                                    <input type = "mail" placeholder = "Your Email" ref = {input => this.email = input} />
+                                    <p ref = "errorInputPasswordError"></p>
+                                    <input type = "password" placeholder = "Password" ref = {input => this.password = input} />
                                     <Button 
-                                        type="button" 
-                                        callback={this.signIn} 
-                                        name="LOG IN"
+                                        type = "button" 
+                                        callback = {this.signIn} 
+                                        name = "LOG IN"
                                     />
                                 </form>  
                             </div>
@@ -67,18 +66,10 @@ class SignIn extends Component{
     }
     function mapStateToProps(state) {
         return {
-           
             state,
             userIsAuthenticatedInReduxStorage : state.userReduser.user && state.userReduser.user.success === true ? true : false,
             error: state.userReduser.user && state.userReduser.user.success === false ? state.userReduser.user.errors : {} 
         };
     }
-    function mapDispatchToProps(dispatch) {
-        return bindActionCreators(
-            {
-                request,
-            },
-            dispatch
-        );
-    };
-    export default connect(mapStateToProps, mapDispatchToProps)(SignIn) ;
+
+    export default connect(mapStateToProps, {request})(SignIn) ;
