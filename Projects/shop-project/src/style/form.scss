@@ -12,10 +12,11 @@
     }
     .formContainer{
         .mainButtonSignIn,.mainButtonSignUP,button{
-                background-color:ghostwhite;
+                background-color:rgba(255, 255, 255, 0.938);
                 margin-right:2em;
                 border: 0.1em solid gray;
-                padding:0 1em
+                padding:0 1em;
+                cursor: pointer;
             }
     }
     .divForMainButtons {
@@ -38,7 +39,7 @@
         height:fit-content;
         min-height: 30em;
         width:25em ;
-        background-color:  rgb(240, 233, 233);
+        background-color:  rgba(117, 105, 109, 0.712);;
     }
     #DivForSignIn{
         text-align: center;
@@ -59,20 +60,21 @@
         }
         button{
             @extend %message-sharedTwo ;
-            background-color: #c2d6d6; 
+            background-color: #A63F5F; 
         }
         a {
             color:black;
         }
         p{
             text-align: center;
-            color: red;
+            color: #A63F5F;
             font-size: 1vw;
         }
     }
     #DivForSignUp{
         text-align: center;
         padding-top: 1em;
+        transform: translateY(20%);
         form{
             width: 100%;
             @extend %message-shared;
@@ -89,14 +91,14 @@
         }
         button{
             @extend %message-sharedTwo ;
-            background-color: #c2d6d6; 
+            background-color: #A63F5F; 
         }
         a {
             color: black;
         }
         p{
             text-align: center;
-            color: red;
+            color: #A63F5F;
             font-size: 1vw;
         }
     }

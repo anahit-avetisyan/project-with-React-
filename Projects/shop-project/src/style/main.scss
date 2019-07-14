@@ -2,7 +2,9 @@
 h1{
     text-align: center;
     margin: 0.3em;
-    padding: 1em
+    padding: 1em;
+    color:rgb(97, 12, 41);
+
 }
 .wrapper{
     display: flex;
@@ -28,26 +30,24 @@ h1{
         } 
     }
         div img{
-            height: 20em;
-            width: 18em;
+            height: 15em;
+            width: 13em;
         }
 }
     .pagination{
         display: flex;
         justify-content: center;
     }
-    .firstDiv{
-        border:0.1px solid grey;
+    .productData{
+        border:0.1px solid rgb(97, 12, 41);
+        height: 50em;
         margin-right: 0.5em;
         img{
             margin: auto
         }
     }
     .star-ratings{
-        text-align:center;
-            div{
-            margin-right: 1em;
-        }
+        text-align:center;  
     }
     textarea,input{
         outline: none;
@@ -70,3 +70,5 @@ h1{
         font-size: 0.7em;
         text-align: center;
     }
+     
+     

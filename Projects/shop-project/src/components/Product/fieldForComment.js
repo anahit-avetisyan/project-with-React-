@@ -1,44 +1,35 @@
-import React, {Component} from 'react';
+import React, {Component,Fragment} from 'react';
 
 
 class FieldForComment extends Component {
-    functionForComment=(id,booksData,responseData )=>{
-        id=this.props.mainId;
-        booksData=this.props.booksData;
-        responseData=this.props.responseData;
-        if(booksData.payload!==undefined){ 
-            if(responseData.success!==undefined&&responseData.success===false){
-                if(responseData.success===false&&responseData.errors.rating===undefined&&responseData.errors.comment===undefined){
-                    if(this.refs['comment'+ id]!==undefined){
-                        this.refs['comment'+ id].textContent=responseData.errors
-                    }
-                }
-                else if(responseData.errors.rating===undefined&&responseData.errors.comment!==undefined){
-                    if(this.refs['comment'+ id]!==undefined){
-                        this.refs['comment'+ id].textContent=responseData.errors.comment
-                    }
-                }
-                else if(responseData.errors.rating!==undefined&&responseData.errors.comment===undefined){
-                    if(this.refs['comment'+ id]!==undefined){
-                        this.refs['comment'+ id].textContent=responseData.errors.rating
-                    }
-                }   
-                else if(responseData.errors.rating!==undefined&&responseData.errors.comment!==undefined){
-                    if(this.refs['comment'+ id]!==undefined){
-                        this.refs['comment'+ id].textContent=`1. ${responseData.errors.rating} 2.${responseData.errors.comment} `
-                    } 
+    
+    componentDidUpdate = (prevProps) =>{
+        let id = this.props.mainId;
+        let responseData = this.props.responseData; 
+        if(this.props.responseData !== prevProps.responseData){
+            if(responseData.success === false){
+                const commentError = responseData.errors.comment ? responseData.errors.comment : null;
+                const   ratingError =  responseData.errors.rating ? responseData.errors.rating : null;
+                if(this.props.mainId === this.props.refId ){
+                    this.refs['comment'+ id].textContent = commentError
+                    this.refs['rating'+ id].textContent = ratingError 
                 } 
             }
-            else if(responseData.success!==undefined&&responseData.success===true){
+            else if (responseData.success === true && Object.keys(responseData).length !== 0){
                 alert ("Your comment has sent")
-            }
-        }
-                
+                if(this.props.mainId === this.props.refId ){
+                this.refs['comment'+ id].textContent = ""
+                this.refs['rating'+ id].textContent = ""
+                }
+            } 
+        }              
     }
     render(){
-        this.functionForComment();
         return (
-            <p ref={`comment${this.props.refId}`}    className='fieldForResponse'></p>
+            <Fragment>
+                <p ref = {`comment${this.props.refId}`} className='fieldForResponse'></p>
+                <p ref = {`rating${this.props.refId}`} className='fieldForResponse'></p>
+            </Fragment>
         )
     };
 }

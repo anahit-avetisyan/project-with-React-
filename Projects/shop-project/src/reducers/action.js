@@ -1,4 +1,5 @@
 
+
     export function BooksInformation(value){
         return{
             type:"CHANGE_VALUE",
@@ -15,7 +16,6 @@
             })
                 .then(res => res.json())
                 .then(response => {
-                    console.log(response)
                     dispatch(requestSuccess(response));
                 })
                 .catch(error => dispatch(requestFailure(error)));
